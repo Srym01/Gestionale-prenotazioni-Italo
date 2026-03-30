@@ -3,129 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#ffffff">
     
-    <link rel="manifest" href='data:application/manifest+json;utf8,{"name":"RistoGest","short_name":"RistoGest","start_url":".","display":"standalone","background_color":"#1e293b","theme_color":"#1e293b","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/1046/1046747.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href="manifest.json">
 
     <title>Gestione Prenotazioni Ristorante</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         :root {
-            --primary: #1e293b;
+            --primary: #0f172a;       
             --secondary: #475569;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
+            --accent: #2563eb;        
+            --accent-hover: #1d4ed8;
             --danger: #ef4444;
             --light: #f8fafc;
             --white: #ffffff;
             --border: #e2e8f0;
-            --pranzo-bg: #fffbeb;
+            --pranzo-bg: #fef3c7;     
             --pranzo-border: #f59e0b;
-            --cena-bg: #f0f9ff;
+            --cena-bg: #e0f2fe;       
             --cena-border: #0ea5e9;
-            --radius-md: 12px;
-            --radius-lg: 20px;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 28px;        
         }
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
         
-        body {
-            background-color: var(--primary);
-            margin: 0;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-            color: var(--primary);
-            overscroll-behavior-y: none;
-            transition: background-color 0.5s ease;
+        body { 
+            margin: 0; 
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); 
+            color: var(--primary); 
+            overscroll-behavior-y: none; 
+            background-color: var(--light);
+            background-attachment: fixed; 
+            transition: background 0.5s ease;
+            min-height: 100vh;
         }
         
-        header {
-            background-color: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: var(--white);
-            padding: 16px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        header { 
+            background-color: rgba(255, 255, 255, 0.98); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+            color: var(--primary); 
+            padding: 16px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
         }
-        
-        header h2 { margin: 0; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
-        
-        .header-actions { display: flex; gap: 8px; margin-top: 12px; width: 100%; }
-        @media (min-width: 768px) { .header-actions { margin-top: 0; width: auto; gap: 10px; } }
+        .header-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        header h2 { margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        button {
-            cursor: pointer; padding: 12px; border: none; border-radius: var(--radius-md);
-            font-weight: 600; font-size: 0.95rem; transition: all 0.2s ease;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-        }
+        .live-clock { text-align: right; font-variant-numeric: tabular-nums; }
+        .live-clock .date { font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .live-clock .time { font-size: 1.05rem; font-weight: 800; color: var(--accent); }
         
-        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
-        .btn-accent:active { transform: scale(0.97); background-color: var(--accent-hover); }
-        .btn-accent:disabled { background-color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+        .header-actions { display: flex; gap: 8px; width: 100%; }
+        button { cursor: pointer; padding: 12px; border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; }
         
-        .btn-outline { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); flex: 1; }
-        .btn-outline:active { background-color: rgba(255,255,255,0.2); }
+        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+        .btn-accent:active { transform: scale(0.96); background-color: var(--accent-hover); box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15); }
+        
+        .btn-outline { background-color: #ffffff; border: 1px solid #cbd5e1; color: var(--secondary); flex: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .btn-outline:active { background-color: #f1f5f9; }
+        
         .btn-danger { background-color: var(--danger); color: white; }
-        .btn-icon { flex: 0 0 auto; width: 45px; padding: 0; font-size: 1.2rem; }
         
         main { padding: 15px; max-width: 800px; margin: auto; padding-bottom: 90px; }
         
-        .calendar-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; color: white;
-            padding: 12px 16px; border-radius: var(--radius-md); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: sticky; 
-            z-index: 90;
-            transition: background-color 0.5s ease; 
-        }
-        .calendar-header button { background: rgba(0,0,0,0.25); color: white; padding: 8px 16px; border-radius: 8px; backdrop-filter: blur(5px); }
-        .calendar-header button:active { background: rgba(0,0,0,0.4); }
-        .calendar-header h2 { margin: 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; color: white; padding: 12px 18px; border-radius: var(--radius-md); box-shadow: 0 6px 15px rgba(0,0,0,0.15); position: sticky; z-index: 90; transition: background-color 0.5s ease; border: 1px solid rgba(255,255,255,0.1); }
+        .calendar-header button { background: rgba(0,0,0,0.25); color: white; padding: 8px 16px; border-radius: 10px; backdrop-filter: blur(5px); }
+        .calendar-header h2 { margin: 0; font-size: 1.15rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-        .agenda-view { display: flex; flex-direction: column; gap: 10px; }
-        
-        .agenda-row {
-            display: flex; background: var(--white); border-radius: var(--radius-md); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; cursor: pointer; transition: all 0.2s;
-            border: 1px solid transparent; min-height: 80px;
-        }
+        .agenda-view { display: flex; flex-direction: column; gap: 12px; }
+        .agenda-row { display: flex; background: var(--white); border-radius: var(--radius-md); box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow: hidden; cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border); min-height: 80px; }
         .agenda-row:active { transform: scale(0.98); background-color: #f8fafc; }
-        
-        .agenda-row.today { border: 2px solid var(--accent); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .agenda-row.today { border: 2px solid var(--accent); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2); }
         .agenda-row.today .agenda-date { background: var(--accent); color: white; border-right: none; }
-        .agenda-row.today .agenda-date .day { color: rgba(255,255,255,0.8); }
-        .agenda-row.today .agenda-date .num { color: white; }
-
-        .agenda-date {
-            width: 70px; min-width: 70px; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; padding: 12px 5px;
-            border-right: 1px solid var(--border); background: #f8fafc;
-        }
-        .agenda-date .num { font-size: 1.6rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-        .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--secondary); letter-spacing: 0.5px; }
+        .agenda-row.today .agenda-date .day, .agenda-row.today .agenda-date .num { color: white; }
+        .agenda-date { width: 75px; min-width: 75px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 5px; border-right: 1px solid var(--border); background: #f8fafc; }
+        .agenda-date .num { font-size: 1.7rem; font-weight: 800; margin-bottom: 2px; }
+        .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--secondary); letter-spacing: 0.5px; }
         .festivo .num, .festivo .day { color: var(--danger); }
         .agenda-row.today.festivo .agenda-date .num, .agenda-row.today.festivo .agenda-date .day { color: white; } 
         
-        /* Modifica layout contenuto: diviso a metà in colonne */
-        .agenda-content { flex: 1; padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        
-        .shift-pill {
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 8px 4px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
-        }
-        .shift-pill .title { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 4px; opacity: 0.8; }
-        .shift-pill .val { font-size: 1rem; }
+        .agenda-content { flex: 1; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .shift-pill { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8px 4px; border-radius: 10px; font-weight: 800; }
+        .shift-pill .title { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 3px; opacity: 0.8; letter-spacing: 0.5px; }
+        .shift-pill .val { font-size: 1.05rem; }
         
         .pill-pranzo { background-color: var(--pranzo-bg); color: #b45309; border: 1px solid #fde68a; }
         .pill-cena { background-color: var(--cena-bg); color: #0369a1; border: 1px solid #bae6fd; }
@@ -133,84 +106,96 @@
         .pill-empty { background-color: transparent; border: 1px dashed #cbd5e1; color: #94a3b8; }
 
         .list-view { display: none; }
-        .list-group { margin-bottom: 25px; background: white; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; }
-        .list-group-header { background: rgba(0,0,0,0.3); color: white; padding: 14px 16px; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px;}
-        
-        .service-section { padding: 0; }
-        .service-title { 
-            margin: 0; padding: 12px 16px; font-size: 0.95rem; font-weight: 800; 
-            display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border);
-        }
-        .title-pranzo { color: #b45309; border-left: 4px solid var(--pranzo-border); }
-        .title-cena { color: #0369a1; border-left: 4px solid var(--cena-border); }
-        
-        .list-item { padding: 14px 16px; border-bottom: 1px solid var(--light); cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
-        .list-item:active { background-color: #f1f5f9; }
+        .list-group { margin-bottom: 18px; background: white; border-radius: var(--radius-md); box-shadow: 0 6px 16px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid var(--border); }
+        .list-group-header { color: white; padding: 14px 18px; font-size: 1.05rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .service-section { padding: 0; background: var(--white); }
+        .service-title { margin: 0; padding: 12px 18px; font-size: 0.95rem; font-weight: 800; display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border); }
+        .title-pranzo { color: #b45309; border-left: 5px solid var(--pranzo-border); }
+        .title-cena { color: #0369a1; border-left: 5px solid var(--cena-border); }
+        .service-divider { height: 8px; background-color: #f1f5f9; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; }
+
+        .list-item { padding: 14px 18px; border-bottom: 2px solid #e2e8f0; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
+        .list-item:active { background-color: #f8fafc; }
         .list-item:last-child { border-bottom: none; }
-        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.05rem; color: var(--primary); }
-        .item-details { color: var(--secondary); font-size: 0.85rem; display: flex; justify-content: space-between; font-weight: 500;}
+        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1.05rem; color: var(--primary); }
+        .item-details { color: var(--secondary); font-size: 0.85rem; display: flex; justify-content: space-between; font-weight: 600;}
         
-        /* Stili per i badge */
-        .badges-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .intol-badge { background: #fef2f2; color: var(--danger); font-size: 0.8rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; border: 1px solid #fecaca; }
-        .seggiolone-badge { background: #e0f2fe; color: #0369a1; font-size: 0.8rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; border: 1px solid #bae6fd; }
+        .badges-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .intol-badge { background: #fef2f2; color: #b91c1c; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #fecaca; }
+        .seggiolone-badge { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #bae6fd; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); z-index: 1000; backdrop-filter: blur(3px); animation: fadeIn 0.2s ease-out; }
-        .modal-content {
-            background-color: #fff; position: absolute; bottom: 0; width: 100%;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 25px 20px; max-height: 90vh; overflow-y: auto;
-            padding-bottom: env(safe-area-inset-bottom);
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-        }
-        @media (min-width: 768px) {
-            .modal-content { position: relative; margin: 4% auto; width: 90%; max-width: 600px; border-radius: var(--radius-lg); bottom: auto; animation: fadeIn 0.3s ease-out; }
-        }
-        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.8rem; cursor: pointer; color: #94a3b8; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; transition: 0.2s; }
-        .close-modal:active { background: #e2e8f0; color: var(--primary); }
+        /* MODALI FLUTTUANTI (Staccate dal fondo) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); z-index: 1000; backdrop-filter: blur(5px); }
         
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--secondary); }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); 
-            font-size: 16px; background-color: #f8fafc; color: var(--primary); font-weight: 500;
-            transition: all 0.2s ease;
+        .modal-content { 
+            background-color: #fff; 
+            position: absolute; 
+            bottom: 15px; /* Distanza dal bordo inferiore */
+            left: 15px;   /* Distanza dal bordo sinistro */
+            right: 15px;  /* Distanza dal bordo destro */
+            width: auto;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: var(--radius-lg); /* Arrotondato su tutti i lati */
+            padding: 25px 20px; 
+            max-height: calc(100vh - 80px); /* Evita che sbatta in alto */
+            overflow-y: auto; 
+            padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
+            animation: slideUp 0.3s cubic-bezier(0.2, 1, 0.3, 1); 
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
+        @keyframes slideUp { from { transform: translateY(120%); } to { transform: translateY(0); } }
         
-        .intolleranze-box { background: #fef2f2; padding: 16px; border-radius: var(--radius-md); border: 1px solid #fecaca; margin-bottom: 18px; }
-        .intolleranze-box h4 { margin: 0 0 12px 0; font-size: 0.95rem; color: var(--danger); font-weight: 800; }
-        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .intol-row label { margin: 0; font-weight: 600; color: #991b1b;}
-        .intol-row input { width: 70px; padding: 10px; text-align: center; border-color: #fca5a5; }
+        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: var(--secondary); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; font-weight: bold; }
+        .close-modal:active { background: #e2e8f0; }
         
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-weight: 800; margin-bottom: 6px; font-size: 0.85rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-size: 16px; background-color: #f8fafc; color: var(--primary); font-weight: 600; transition: all 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
         .row { display: flex; gap: 12px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 120px; }
 
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary); z-index: 2000; display: flex;
-            align-items: center; justify-content: center; flex-direction: column;
-            color: var(--white); font-weight: 700; font-size: 1.1rem;
-        }
+        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+
+        .stepper-control { display: flex; align-items: center; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); overflow: hidden; height: 46px; width: 100%; max-width: 160px; }
+        .stepper-btn { flex: 0 0 44px; height: 100%; background: transparent; border: none; font-size: 1.6rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; border-radius: 0; transition: background 0.1s; }
+        .stepper-btn:active { background: #e2e8f0; }
+        .stepper-btn.minus { border-right: 2px solid #e2e8f0; color: var(--danger); }
+        .stepper-btn.plus { border-left: 2px solid #e2e8f0; }
+        .stepper-input { flex: 1; min-width: 0; text-align: center; border: none !important; background: transparent !important; padding: 0 !important; font-size: 1.1rem !important; font-weight: 800 !important; color: var(--primary) !important; pointer-events: none; }
+
+        .smart-toggles { display: flex; gap: 10px; margin-bottom: 14px; margin-top: 8px; }
+        .toggle-btn { flex: 1; padding: 12px; background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-md); font-weight: 800; font-size: 0.85rem; color: var(--secondary); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .toggle-btn.active { background: #eff6ff; border-color: #bfdbfe; color: var(--accent); }
+        
+        .hidden-section { display: none; margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: var(--radius-md); border: 2px solid #e2e8f0; }
+        .hidden-section.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .intol-row:last-child { margin-bottom: 0; }
+        .intol-row label { margin: 0; font-weight: 800; color: var(--primary); font-size: 0.95rem; text-transform: none; flex: 1; }
+
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light); z-index: 2000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--primary); font-weight: 800; font-size: 1.2rem; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
 
-<div id="loading-overlay">Sincronizzazione in corso... ⏳</div>
+<div id="loading-overlay">Sincronizzazione... ⏳</div>
 
 <header id="main-header">
-    <h2>📅 RistoGest</h2>
+    <div class="header-top-row">
+        <h2>📅 RistoGest</h2>
+        <div class="live-clock" id="live-clock">
+            <div class="date">-</div>
+            <div class="time">-</div>
+        </div>
+    </div>
     <div class="header-actions">
         <button class="btn-outline" onclick="toggleView('calendar')" id="btn-cal">🗓 Agenda</button>
         <button class="btn-outline" onclick="toggleView('list')" id="btn-list">📋 Lista</button>
         <button class="btn-accent" onclick="window.closeModals(); openFormModal()">➕ Nuova</button>
-        <button class="btn-outline btn-icon" onclick="openOptionsModal()">⚙️</button>
     </div>
 </header>
 
@@ -223,41 +208,18 @@
         </div>
         <div class="agenda-view" id="agenda-grid"></div>
     </div>
-
-    <div id="list-view" class="list-view">
-        <div id="list-container"></div>
-    </div>
+    <div id="list-view" class="list-view"><div id="list-container"></div></div>
 </main>
-
-<div id="optionsModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 style="margin-top: 0; font-weight: 800; color: var(--primary);">⚙️ Opzioni</h2>
-        <p style="color: var(--secondary); font-size: 0.95rem; font-weight: 500;">Gestisci le impostazioni dell'applicazione.</p>
-        
-        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
-            <button class="btn-accent" onclick="installApp()" style="padding: 16px; font-size: 1.1rem;">
-                📱 Installa App su PC o Cellulare
-            </button>
-            <p style="font-size: 0.8rem; color: var(--secondary); text-align: center;">
-                Su Windows/Mac (Chrome/Edge) questo la installerà come un programma (.exe) sul Desktop.
-            </p>
-        </div>
-    </div>
-</div>
 
 <div id="formModal" class="modal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 20px;">Nuova Prenotazione</h2>
+        <span class="close-modal" onclick="attemptCloseForm()">&times;</span>
+        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 18px; color: var(--primary);">Nuova Prenotazione</h2>
         <form id="reservationForm" onsubmit="saveReservation(event)">
             <input type="hidden" id="res-id">
             
             <div class="row">
-                <div class="form-group col">
-                    <label>Data</label>
-                    <input type="date" id="res-date" required>
-                </div>
+                <div class="form-group col"><label>Data</label><input type="date" id="res-date" required></div>
                 <div class="form-group col">
                     <label>Orario</label>
                     <select id="res-time" required>
@@ -277,52 +239,71 @@
             </div>
 
             <div class="row">
-                <div class="form-group col">
-                    <label>Persone Totali</label>
-                    <input type="number" id="res-pax" min="1" required inputmode="numeric">
+                <div class="form-group col"><label>Persone Totali</label><input type="number" id="res-pax" min="1" required inputmode="numeric"></div>
+                <div class="form-group col"><label>Telefono</label><input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel"></div>
+            </div>
+
+            <div class="form-group"><label>Nome Prenotazione</label><input type="text" id="res-name" required placeholder="Es. Rossi"></div>
+
+            <div class="smart-toggles">
+                <button type="button" class="toggle-btn" id="btn-toggle-bimbi" onclick="toggleSection('children-section', this)">👶 Bambini & Seggioloni</button>
+                <button type="button" class="toggle-btn" id="btn-toggle-menu" onclick="toggleSection('menu-section', this)">🥗 Menù Speciali</button>
+            </div>
+
+            <div id="children-section" class="hidden-section" style="background: #eff6ff; border-color: #bfdbfe;">
+                <div class="row">
+                    <div class="form-group col" style="margin-bottom:0;">
+                        <label style="color: #1e3a8a;">Bambini</label>
+                        <div class="stepper-control">
+                            <button type="button" class="stepper-btn minus" onclick="updateStepper('res-children', -1)">−</button>
+                            <input type="number" id="res-children" class="stepper-input" value="0" readonly>
+                            <button type="button" class="stepper-btn plus" onclick="updateStepper('res-children', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="form-group col" style="margin-bottom:0;">
+                        <label style="color: #1e3a8a;">Seggioloni</label>
+                        <div class="stepper-control">
+                            <button type="button" class="stepper-btn minus" onclick="updateStepper('res-highchairs', -1)">−</button>
+                            <input type="number" id="res-highchairs" class="stepper-input" value="0" readonly>
+                            <button type="button" class="stepper-btn plus" onclick="updateStepper('res-highchairs', 1)">+</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col">
-                    <label>Telefono</label>
-                    <input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel">
+            </div>
+
+            <div id="menu-section" class="hidden-section" style="background: #fef2f2; border-color: #fecaca;">
+                <div class="intol-row">
+                    <label style="color: #991b1b;">Celiaci</label>
+                    <div class="stepper-control">
+                        <button type="button" class="stepper-btn minus" onclick="updateStepper('int-celiaco', -1)">−</button>
+                        <input type="number" id="int-celiaco" class="stepper-input" value="0" readonly>
+                        <button type="button" class="stepper-btn plus" onclick="updateStepper('int-celiaco', 1)">+</button>
+                    </div>
+                </div>
+                <div class="intol-row">
+                    <label style="color: #065f46;">Vegetariani</label>
+                    <div class="stepper-control">
+                        <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegetariano', -1)">−</button>
+                        <input type="number" id="int-vegetariano" class="stepper-input" value="0" readonly>
+                        <button type="button" class="stepper-btn plus" style="color: #059669;" onclick="updateStepper('int-vegetariano', 1)">+</button>
+                    </div>
+                </div>
+                <div class="intol-row">
+                    <label style="color: #065f46;">Vegani</label>
+                    <div class="stepper-control">
+                        <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegano', -1)">−</button>
+                        <input type="number" id="int-vegano" class="stepper-input" value="0" readonly>
+                        <button type="button" class="stepper-btn plus" style="color: #059669;" onclick="updateStepper('int-vegano', 1)">+</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Nome Prenotazione</label>
-                <input type="text" id="res-name" required placeholder="Es. Rossi">
-            </div>
+            <div class="form-group"><label>Note Opzionali</label><input type="text" id="res-notes" placeholder="Richieste extra..."></div>
+            <div class="form-group"><label>Operatore</label><input type="text" id="res-operator" required placeholder="Tuo nome"></div>
 
-            <div class="row">
-                <div class="form-group col">
-                    <label>Bambini</label>
-                    <input type="number" id="res-children" min="0" value="0" inputmode="numeric">
-                </div>
-                <div class="form-group col">
-                    <label>Seggioloni</label>
-                    <input type="number" id="res-highchairs" min="0" value="0" inputmode="numeric">
-                </div>
-            </div>
-
-            <div class="intolleranze-box">
-                <h4>Menù Speciali (n° persone)</h4>
-                <div class="intol-row"><label>Celiaci</label><input type="number" id="int-celiaco" min="0" value="0" inputmode="numeric"></div>
-                <div class="intol-row"><label>Vegetariani</label><input type="number" id="int-vegetariano" min="0" value="0" inputmode="numeric"></div>
-                <div class="intol-row"><label>Vegani</label><input type="number" id="int-vegano" min="0" value="0" inputmode="numeric"></div>
-            </div>
-
-            <div class="form-group">
-                <label>Note Opzionali</label>
-                <textarea id="res-notes" rows="2" placeholder="Richieste extra..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Operatore</label>
-                <input type="text" id="res-operator" required placeholder="Tuo nome">
-            </div>
-
-            <div class="row" style="margin-top: 30px;">
-                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 16px; font-size: 1.1rem;">💾 Salva Prenotazione</button>
-                <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1;" onclick="deleteReservation()">🗑 Elimina</button>
+            <div class="row" style="margin-top: 20px;">
+                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 16px; font-size: 1.1rem; border-radius: 12px;">💾 Salva Prenotazione</button>
+                <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1; border-radius: 12px;" onclick="deleteReservation()">🗑 Elimina</button>
             </div>
         </form>
     </div>
@@ -331,9 +312,9 @@
 <div id="dayModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 20px; font-weight: 800;">Prenotazioni</h2>
-        <div id="day-modal-list" style="margin-bottom: 25px; max-height: 50vh; overflow-y: auto;"></div>
-        <button class="btn-accent" style="width: 100%; padding: 16px; font-size: 1.05rem;" onclick="window.closeModals(); openFormModalForDay()">➕ Aggiungi per questo giorno</button>
+        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 15px; font-weight: 800; color: var(--primary);">Prenotazioni</h2>
+        <div id="day-modal-list" style="margin-bottom: 20px; max-height: 55vh; overflow-y: auto;"></div>
+        <button class="btn-accent" style="width: 100%; padding: 16px; border-radius: 12px;" onclick="window.closeModals(); openFormModalForDay()">➕ Aggiungi prenotazione</button>
     </div>
 </div>
 
@@ -358,64 +339,55 @@
     let currentDate = new Date();
     let selectedDayForNewRes = null;
     let initialLoadDone = false;
-    let deferredPrompt; 
 
-    const monthColors = [
-        "#0f172a", "#334155", "#115e59", "#047857", "#c2410c", "#b91c1c", 
-        "#e11d48", "#d97706", "#b45309", "#78350f", "#475569", "#0f766e"
-    ];
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+    }
 
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-
-    const getTodayString = () => {
-        const t = new Date();
-        return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+    window.updateStepper = function(inputId, delta) {
+        const inputEl = document.getElementById(inputId);
+        let val = parseInt(inputEl.value) || 0;
+        val += delta;
+        if (val < 0) val = 0; 
+        inputEl.value = val;
     };
 
+    const monthColors = ["#0f172a", "#334155", "#115e59", "#047857", "#c2410c", "#b91c1c", "#e11d48", "#d97706", "#b45309", "#78350f", "#475569", "#0f766e"];
+
+    function updateClock() {
+        const clockEl = document.getElementById('live-clock');
+        const now = new Date();
+        clockEl.querySelector('.date').innerText = now.toLocaleDateString('it-IT', { weekday: 'short', day: '2-digit', month: 'short' });
+        clockEl.querySelector('.time').innerText = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+    }
+    setInterval(updateClock, 1000); updateClock();
+
+    const getTodayString = () => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`; };
     const smHolidays = ["01-01", "01-06", "02-05", "03-25", "04-01", "05-01", "07-28", "08-15", "09-03", "10-01", "11-01", "11-02", "12-08", "12-25", "12-26", "12-31"];
     const dynamicHolidays = ["2026-04-05", "2026-04-06"]; 
 
     function isHoliday(dateObj) {
         if (dateObj.getDay() === 0) return true;
         const mmdd = `${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-        const yyyymmdd = `${dateObj.getFullYear()}-${mmdd}`;
-        return smHolidays.includes(mmdd) || dynamicHolidays.includes(yyyymmdd);
+        return smHolidays.includes(mmdd) || dynamicHolidays.includes(`${dateObj.getFullYear()}-${mmdd}`);
     }
 
-    function adjustStickyHeader() {
-        const headerHeight = document.getElementById('main-header').offsetHeight;
-        document.getElementById('month-header').style.top = (headerHeight + 5) + 'px';
-    }
+    function adjustStickyHeader() { document.getElementById('month-header').style.top = (document.getElementById('main-header').offsetHeight + 5) + 'px'; }
     window.addEventListener('resize', adjustStickyHeader);
 
     onSnapshot(collection(db, "prenotazioni"), (snapshot) => {
         reservations = [];
         snapshot.forEach((doc) => { reservations.push({ id: doc.id, ...doc.data() }); });
-        
-        renderCalendar();
-        renderList();
-
-        if(!initialLoadDone) {
-            document.getElementById('loading-overlay').style.display = 'none';
-            window.toggleView('calendar');
-            initialLoadDone = true;
-        } else {
-            if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) {
-                window.openDayModal(selectedDayForNewRes);
-            }
-        }
-    }, (error) => {
-        console.error("Errore Firebase:", error);
-        document.getElementById('loading-overlay').innerText = "Errore di connessione a Firebase.";
-    });
+        renderCalendar(); renderList();
+        if(!initialLoadDone) { document.getElementById('loading-overlay').style.display = 'none'; window.toggleView('calendar'); initialLoadDone = true; } 
+        else if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) { window.openDayModal(selectedDayForNewRes); }
+    }, (error) => { document.getElementById('loading-overlay').innerText = "Errore connessione"; });
 
     window.toggleView = function(view) {
         document.getElementById('calendar-view').style.display = view === 'calendar' ? 'block' : 'none';
         document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
-        
         document.getElementById('btn-cal').style.opacity = view === 'calendar' ? '1' : '0.6';
         document.getElementById('btn-list').style.opacity = view === 'list' ? '1' : '0.6';
-        
         if(view === 'calendar') { renderCalendar(); scrollToToday(); }
         if(view === 'list') renderList();
     };
@@ -424,130 +396,86 @@
         document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
         document.getElementById('reservationForm').reset();
         document.getElementById('res-id').value = '';
+        document.getElementById('children-section').classList.remove('active');
+        document.getElementById('menu-section').classList.remove('active');
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
     };
 
-    window.openOptionsModal = function() { document.getElementById('optionsModal').style.display = 'block'; };
+    window.attemptCloseForm = function() { if(confirm("Sei sicuro di voler chiudere? I dati non salvati andranno persi.")) { window.closeModals(); } };
 
-    window.installApp = async function() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            deferredPrompt = null;
-        } else {
-            alert("PER INSTALLARE L'APP SUL TELEFONO O PC:\n\n🍏 IPHONE (Safari):\n1. Tocca 'Condividi' (il quadrato con la freccia, in basso).\n2. Fai tap su 'Aggiungi a schermata Home'.\n\n🤖 ANDROID O PC (Chrome/Edge):\n1. Clicca i tre puntini del menu (in alto a destra).\n2. Seleziona 'Installa app' o 'Aggiungi a schermata Home'.");
-        }
+    window.toggleSection = function(sectionId, btn) {
+        document.getElementById(sectionId).classList.toggle('active');
+        btn.classList.toggle('active');
     };
 
     window.changeMonth = function(dir) {
-        currentDate.setMonth(currentDate.getMonth() + dir);
-        renderCalendar();
-        if(currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear()) {
-            scrollToToday();
-        } else { window.scrollTo({top: 0, behavior: 'smooth'}); }
+        currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar();
+        if(currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear()) { scrollToToday(); } 
+        else { window.scrollTo({top: 0, behavior: 'smooth'}); }
     };
 
-    function scrollToToday() {
-        setTimeout(() => {
-            const todayEl = document.getElementById('row-today');
-            if(todayEl) {
-                const headerOffset = document.getElementById('main-header').offsetHeight + 80;
-                const elementPosition = todayEl.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-            }
-        }, 150);
-    }
+    function scrollToToday() { setTimeout(() => { const todayEl = document.getElementById('row-today'); if(todayEl) { window.scrollTo({ top: todayEl.getBoundingClientRect().top + window.pageYOffset - document.getElementById('main-header').offsetHeight - 80, behavior: 'smooth' }); } }, 150); }
 
     function renderCalendar() {
         adjustStickyHeader();
-        
-        const grid = document.getElementById('agenda-grid');
-        grid.innerHTML = '';
-        
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-        const dayNames = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
+        const grid = document.getElementById('agenda-grid'); grid.innerHTML = '';
+        const year = currentDate.getFullYear(); const month = currentDate.getMonth();
         
         const color = monthColors[month];
-        document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
+        document.getElementById('month-year-display').innerText = `${["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"][month]} ${year}`;
+        
         document.getElementById('month-header').style.backgroundColor = color;
-        document.body.style.backgroundColor = color;
+        
+        document.body.style.background = `linear-gradient(to bottom, ${color}33 0%, #f8fafc 100vh)`;
+        document.body.style.backgroundAttachment = "fixed";
 
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const todayStr = getTodayString();
 
         for (let day = 1; day <= daysInMonth; day++) {
-            const dateObj = new Date(year, month, day);
-            const dateString = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            const isOggi = dateString === todayStr;
-            const isTuesday = dateObj.getDay() === 2;
-            const isFestivo = isHoliday(dateObj) ? 'festivo' : '';
+            const dateObj = new Date(year, month, day); const dateString = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            const isOggi = dateString === todayStr; const isTuesday = dateObj.getDay() === 2;
             
             const div = document.createElement('div');
-            div.className = `agenda-row ${isOggi ? 'today' : ''} ${isFestivo}`;
-            if(isOggi) div.id = 'row-today';
-            div.onclick = () => window.openDayModal(dateString);
+            div.className = `agenda-row ${isOggi ? 'today' : ''} ${isHoliday(dateObj) ? 'festivo' : ''}`;
+            if(isOggi) div.id = 'row-today'; div.onclick = () => window.openDayModal(dateString);
             
-            let html = `<div class="agenda-date"><span class="num">${day}</span><span class="day">${dayNames[dateObj.getDay()]}</span></div><div class="agenda-content">`;
+            let html = `<div class="agenda-date"><span class="num">${day}</span><span class="day">${["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"][dateObj.getDay()]}</span></div><div class="agenda-content">`;
             
             const dayRes = reservations.filter(r => r.date === dateString);
             const resPranzo = dayRes.filter(r => r.service === 'Pranzo');
             const resCena = dayRes.filter(r => r.service === 'Cena');
 
-            // --- COLONNA PRANZO (Sempre a sinistra) ---
-            if(resPranzo.length > 0) {
-                html += `<div class="shift-pill pill-pranzo"><span class="title">☀️ PRANZO</span> <span class="val">${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>`;
-            } else {
-                html += `<div class="shift-pill pill-empty"><span class="title">☀️ PRANZO</span> <span class="val">-</span></div>`;
-            }
+            html += resPranzo.length > 0 ? `<div class="shift-pill pill-pranzo"><span class="title">☀️ PRANZO</span> <span class="val">${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>` : `<div class="shift-pill pill-empty"><span class="title">☀️ PRANZO</span> <span class="val">-</span></div>`;
+            if(resCena.length > 0) { html += `<div class="shift-pill pill-cena"><span class="title">${isTuesday ? '🌙 EXTRA' : '🌙 CENA'}</span> <span class="val">${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; } 
+            else if (isTuesday) { html += `<div class="shift-pill pill-chiuso"><span class="title">🌙 CENA</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`; } 
+            else { html += `<div class="shift-pill pill-empty"><span class="title">🌙 CENA</span> <span class="val">-</span></div>`; }
 
-            // --- COLONNA CENA (Sempre a destra) ---
-            if(resCena.length > 0) {
-                const cenaTesto = isTuesday ? '🌙 EXTRA' : '🌙 CENA';
-                html += `<div class="shift-pill pill-cena"><span class="title">${cenaTesto}</span> <span class="val">${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`;
-            } else if (isTuesday) {
-                html += `<div class="shift-pill pill-chiuso"><span class="title">🌙 CENA</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`;
-            } else {
-                html += `<div class="shift-pill pill-empty"><span class="title">🌙 CENA</span> <span class="val">-</span></div>`;
-            }
-
-            div.innerHTML = html + `</div>`;
-            grid.appendChild(div);
+            div.innerHTML = html + `</div>`; grid.appendChild(div);
         }
     }
 
     function getIntoleranceString(intolObj) {
         let arr = [];
         if(intolObj.celiaco > 0) arr.push(`${intolObj.celiaco} Celiaci`);
-        if(intolObj.vegetariano > 0) arr.push(`${intolObj.vegetariano} Vegetariani`);
+        if(intolObj.vegetariano > 0) arr.push(`${intolObj.vegetariano} Vegt`);
         if(intolObj.vegano > 0) arr.push(`${intolObj.vegano} Vegani`);
         return arr.length > 0 ? `⚠️ ${arr.join(' • ')}` : '';
     }
 
     function generateDayListHtml(dayRes) {
-        if(dayRes.length === 0) return '<p style="padding: 15px; color: #64748b; font-weight: 500;">Nessuna prenotazione.</p>';
+        if(dayRes.length === 0) return '<p style="padding: 15px; color: #64748b; font-weight: 600;">Nessuna prenotazione.</p>';
         const pranzi = dayRes.filter(r => r.service === 'Pranzo').sort((a,b) => a.time.localeCompare(b.time));
         const cene = dayRes.filter(r => r.service === 'Cena').sort((a,b) => a.time.localeCompare(b.time));
         
         let html = '';
         const renderGroup = (arr, titleClass, icon, titleText) => {
             if(arr.length === 0) return '';
-            const totPax = arr.reduce((s,r) => s + r.pax, 0);
-            let groupHtml = `<div class="service-section"><div class="service-title ${titleClass}"><span>${icon} ${titleText}</span> <span>Tot: ${totPax} pax</span></div>`;
-            
+            let groupHtml = `<div class="service-section"><div class="service-title ${titleClass}"><span>${icon} ${titleText}</span> <span>Tot: ${arr.reduce((s,r) => s + r.pax, 0)} pax</span></div>`;
             arr.forEach(r => {
-                // Costruisci badge Intolleranze e Seggioloni
-                const intolStr = getIntoleranceString(r.intolerances);
-                const intolBadge = intolStr ? `<div class="intol-badge">${intolStr}</div>` : '';
+                const intolBadge = getIntoleranceString(r.intolerances) ? `<div class="intol-badge">${getIntoleranceString(r.intolerances)}</div>` : '';
                 const seggBadge = r.highchairs > 0 ? `<div class="seggiolone-badge">🪑 ${r.highchairs} Seggiolone/i</div>` : '';
-                
-                let badgesHtml = '';
-                if(intolBadge || seggBadge) {
-                    badgesHtml = `<div class="badges-container">${intolBadge}${seggBadge}</div>`;
-                }
-
-                // Chiudi PRIMA le modali correnti, poi apri il form per la modifica
+                const badgesHtml = (intolBadge || seggBadge) ? `<div class="badges-container">${intolBadge}${seggBadge}</div>` : '';
                 groupHtml += `
                     <div class="list-item" onclick="window.closeModals(); window.openFormModal('${r.id}')">
                         <div class="item-top"><span>${r.time} - ${r.name}</span><span>${r.pax} pax</span></div>
@@ -558,46 +486,44 @@
             return groupHtml + `</div>`;
         };
         html += renderGroup(pranzi, 'title-pranzo', '☀️', 'PRANZO');
+        if(pranzi.length > 0 && cene.length > 0) html += `<div class="service-divider"></div>`;
         html += renderGroup(cene, 'title-cena', '🌙', 'CENA');
         return html;
     }
 
+    window.toggleAccordion = function(headerEl, isOggi) {
+        if(isOggi) return; 
+        const contentEl = headerEl.nextElementSibling;
+        const iconEl = headerEl.querySelector('.icon');
+        if (contentEl.style.display === 'none') { contentEl.style.display = 'block'; iconEl.style.transform = 'rotate(180deg)'; } 
+        else { contentEl.style.display = 'none'; iconEl.style.transform = 'rotate(0deg)'; }
+    };
+
     window.openDayModal = function(dateString) {
         selectedDayForNewRes = dateString;
-        const dayRes = reservations.filter(r => r.date === dateString);
         document.getElementById('day-modal-title').innerText = new Date(dateString).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
-        document.getElementById('day-modal-list').innerHTML = generateDayListHtml(dayRes);
+        document.getElementById('day-modal-list').innerHTML = generateDayListHtml(reservations.filter(r => r.date === dateString));
         document.getElementById('dayModal').style.display = 'block';
     };
 
     function renderList() {
-        const container = document.getElementById('list-container');
-        container.innerHTML = '';
-        const grouped = {};
-        
-        reservations.sort((a,b) => a.date.localeCompare(b.date)).forEach(r => {
-            if(!grouped[r.date]) grouped[r.date] = [];
-            grouped[r.date].push(r);
-        });
-
+        const container = document.getElementById('list-container'); container.innerHTML = '';
+        const grouped = {}; reservations.sort((a,b) => a.date.localeCompare(b.date)).forEach(r => { if(!grouped[r.date]) grouped[r.date] = []; grouped[r.date].push(r); });
         for(const [dateStr, resArray] of Object.entries(grouped)) {
             const isOggi = dateStr === getTodayString();
             let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
             if(isOggi) itaDate = "⭐ OGGI - " + itaDate;
-            
-            const listMonth = new Date(dateStr).getMonth();
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'list-group';
-            groupDiv.innerHTML = `<div class="list-group-header" style="background-color: ${monthColors[listMonth]};">${itaDate}</div>` + generateDayListHtml(resArray);
+            const groupDiv = document.createElement('div'); groupDiv.className = 'list-group';
+            groupDiv.innerHTML = `
+                <div class="list-group-header" style="background-color: ${monthColors[new Date(dateStr).getMonth()]};" onclick="window.toggleAccordion(this, ${isOggi})">
+                    <span>${itaDate}</span> ${isOggi ? '' : `<span class="icon" style="transform: rotate(0deg); display: inline-block;">▼</span>`}
+                </div>
+                <div class="list-group-content" style="display: ${isOggi ? 'block' : 'none'};">${generateDayListHtml(resArray)}</div>`;
             container.appendChild(groupDiv);
         }
     }
 
-    window.openFormModalForDay = function() {
-        window.closeModals();
-        window.openFormModal();
-        if(selectedDayForNewRes) document.getElementById('res-date').value = selectedDayForNewRes;
-    };
+    window.openFormModalForDay = function() { window.closeModals(); window.openFormModal(); if(selectedDayForNewRes) document.getElementById('res-date').value = selectedDayForNewRes; };
 
     window.openFormModal = function(id = null) {
         document.getElementById('reservationForm').reset();
@@ -608,21 +534,18 @@
             document.getElementById('form-title').innerText = "Modifica Prenotazione";
             const r = reservations.find(res => res.id === id);
             if (r) {
-                document.getElementById('res-id').value = r.id;
-                document.getElementById('res-date').value = r.date;
-                document.getElementById('res-time').value = r.time;
-                document.getElementById('res-name').value = r.name;
-                document.getElementById('res-phone').value = r.phone;
-                document.getElementById('res-pax').value = r.pax;
-                document.getElementById('res-children').value = r.children;
-                document.getElementById('res-highchairs').value = r.highchairs;
-                document.getElementById('res-notes').value = r.notes;
-                document.getElementById('res-operator').value = r.operator;
-                
+                document.getElementById('res-id').value = r.id; document.getElementById('res-date').value = r.date;
+                document.getElementById('res-time').value = r.time; document.getElementById('res-name').value = r.name;
+                document.getElementById('res-phone').value = r.phone; document.getElementById('res-pax').value = r.pax;
+                document.getElementById('res-children').value = r.children; document.getElementById('res-highchairs').value = r.highchairs;
+                document.getElementById('res-notes').value = r.notes; document.getElementById('res-operator').value = r.operator;
                 document.getElementById('int-celiaco').value = r.intolerances.celiaco || 0;
                 document.getElementById('int-vegetariano').value = r.intolerances.vegetariano || 0;
                 document.getElementById('int-vegano').value = r.intolerances.vegano || 0;
                 document.getElementById('btn-delete').style.display = 'block';
+                
+                if(r.children > 0 || r.highchairs > 0) window.toggleSection('children-section', document.getElementById('btn-toggle-bimbi'));
+                if(r.intolerances.celiaco > 0 || r.intolerances.vegetariano > 0 || r.intolerances.vegano > 0) window.toggleSection('menu-section', document.getElementById('btn-toggle-menu'));
             }
         } else {
             document.getElementById('form-title').innerText = "Nuova Prenotazione";
@@ -633,55 +556,26 @@
 
     window.saveReservation = async function(e) {
         e.preventDefault();
-        const btnSalva = document.getElementById('btn-submit-save');
-        btnSalva.disabled = true;
-        btnSalva.innerText = "⏳ Salvataggio...";
-        
+        const btnSalva = document.getElementById('btn-submit-save'); btnSalva.disabled = true; btnSalva.innerText = "⏳ Salvataggio...";
         const timeValue = document.getElementById('res-time').value;
         const autoService = parseInt(timeValue.split(':')[0]) < 15 ? 'Pranzo' : 'Cena';
         const id = document.getElementById('res-id').value || Date.now().toString() + Math.floor(Math.random()*1000);
-
         const newRes = {
-            date: document.getElementById('res-date').value,
-            service: autoService,
-            time: timeValue,
-            name: document.getElementById('res-name').value,
-            phone: document.getElementById('res-phone').value,
-            pax: parseInt(document.getElementById('res-pax').value),
-            children: parseInt(document.getElementById('res-children').value),
-            highchairs: parseInt(document.getElementById('res-highchairs').value),
-            intolerances: {
-                celiaco: parseInt(document.getElementById('int-celiaco').value) || 0,
-                vegetariano: parseInt(document.getElementById('int-vegetariano').value) || 0,
-                vegano: parseInt(document.getElementById('int-vegano').value) || 0
-            },
-            notes: document.getElementById('res-notes').value,
-            operator: document.getElementById('res-operator').value
+            date: document.getElementById('res-date').value, service: autoService, time: timeValue, name: document.getElementById('res-name').value,
+            phone: document.getElementById('res-phone').value, pax: parseInt(document.getElementById('res-pax').value),
+            children: parseInt(document.getElementById('res-children').value) || 0, highchairs: parseInt(document.getElementById('res-highchairs').value) || 0,
+            intolerances: { celiaco: parseInt(document.getElementById('int-celiaco').value) || 0, vegetariano: parseInt(document.getElementById('int-vegetariano').value) || 0, vegano: parseInt(document.getElementById('int-vegano').value) || 0 },
+            notes: document.getElementById('res-notes').value, operator: document.getElementById('res-operator').value
         };
-
-        try {
-            window.closeModals();
-            selectedDayForNewRes = null;
-            await setDoc(doc(db, "prenotazioni", id), newRes);
-        } catch (error) {
-            console.error("Errore salvataggio:", error);
-            alert("Errore durante il salvataggio. Riprova.");
-        } finally {
-            btnSalva.disabled = false;
-            btnSalva.innerText = "💾 Salva Prenotazione";
-        }
+        try { window.closeModals(); selectedDayForNewRes = null; await setDoc(doc(db, "prenotazioni", id), newRes); } 
+        catch (error) { alert("Errore durante il salvataggio."); } 
+        finally { btnSalva.disabled = false; btnSalva.innerText = "💾 Salva Prenotazione"; }
     };
 
     window.deleteReservation = async function() {
-        if(confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
-            const id = document.getElementById('res-id').value;
-            try {
-                await deleteDoc(doc(db, "prenotazioni", id));
-                window.closeModals();
-            } catch (error) {
-                console.error("Errore eliminazione:", error);
-                alert("Errore durante l'eliminazione. Riprova.");
-            }
+        if(confirm("Eliminare definitivamente questa prenotazione?")) {
+            try { await deleteDoc(doc(db, "prenotazioni", document.getElementById('res-id').value)); window.closeModals(); } 
+            catch (error) { alert("Errore durante l'eliminazione."); }
         }
     };
 </script>

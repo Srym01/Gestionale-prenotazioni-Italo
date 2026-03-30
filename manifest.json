@@ -1,0 +1,17 @@
+{
+  "name": "RistoGest Prenotazioni",
+  "short_name": "RistoGest",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "description": "App per la gestione delle prenotazioni del ristorante",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1046/1046747.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
