@@ -5,198 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a2b4c">
+    <meta name="theme-color" content="#1e293b">
     <title>Gestione Prenotazioni Ristorante</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
         :root {
-            --primary: #1a2b4c;
-            --secondary: #34495e;
-            --accent: #3498db;
-            --danger: #e74c3c;
-            --light: #f4f6f7;
+            --primary: #1e293b;
+            --secondary: #475569;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --light: #f8fafc;
             --white: #ffffff;
-            --border: #e0e6ed;
-            --pranzo-bg: #fff8e1;
-            --pranzo-border: #ffc107;
-            --cena-bg: #e8f4f8;
-            --cena-border: #3498db;
+            --border: #e2e8f0;
+            --pranzo-bg: #fffbeb;
+            --pranzo-border: #f59e0b;
+            --cena-bg: #f0f9ff;
+            --cena-border: #0ea5e9;
+            --radius-md: 12px;
+            --radius-lg: 20px;
         }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--light);
+            background-color: var(--primary); /* Colore base, verrà sovrascritto dal JS */
             margin: 0;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             color: var(--primary);
+            overscroll-behavior-y: none;
+            transition: background-color 0.5s ease; /* Transizione fluida del colore */
         }
         
         header {
-            background-color: var(--primary);
+            background-color: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--white);
-            padding: 15px 20px;
+            padding: 16px 20px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
-        header h2 { margin: 0; font-size: 1.5rem; }
+        header h2 { margin: 0; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
         
-        .header-actions { display: flex; gap: 10px; margin-top: 10px; width: 100%; }
-        @media (min-width: 768px) { .header-actions { margin-top: 0; width: auto; } }
+        .header-actions { display: flex; gap: 8px; margin-top: 12px; width: 100%; }
+        @media (min-width: 768px) { .header-actions { margin-top: 0; width: auto; gap: 10px; } }
 
         button {
-            cursor: pointer; padding: 12px 16px; border: none; border-radius: 8px;
-            font-weight: 600; font-size: 1rem; transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; padding: 12px; border: none; border-radius: var(--radius-md);
+            font-weight: 600; font-size: 0.95rem; transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         
-        .btn-accent { background-color: var(--accent); color: white; flex: 1; }
-        .btn-accent:active { transform: scale(0.98); background-color: #2980b9; }
-        .btn-outline { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: var(--white); flex: 1; }
+        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
+        .btn-accent:active { transform: scale(0.97); background-color: var(--accent-hover); }
+        .btn-accent:disabled { background-color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+        
+        .btn-outline { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--white); flex: 1; }
+        .btn-outline:active { background-color: rgba(255,255,255,0.2); }
         .btn-danger { background-color: var(--danger); color: white; }
+        .btn-icon { flex: 0 0 auto; width: 45px; padding: 0; font-size: 1.2rem; }
         
-        main { padding: 15px; max-width: 1000px; margin: auto; padding-bottom: 80px; }
+        main { padding: 15px; max-width: 800px; margin: auto; padding-bottom: 90px; }
         
-        /* Calendario Verticale Stile Agenda */
         .calendar-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px; background: var(--primary); color: white;
-            padding: 10px 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky; top: 75px; z-index: 90;
+            margin-bottom: 15px; color: white;
+            padding: 12px 16px; border-radius: var(--radius-md); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky; 
+            z-index: 90;
+            transition: background-color 0.5s ease; 
         }
-        .calendar-header button { background: rgba(255,255,255,0.2); color: white; padding: 8px 15px; border-radius: 6px; }
-        .calendar-header h2 { margin: 0; font-size: 1.2rem; text-transform: uppercase; }
+        .calendar-header button { background: rgba(0,0,0,0.25); color: white; padding: 8px 16px; border-radius: 8px; backdrop-filter: blur(5px); }
+        .calendar-header button:active { background: rgba(0,0,0,0.4); }
+        .calendar-header h2 { margin: 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .agenda-view { display: flex; flex-direction: column; gap: 8px; }
+        .agenda-view { display: flex; flex-direction: column; gap: 10px; }
         
         .agenda-row {
-            display: flex; background: var(--white); border-radius: 8px; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; cursor: pointer;
-            transition: all 0.2s;
+            display: flex; background: var(--white); border-radius: var(--radius-md); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; cursor: pointer; transition: all 0.2s;
+            border: 1px solid transparent;
         }
-        .agenda-row:active { background-color: #f8f9fa; }
+        .agenda-row:active { transform: scale(0.98); background-color: #f8fafc; }
         
-        /* STILE GIORNO CORRENTE EVIDENZIATO */
-        .agenda-row.today {
-            border: 2px solid var(--accent);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-            transform: scale(1.01);
-            background-color: #f0f8ff;
-        }
-        .agenda-row.today .agenda-date {
-            background: var(--accent);
-            color: white;
-            border-right: none;
-        }
-        .agenda-row.today .agenda-date .day { color: rgba(255,255,255,0.9); }
+        .agenda-row.today { border: 2px solid var(--accent); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+        .agenda-row.today .agenda-date { background: var(--accent); color: white; border-right: none; }
+        .agenda-row.today .agenda-date .day { color: rgba(255,255,255,0.8); }
         .agenda-row.today .agenda-date .num { color: white; }
 
         .agenda-date {
-            width: 65px; min-width: 65px; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; padding: 10px 5px;
-            border-right: 1px solid var(--border); background: #fafafa;
+            width: 70px; min-width: 70px; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; padding: 12px 5px;
+            border-right: 1px solid var(--border); background: #f8fafc;
         }
-        .agenda-date .num { font-size: 1.5rem; font-weight: 800; line-height: 1; margin-bottom: 3px; }
-        .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 600; color: #7f8c8d; }
+        .agenda-date .num { font-size: 1.6rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+        .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--secondary); letter-spacing: 0.5px; }
         .festivo .num, .festivo .day { color: var(--danger); }
-        .agenda-row.today.festivo .agenda-date .num, .agenda-row.today.festivo .agenda-date .day { color: white; } /* Se oggi è festivo ma è evidenziato in blu, scritte bianche */
+        .agenda-row.today.festivo .agenda-date .num, .agenda-row.today.festivo .agenda-date .day { color: white; } 
         
-        .agenda-content { flex: 1; padding: 8px; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
-        .agenda-empty { color: #aaa; font-size: 0.9rem; font-style: italic; padding: 10px; }
+        .agenda-content { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+        .agenda-empty { color: #94a3b8; font-size: 0.9rem; font-style: italic; padding: 10px; }
         
         .shift-pill {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem;
+            padding: 10px 12px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
         }
-        .pill-pranzo { background-color: var(--pranzo-bg); border-left: 4px solid var(--pranzo-border); color: #b78a00; }
-        .pill-cena { background-color: var(--cena-bg); border-left: 4px solid var(--cena-border); color: #21618c; }
+        .pill-pranzo { background-color: var(--pranzo-bg); border-left: 4px solid var(--pranzo-border); color: #b45309; }
+        .pill-cena { background-color: var(--cena-bg); border-left: 4px solid var(--cena-border); color: #0369a1; }
+        .pill-chiuso { background-color: #f1f5f9; border-left: 4px solid #94a3b8; color: #64748b; }
 
-        /* Lista */
         .list-view { display: none; }
-        .list-group { margin-bottom: 25px; background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
-        .list-group-header { background: var(--primary); color: white; padding: 12px 15px; font-size: 1.1rem; font-weight: bold; }
+        .list-group { margin-bottom: 25px; background: white; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.15); overflow: hidden; }
+        .list-group-header { background: rgba(0,0,0,0.3); color: white; padding: 14px 16px; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.5px;}
         
         .service-section { padding: 0; }
         .service-title { 
-            margin: 0; padding: 10px 15px; font-size: 0.95rem; font-weight: bold; 
-            display: flex; justify-content: space-between; background: #f8f9fa; border-bottom: 1px solid var(--border);
+            margin: 0; padding: 12px 16px; font-size: 0.95rem; font-weight: 800; 
+            display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border);
         }
-        .title-pranzo { color: #b78a00; border-left: 4px solid var(--pranzo-border); }
-        .title-cena { color: #21618c; border-left: 4px solid var(--cena-border); }
+        .title-pranzo { color: #b45309; border-left: 4px solid var(--pranzo-border); }
+        .title-cena { color: #0369a1; border-left: 4px solid var(--cena-border); }
         
-        .list-item { 
-            padding: 12px 15px; border-bottom: 1px solid var(--light); cursor: pointer; display: flex; flex-direction: column; gap: 4px;
-        }
-        .list-item:active { background-color: #f0f3f5; }
+        .list-item { padding: 14px 16px; border-bottom: 1px solid var(--light); cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+        .list-item:active { background-color: #f1f5f9; }
         .list-item:last-child { border-bottom: none; }
-        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 1.05rem; }
-        .item-details { color: #7f8c8d; font-size: 0.85rem; display: flex; justify-content: space-between; }
-        .intol-badge { color: var(--danger); font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
+        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.05rem; color: var(--primary); }
+        .item-details { color: var(--secondary); font-size: 0.85rem; display: flex; justify-content: space-between; font-weight: 500;}
+        .intol-badge { background: #fef2f2; color: var(--danger); font-size: 0.8rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-top: 4px; border: 1px solid #fecaca; }
 
-        /* Modali */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.6); z-index: 1000; backdrop-filter: blur(2px);
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); z-index: 1000; backdrop-filter: blur(3px); animation: fadeIn 0.2s ease-out; }
         .modal-content {
             background-color: #fff; position: absolute; bottom: 0; width: 100%;
-            border-radius: 20px 20px 0 0; padding: 25px 20px; max-height: 90vh; overflow-y: auto;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 25px 20px; max-height: 90vh; overflow-y: auto;
             padding-bottom: env(safe-area-inset-bottom);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
         }
         @media (min-width: 768px) {
-            .modal-content { position: relative; margin: 5% auto; width: 90%; max-width: 600px; border-radius: 12px; bottom: auto; }
+            .modal-content { position: relative; margin: 4% auto; width: 90%; max-width: 600px; border-radius: var(--radius-lg); bottom: auto; animation: fadeIn 0.3s ease-out; }
         }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; cursor: pointer; color: #aaa; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.8rem; cursor: pointer; color: #94a3b8; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; transition: 0.2s; }
+        .close-modal:active { background: #e2e8f0; color: var(--primary); }
         
-        /* Form */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: var(--secondary); }
         .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; 
-            font-size: 16px; background-color: var(--white);
+            width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); 
+            font-size: 16px; background-color: #f8fafc; color: var(--primary); font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
         }
         
-        .intolleranze-box { background: #fff3f3; padding: 10px; border-radius: 8px; border: 1px solid #ffcccc; margin-bottom: 15px; }
-        .intolleranze-box h4 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--danger); }
-        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .intol-row label { margin: 0; font-weight: normal; }
-        .intol-row input { width: 60px; padding: 8px; text-align: center; }
+        .intolleranze-box { background: #fef2f2; padding: 16px; border-radius: var(--radius-md); border: 1px solid #fecaca; margin-bottom: 18px; }
+        .intolleranze-box h4 { margin: 0 0 12px 0; font-size: 0.95rem; color: var(--danger); font-weight: 800; }
+        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .intol-row label { margin: 0; font-weight: 600; color: #991b1b;}
+        .intol-row input { width: 70px; padding: 10px; text-align: center; border-color: #fca5a5; }
         
-        .row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 120px; }
 
-        /* Loader */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--light); z-index: 2000; display: flex;
+            background: var(--primary); z-index: 2000; display: flex;
             align-items: center; justify-content: center; flex-direction: column;
-            color: var(--primary); font-weight: bold;
+            color: var(--white); font-weight: 700; font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-<div id="loading-overlay">Sincronizzazione con Firebase in corso... ⏳</div>
+<div id="loading-overlay">Sincronizzazione in corso... ⏳</div>
 
-<header>
+<header id="main-header">
     <h2>📅 RistoGest</h2>
     <div class="header-actions">
-        <button class="btn-outline" onclick="toggleView('calendar')" id="btn-cal">🗓 Calendario</button>
-        <button class="btn-outline" onclick="toggleView('list')" id="btn-list">📋 Elenco</button>
+        <button class="btn-outline" onclick="toggleView('calendar')" id="btn-cal">🗓 Agenda</button>
+        <button class="btn-outline" onclick="toggleView('list')" id="btn-list">📋 Lista</button>
         <button class="btn-accent" onclick="openFormModal()">➕ Nuova</button>
+        <button class="btn-outline btn-icon" onclick="openOptionsModal()">⚙️</button>
     </div>
 </header>
 
 <main>
     <div id="calendar-view">
-        <div class="calendar-header">
+        <div class="calendar-header" id="month-header">
             <button onclick="changeMonth(-1)">⬅️</button>
             <h2 id="month-year-display">Mese Anno</h2>
             <button onclick="changeMonth(1)">➡️</button>
@@ -209,10 +217,24 @@
     </div>
 </main>
 
+<div id="optionsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModals()">&times;</span>
+        <h2 style="margin-top: 0; font-weight: 800; color: var(--primary);">⚙️ Opzioni</h2>
+        <p style="color: var(--secondary); font-size: 0.95rem; font-weight: 500;">Gestisci le impostazioni dell'applicazione.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
+            <button class="btn-accent" onclick="installApp()" style="padding: 16px; font-size: 1.1rem;">
+                📱 Installa App su Cellulare
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="formModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="form-title" style="margin-top: 0;">Nuova Prenotazione</h2>
+        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 20px;">Nuova Prenotazione</h2>
         <form id="reservationForm" onsubmit="saveReservation(event)">
             <input type="hidden" id="res-id">
             
@@ -274,7 +296,7 @@
             </div>
 
             <div class="form-group">
-                <label>Note</label>
+                <label>Note Opzionali</label>
                 <textarea id="res-notes" rows="2" placeholder="Richieste extra..."></textarea>
             </div>
 
@@ -283,8 +305,8 @@
                 <input type="text" id="res-operator" required placeholder="Tuo nome">
             </div>
 
-            <div class="row" style="margin-top: 25px;">
-                <button type="submit" class="btn-accent" style="flex: 2; padding: 15px;">💾 Salva</button>
+            <div class="row" style="margin-top: 30px;">
+                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 16px; font-size: 1.1rem;">💾 Salva Prenotazione</button>
                 <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1;" onclick="deleteReservation()">🗑 Elimina</button>
             </div>
         </form>
@@ -294,45 +316,58 @@
 <div id="dayModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.2rem; margin-bottom: 15px;">Prenotazioni</h2>
-        <div id="day-modal-list" style="margin-bottom: 20px; max-height: 50vh; overflow-y: auto;"></div>
-        <button class="btn-accent" style="width: 100%; padding: 15px;" onclick="openFormModalForDay()">➕ Aggiungi per questo giorno</button>
+        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 20px; font-weight: 800;">Prenotazioni</h2>
+        <div id="day-modal-list" style="margin-bottom: 25px; max-height: 50vh; overflow-y: auto;"></div>
+        <button class="btn-accent" style="width: 100%; padding: 16px; font-size: 1.05rem;" onclick="openFormModalForDay()">➕ Aggiungi per questo giorno</button>
     </div>
 </div>
 
 <script type="module">
-    // Importa Firebase SDK (Firestore)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // --- DA COMPILARE ---
-    // Vai su console.firebase.google.com -> Impostazioni Progetto -> Generale -> "Le tue app" -> Configurazione SDK
-    const firebaseConfig = {
-        apiKey: "INSERISCI_QUI",
-        authDomain: "INSERISCI_QUI",
-        projectId: "INSERISCI_QUI",
-        storageBucket: "INSERISCI_QUI",
-        messagingSenderId: "INSERISCI_QUI",
-        appId: "INSERISCI_QUI"
-    };
+   const firebaseConfig = {
+  apiKey: "AIzaSyD_JLRWYDGbod9sAtotDLzBYAvg1js40_I",
+  authDomain: "ristorante-italo.firebaseapp.com",
+  projectId: "ristorante-italo",
+  storageBucket: "ristorante-italo.firebasestorage.app",
+  messagingSenderId: "311449776759",
+  appId: "1:311449776759:web:7623cb79093c576b9d0c72",
+  measurementId: "G-SRTCFX9GPY"
+};
 
-    // Inizializza Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Variabili di stato
     let reservations = [];
     let currentDate = new Date();
     let selectedDayForNewRes = null;
     let initialLoadDone = false;
+    let deferredPrompt; 
 
-    // Utilità per la data di oggi formattata (YYYY-MM-DD)
+    // Nuovi Colori eleganti che verranno applicati SIA alla barra che allo SFONDO generale
+    const monthColors = [
+        "#0f172a", // Gennaio (Blu notte)
+        "#334155", // Febbraio (Ardesia scura)
+        "#115e59", // Marzo (Verde scuro)
+        "#047857", // Aprile (Smeraldo)
+        "#c2410c", // Maggio (Arancio bruciato)
+        "#b91c1c", // Giugno (Rosso intenso)
+        "#e11d48", // Luglio (Rosso ciliegia)
+        "#d97706", // Agosto (Ambra scura)
+        "#b45309", // Settembre (Bronzo)
+        "#78350f", // Ottobre (Marrone autunnale)
+        "#475569", // Novembre (Grigio tempesta)
+        "#0f766e"  // Dicembre (Verde abete)
+    ];
+
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
     const getTodayString = () => {
         const t = new Date();
         return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
     };
 
-    // Festività San Marino
     const smHolidays = ["01-01", "01-06", "02-05", "03-25", "04-01", "05-01", "07-28", "08-15", "09-03", "10-01", "11-01", "11-02", "12-08", "12-25", "12-26", "12-31"];
     const dynamicHolidays = ["2026-04-05", "2026-04-06"]; 
 
@@ -343,36 +378,34 @@
         return smHolidays.includes(mmdd) || dynamicHolidays.includes(yyyymmdd);
     }
 
-    // --- LISTENER FIREBASE IN TEMPO REALE ---
+    // FIX BARRA DEL MESE: Calcola l'altezza dinamica dell'header principale per non coprire la barra del mese
+    function adjustStickyHeader() {
+        const headerHeight = document.getElementById('main-header').offsetHeight;
+        document.getElementById('month-header').style.top = (headerHeight + 5) + 'px';
+    }
+    window.addEventListener('resize', adjustStickyHeader);
+
     onSnapshot(collection(db, "prenotazioni"), (snapshot) => {
         reservations = [];
-        snapshot.forEach((doc) => {
-            reservations.push({ id: doc.id, ...doc.data() });
-        });
+        snapshot.forEach((doc) => { reservations.push({ id: doc.id, ...doc.data() }); });
         
         renderCalendar();
         renderList();
 
-        // Rimuove la schermata di caricamento e scrolla al giorno odierno solo al primo avvio
         if(!initialLoadDone) {
             document.getElementById('loading-overlay').style.display = 'none';
-            toggleView('calendar');
-            scrollToToday();
+            window.toggleView('calendar');
             initialLoadDone = true;
         } else {
-            // Se eravamo in un modale del giorno, aggiorniamolo in tempo reale!
             if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) {
-                openDayModal(selectedDayForNewRes);
+                window.openDayModal(selectedDayForNewRes);
             }
         }
     }, (error) => {
-        console.error("Errore sincronizzazione Firebase:", error);
-        alert("Errore di connessione a Firebase. Controlla la configurazione nel codice.");
+        console.error("Errore Firebase:", error);
         document.getElementById('loading-overlay').innerText = "Errore di connessione a Firebase.";
     });
 
-
-    // --- FUNZIONI DI VISUALIZZAZIONE (ESPOSTE GLOBALI PER L'HTML) ---
     window.toggleView = function(view) {
         document.getElementById('calendar-view').style.display = view === 'calendar' ? 'block' : 'none';
         document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
@@ -380,42 +413,51 @@
         document.getElementById('btn-cal').style.opacity = view === 'calendar' ? '1' : '0.6';
         document.getElementById('btn-list').style.opacity = view === 'list' ? '1' : '0.6';
         
-        if(view === 'calendar') {
-            renderCalendar();
-            scrollToToday();
-        }
+        if(view === 'calendar') { renderCalendar(); scrollToToday(); }
         if(view === 'list') renderList();
     };
 
     window.closeModals = function() {
-        document.getElementById('formModal').style.display = 'none';
-        document.getElementById('dayModal').style.display = 'none';
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.getElementById('reservationForm').reset();
+        document.getElementById('res-id').value = '';
+    };
+
+    window.openOptionsModal = function() { document.getElementById('optionsModal').style.display = 'block'; };
+
+    window.installApp = async function() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+        } else {
+            alert("PER INSTALLARE L'APP SUL TELEFONO:\n\n🍏 IPHONE (Safari):\n1. Tocca 'Condividi' (il quadrato con la freccia, in basso).\n2. Fai tap su 'Aggiungi a schermata Home'.\n\n🤖 ANDROID (Chrome):\n1. Tocca i tre puntini in alto a destra.\n2. Fai tap su 'Aggiungi a schermata Home'.");
+        }
     };
 
     window.changeMonth = function(dir) {
         currentDate.setMonth(currentDate.getMonth() + dir);
         renderCalendar();
-        
-        // Se torniamo al mese corrente, scrolliamo ad oggi
         if(currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear()) {
             scrollToToday();
-        } else {
-            window.scrollTo(0,0);
-        }
+        } else { window.scrollTo({top: 0, behavior: 'smooth'}); }
     };
 
     function scrollToToday() {
         setTimeout(() => {
             const todayEl = document.getElementById('row-today');
             if(todayEl) {
-                // Calcola la posizione considerando l'intestazione fissa (header + calendar-header)
-                const y = todayEl.getBoundingClientRect().top + window.scrollY - 150;
-                window.scrollTo({ top: y, behavior: 'smooth' });
+                const headerOffset = document.getElementById('main-header').offsetHeight + 80;
+                const elementPosition = todayEl.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
             }
-        }, 100);
+        }, 150);
     }
 
     function renderCalendar() {
+        adjustStickyHeader(); // Richiama il fix per l'altezza ogni volta che si renderizza
+        
         const grid = document.getElementById('agenda-grid');
         grid.innerHTML = '';
         
@@ -424,49 +466,56 @@
         const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
         const dayNames = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
         
+        // APPLICA IL COLORE ALLO SFONDO E ALLA BARRA DEL MESE
+        const color = monthColors[month];
         document.getElementById('month-year-display').innerText = `${monthNames[month]} ${year}`;
+        document.getElementById('month-header').style.backgroundColor = color;
+        document.body.style.backgroundColor = color;
+
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const todayStr = getTodayString();
 
         for (let day = 1; day <= daysInMonth; day++) {
             const dateObj = new Date(year, month, day);
             const dateString = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            const dayNameStr = dayNames[dateObj.getDay()];
-            
             const isOggi = dateString === todayStr;
+            const isTuesday = dateObj.getDay() === 2; // Giorno 2 = Martedì
             const isFestivo = isHoliday(dateObj) ? 'festivo' : '';
             
             const div = document.createElement('div');
             div.className = `agenda-row ${isOggi ? 'today' : ''} ${isFestivo}`;
             if(isOggi) div.id = 'row-today';
-            div.onclick = () => openDayModal(dateString);
+            div.onclick = () => window.openDayModal(dateString);
             
-            let html = `
-                <div class="agenda-date">
-                    <span class="num">${day}</span>
-                    <span class="day">${dayNameStr}</span>
-                </div>
-                <div class="agenda-content">
-            `;
+            let html = `<div class="agenda-date"><span class="num">${day}</span><span class="day">${dayNames[dateObj.getDay()]}</span></div><div class="agenda-content">`;
             
             const dayRes = reservations.filter(r => r.date === dateString);
+            
             if(dayRes.length === 0) {
-                html += `<div class="agenda-empty">${isOggi ? 'Oggi n' : 'N'}essuna prenotazione</div>`;
+                // Nessuna prenotazione. Se è martedì mostriamo chiuso, altrimenti vuoto.
+                if (isTuesday) {
+                    html += `<div class="shift-pill pill-chiuso"><span>🌙 CENA (Chiuso)</span></div>`;
+                } else {
+                    html += `<div class="agenda-empty">${isOggi ? 'Oggi n' : 'N'}essuna prenotazione</div>`;
+                }
             } else {
                 const resPranzo = dayRes.filter(r => r.service === 'Pranzo');
                 const resCena = dayRes.filter(r => r.service === 'Cena');
                 
                 if(resPranzo.length > 0) {
-                    const pax = resPranzo.reduce((s, r) => s + r.pax, 0);
-                    html += `<div class="shift-pill pill-pranzo"><span>☀️ PRANZO</span> <span>${pax} pax</span></div>`;
+                    html += `<div class="shift-pill pill-pranzo"><span>☀️ PRANZO</span> <span>${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>`;
                 }
+                
                 if(resCena.length > 0) {
-                    const pax = resCena.reduce((s, r) => s + r.pax, 0);
-                    html += `<div class="shift-pill pill-cena"><span>🌙 CENA</span> <span>${pax} pax</span></div>`;
+                    // Se ci sono prenotazioni di martedì sera, le evidenzia come Apertura Extra
+                    const cenaTesto = isTuesday ? '🌙 CENA (Apertura Extra)' : '🌙 CENA';
+                    html += `<div class="shift-pill pill-cena"><span>${cenaTesto}</span> <span>${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`;
+                } else if (isTuesday) {
+                    // Ci sono prenotazioni a pranzo, ma non a cena ed è martedì
+                    html += `<div class="shift-pill pill-chiuso" style="margin-top:4px;"><span>🌙 CENA (Chiuso)</span></div>`;
                 }
             }
-            html += `</div>`;
-            div.innerHTML = html;
+            div.innerHTML = html + `</div>`;
             grid.appendChild(div);
         }
     }
@@ -475,12 +524,12 @@
         let arr = [];
         if(intolObj.celiaco > 0) arr.push(`${intolObj.celiaco} Cel`);
         if(intolObj.vegetariano > 0) arr.push(`${intolObj.vegetariano} Vegt`);
-        if(intolObj.vegano > 0) arr.push(`${intolObj.vegano} Vegani`);
-        return arr.length > 0 ? `⚠️ ${arr.join(', ')}` : '';
+        if(intolObj.vegano > 0) arr.push(`${intolObj.vegano} Veg`);
+        return arr.length > 0 ? `⚠️ ${arr.join(' • ')}` : '';
     }
 
     function generateDayListHtml(dayRes) {
-        if(dayRes.length === 0) return '<p style="padding: 15px;">Nessuna prenotazione.</p>';
+        if(dayRes.length === 0) return '<p style="padding: 15px; color: #64748b; font-weight: 500;">Nessuna prenotazione.</p>';
         const pranzi = dayRes.filter(r => r.service === 'Pranzo').sort((a,b) => a.time.localeCompare(b.time));
         const cene = dayRes.filter(r => r.service === 'Cena').sort((a,b) => a.time.localeCompare(b.time));
         
@@ -489,7 +538,6 @@
             if(arr.length === 0) return '';
             const totPax = arr.reduce((s,r) => s + r.pax, 0);
             let groupHtml = `<div class="service-section"><div class="service-title ${titleClass}"><span>${icon} ${titleText}</span> <span>Tot: ${totPax} pax</span></div>`;
-            
             arr.forEach(r => {
                 const intolStr = getIntoleranceString(r.intolerances);
                 const intolHtml = intolStr ? `<div class="intol-badge">${intolStr}</div>` : '';
@@ -502,7 +550,6 @@
             });
             return groupHtml + `</div>`;
         };
-
         html += renderGroup(pranzi, 'title-pranzo', '☀️', 'PRANZO');
         html += renderGroup(cene, 'title-cena', '🌙', 'CENA');
         return html;
@@ -511,8 +558,7 @@
     window.openDayModal = function(dateString) {
         selectedDayForNewRes = dateString;
         const dayRes = reservations.filter(r => r.date === dateString);
-        const dateObj = new Date(dateString);
-        document.getElementById('day-modal-title').innerText = dateObj.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+        document.getElementById('day-modal-title').innerText = new Date(dateString).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
         document.getElementById('day-modal-list').innerHTML = generateDayListHtml(dayRes);
         document.getElementById('dayModal').style.display = 'block';
     };
@@ -522,22 +568,21 @@
         container.innerHTML = '';
         const grouped = {};
         
-        // Ordina dal giorno odierno in poi, eliminando o nascondendo il passato (opzionale, qui mostro tutto)
         reservations.sort((a,b) => a.date.localeCompare(b.date)).forEach(r => {
             if(!grouped[r.date]) grouped[r.date] = [];
             grouped[r.date].push(r);
         });
 
         for(const [dateStr, resArray] of Object.entries(grouped)) {
-            const dateObj = new Date(dateStr);
             const isOggi = dateStr === getTodayString();
-            let itaDate = dateObj.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
+            let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
             if(isOggi) itaDate = "⭐ OGGI - " + itaDate;
             
+            // Nella vista elenco le liste hanno intestazioni con colore abbinato al mese di riferimento
+            const listMonth = new Date(dateStr).getMonth();
             const groupDiv = document.createElement('div');
             groupDiv.className = 'list-group';
-            groupDiv.innerHTML = `<div class="list-group-header" style="${isOggi ? 'background:var(--accent);' : ''}">${itaDate}</div>`;
-            groupDiv.innerHTML += generateDayListHtml(resArray);
+            groupDiv.innerHTML = `<div class="list-group-header" style="background-color: ${monthColors[listMonth]};">${itaDate}</div>` + generateDayListHtml(resArray);
             container.appendChild(groupDiv);
         }
     }
@@ -571,22 +616,20 @@
                 document.getElementById('int-celiaco').value = r.intolerances.celiaco || 0;
                 document.getElementById('int-vegetariano').value = r.intolerances.vegetariano || 0;
                 document.getElementById('int-vegano').value = r.intolerances.vegano || 0;
-
                 document.getElementById('btn-delete').style.display = 'block';
             }
         } else {
             document.getElementById('form-title').innerText = "Nuova Prenotazione";
             if(!selectedDayForNewRes) document.getElementById('res-date').value = getTodayString();
-            document.getElementById('int-celiaco').value = 0;
-            document.getElementById('int-vegetariano').value = 0;
-            document.getElementById('int-vegano').value = 0;
         }
         document.getElementById('formModal').style.display = 'block';
     };
 
-    // --- SALVATAGGIO SU FIREBASE ---
     window.saveReservation = async function(e) {
         e.preventDefault();
+        const btnSalva = document.getElementById('btn-submit-save');
+        btnSalva.disabled = true;
+        btnSalva.innerText = "⏳ Salvataggio...";
         
         const timeValue = document.getElementById('res-time').value;
         const autoService = parseInt(timeValue.split(':')[0]) < 15 ? 'Pranzo' : 'Cena';
@@ -611,17 +654,18 @@
         };
 
         try {
-            // Salva nel database (Firestore)
-            await setDoc(doc(db, "prenotazioni", id), newRes);
             window.closeModals();
             selectedDayForNewRes = null;
+            await setDoc(doc(db, "prenotazioni", id), newRes);
         } catch (error) {
-            console.error("Errore nel salvataggio:", error);
+            console.error("Errore salvataggio:", error);
             alert("Errore durante il salvataggio. Riprova.");
+        } finally {
+            btnSalva.disabled = false;
+            btnSalva.innerText = "💾 Salva Prenotazione";
         }
     };
 
-    // --- ELIMINAZIONE DA FIREBASE ---
     window.deleteReservation = async function() {
         if(confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
             const id = document.getElementById('res-id').value;
@@ -629,7 +673,7 @@
                 await deleteDoc(doc(db, "prenotazioni", id));
                 window.closeModals();
             } catch (error) {
-                console.error("Errore nell'eliminazione:", error);
+                console.error("Errore eliminazione:", error);
                 alert("Errore durante l'eliminazione. Riprova.");
             }
         }
