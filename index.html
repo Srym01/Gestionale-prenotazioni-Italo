@@ -4,34 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <title>Gestione Prenotazioni Ristorante</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
         :root {
             --primary: #0f172a;       
-            --secondary: #475569;
-            --accent: #2563eb;        
-            --accent-hover: #1d4ed8;
+            --secondary: #64748b;     
+            --accent: #4f46e5;        
+            --accent-hover: #4338ca;  
+            --accent-light: #e0e7ff;
             --danger: #ef4444;
-            --light: #f8fafc;
+            --danger-light: #fef2f2;
+            --light: #f8fafc;         
             --white: #ffffff;
             --border: #e2e8f0;
-            --pranzo-bg: #fef3c7;     
-            --pranzo-border: #f59e0b;
-            --cena-bg: #e0f2fe;       
-            --cena-border: #0ea5e9;
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 28px;        
+            
+            --pranzo-bg: #fffbeb;     
+            --pranzo-text: #b45309;
+            --pranzo-border: #fcd34d;
+            
+            --cena-bg: #eff6ff;       
+            --cena-text: #1d4ed8;
+            --cena-border: #93c5fd;
+
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 32px;        
+            --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.08);
+            --shadow-float: 0 20px 40px rgba(79, 70, 229, 0.15);
         }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Inter', sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         
         body { 
             margin: 0; 
@@ -45,166 +56,194 @@
         }
         
         header { 
-            background-color: rgba(255, 255, 255, 0.98); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px); 
+            background-color: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
             color: var(--primary); 
-            padding: 16px 20px; 
+            padding: 20px 20px 16px 20px; 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            gap: 16px; 
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
             position: sticky; 
             top: 0; 
             z-index: 100; 
         }
         .header-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        header h2 { margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+        header h2 { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
+        header h2 span { background: var(--accent); color: white; padding: 4px 10px; border-radius: 8px; font-size: 1rem; }
 
         .live-clock { text-align: right; font-variant-numeric: tabular-nums; }
-        .live-clock .date { font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .live-clock .time { font-size: 1.05rem; font-weight: 800; color: var(--accent); }
+        .live-clock .date { font-size: 0.75rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .live-clock .time { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
         
-        .header-actions { display: flex; gap: 8px; width: 100%; }
-        button { cursor: pointer; padding: 12px; border: none; border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .header-actions { display: flex; gap: 10px; width: 100%; }
+        button { cursor: pointer; padding: 14px; border: none; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; }
         
-        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
-        .btn-accent:active { transform: scale(0.96); background-color: var(--accent-hover); box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15); }
+        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: var(--shadow-float); }
+        .btn-accent:active { transform: scale(0.97); background-color: var(--accent-hover); box-shadow: none; }
         
-        .btn-outline { background-color: #ffffff; border: 1px solid #cbd5e1; color: var(--secondary); flex: 1; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .btn-outline:active { background-color: #f1f5f9; }
+        .btn-outline { background-color: var(--white); border: 1px solid var(--border); color: var(--secondary); flex: 1; box-shadow: var(--shadow-sm); }
+        .btn-outline:active { background-color: #f1f5f9; transform: scale(0.97); }
+        .btn-outline.active-tab { background-color: var(--primary); color: white; border-color: var(--primary); }
         
-        .btn-danger { background-color: var(--danger); color: white; }
-        
-        main { padding: 15px; max-width: 800px; margin: auto; padding-bottom: 90px; }
-        
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; color: white; padding: 12px 18px; border-radius: var(--radius-md); box-shadow: 0 6px 15px rgba(0,0,0,0.15); position: sticky; z-index: 90; transition: background-color 0.5s ease; border: 1px solid rgba(255,255,255,0.1); }
-        .calendar-header button { background: rgba(0,0,0,0.25); color: white; padding: 8px 16px; border-radius: 10px; backdrop-filter: blur(5px); }
-        .calendar-header h2 { margin: 0; font-size: 1.15rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .btn-danger { background-color: var(--danger); color: white; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2); }
+        .btn-danger:active { transform: scale(0.97); }
 
-        .agenda-view { display: flex; flex-direction: column; gap: 12px; }
-        .agenda-row { display: flex; background: var(--white); border-radius: var(--radius-md); box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow: hidden; cursor: pointer; transition: transform 0.2s; border: 1px solid var(--border); min-height: 80px; }
+        main { padding: 20px 15px; max-width: 800px; margin: auto; padding-bottom: 90px; }
+        
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: white; padding: 16px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); position: sticky; z-index: 90; transition: background-color 0.5s ease; border: 1px solid rgba(255,255,255,0.1); }
+        .calendar-header button { background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 12px; backdrop-filter: blur(5px); }
+        .calendar-header button:active { background: rgba(255,255,255,0.3); }
+        .calendar-header h2 { margin: 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .agenda-view { display: flex; flex-direction: column; gap: 14px; }
+        .agenda-row { display: flex; background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border); min-height: 85px; }
         .agenda-row:active { transform: scale(0.98); background-color: #f8fafc; }
-        .agenda-row.today { border: 2px solid var(--accent); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.2); }
+        .agenda-row.today { border: 2px solid var(--accent); box-shadow: var(--shadow-float); }
         .agenda-row.today .agenda-date { background: var(--accent); color: white; border-right: none; }
         .agenda-row.today .agenda-date .day, .agenda-row.today .agenda-date .num { color: white; }
-        .agenda-date { width: 75px; min-width: 75px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 5px; border-right: 1px solid var(--border); background: #f8fafc; }
-        .agenda-date .num { font-size: 1.7rem; font-weight: 800; margin-bottom: 2px; }
+        
+        .agenda-date { width: 80px; min-width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 5px; border-right: 1px solid var(--border); background: #f8fafc; }
+        .agenda-date .num { font-size: 1.8rem; font-weight: 800; margin-bottom: 2px; }
         .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--secondary); letter-spacing: 0.5px; }
         .festivo .num, .festivo .day { color: var(--danger); }
         .agenda-row.today.festivo .agenda-date .num, .agenda-row.today.festivo .agenda-date .day { color: white; } 
         
-        .agenda-content { flex: 1; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .shift-pill { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8px 4px; border-radius: 10px; font-weight: 800; }
-        .shift-pill .title { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 3px; opacity: 0.8; letter-spacing: 0.5px; }
-        .shift-pill .val { font-size: 1.05rem; }
+        .agenda-content { flex: 1; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .shift-pill { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px 6px; border-radius: 12px; font-weight: 800; }
+        .shift-pill .title { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 4px; opacity: 0.8; letter-spacing: 0.5px; }
+        .shift-pill .val { font-size: 1.1rem; }
         
-        .pill-pranzo { background-color: var(--pranzo-bg); color: #b45309; border: 1px solid #fde68a; }
-        .pill-cena { background-color: var(--cena-bg); color: #0369a1; border: 1px solid #bae6fd; }
-        .pill-chiuso { background-color: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+        .pill-pranzo { background-color: var(--pranzo-bg); color: var(--pranzo-text); border: 1px solid var(--pranzo-border); }
+        .pill-cena { background-color: var(--cena-bg); color: var(--cena-text); border: 1px solid var(--cena-border); }
+        .pill-chiuso { background-color: #f1f5f9; color: var(--secondary); border: 1px solid var(--border); }
         .pill-empty { background-color: transparent; border: 1px dashed #cbd5e1; color: #94a3b8; }
 
         .list-view { display: none; }
-        .list-group { margin-bottom: 18px; background: white; border-radius: var(--radius-md); box-shadow: 0 6px 16px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid var(--border); }
-        .list-group-header { color: white; padding: 14px 18px; font-size: 1.05rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .list-group { margin-bottom: 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid var(--border); }
+        .list-group-header { color: white; padding: 16px 20px; font-size: 1.1rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; letter-spacing: 0.5px; transition: opacity 0.2s;}
+        .list-group-header:active { opacity: 0.9; }
+        
         .service-section { padding: 0; background: var(--white); }
-        .service-title { margin: 0; padding: 12px 18px; font-size: 0.95rem; font-weight: 800; display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border); }
-        .title-pranzo { color: #b45309; border-left: 5px solid var(--pranzo-border); }
-        .title-cena { color: #0369a1; border-left: 5px solid var(--cena-border); }
-        .service-divider { height: 8px; background-color: #f1f5f9; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; }
+        .service-title { margin: 0; padding: 14px 20px; font-size: 0.95rem; font-weight: 800; display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border); }
+        .title-pranzo { color: var(--pranzo-text); border-left: 6px solid var(--pranzo-border); }
+        .title-cena { color: var(--cena-text); border-left: 6px solid var(--cena-border); }
+        .service-divider { height: 6px; background-color: #f1f5f9; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-        .list-item { padding: 14px 18px; border-bottom: 2px solid #e2e8f0; cursor: pointer; display: flex; flex-direction: column; gap: 8px; }
+        .list-item { padding: 16px 20px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column; gap: 10px; transition: background 0.2s; }
         .list-item:active { background-color: #f8fafc; }
         .list-item:last-child { border-bottom: none; }
-        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1.05rem; color: var(--primary); }
-        .item-details { color: var(--secondary); font-size: 0.85rem; display: flex; justify-content: space-between; font-weight: 600;}
+        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1.1rem; color: var(--primary); }
+        .item-details { color: var(--secondary); font-size: 0.9rem; display: flex; justify-content: space-between; font-weight: 600; align-items: center;}
         
         .badges-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-        .intol-badge { background: #fef2f2; color: #b91c1c; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #fecaca; }
-        .seggiolone-badge { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #bae6fd; }
+        .intol-badge { background: var(--danger-light); color: var(--danger); font-size: 0.75rem; font-weight: 800; padding: 6px 10px; border-radius: 8px; border: 1px solid #fecaca; }
+        .seggiolone-badge { background: var(--accent-light); color: var(--accent); font-size: 0.75rem; font-weight: 800; padding: 6px 10px; border-radius: 8px; border: 1px solid #c7d2fe; }
 
-        /* MODALI FLUTTUANTI */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); z-index: 1000; backdrop-filter: blur(5px); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); z-index: 1000; backdrop-filter: blur(4px); }
         
         .modal-content { 
             background-color: #fff; 
             position: absolute; 
-            bottom: 15px; 
-            left: 15px;   
-            right: 15px;  
-            width: auto;
+            bottom: 0; 
+            left: 0;   
+            right: 0;  
+            width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            border-radius: var(--radius-lg); 
-            padding: 25px 20px; 
-            max-height: calc(100vh - 80px); 
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0; 
+            padding: 30px 24px; 
+            max-height: 90vh; 
             overflow-y: auto; 
-            padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
-            animation: slideUp 0.3s cubic-bezier(0.2, 1, 0.3, 1); 
+            padding-bottom: calc(30px + env(safe-area-inset-bottom)); 
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2); 
+            animation: slideUp 0.35s cubic-bezier(0.3, 1, 0.3, 1); 
         }
-        @keyframes slideUp { from { transform: translateY(120%); } to { transform: translateY(0); } }
         
-        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; color: var(--secondary); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; font-weight: bold; }
-        .close-modal:active { background: #e2e8f0; }
+        .modal-drag-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: -15px auto 20px auto; }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-weight: 800; margin-bottom: 6px; font-size: 0.85rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-size: 16px; background-color: #f8fafc; color: var(--primary); font-weight: 600; transition: all 0.2s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-        .row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--secondary); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; font-weight: bold; transition: all 0.2s;}
+        .close-modal:active { background: #e2e8f0; transform: scale(0.9); }
+        
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; border: 2px solid transparent; border-radius: var(--radius-sm); font-size: 16px; background-color: #f1f5f9; color: var(--primary); font-weight: 600; transition: all 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
+        .row { display: flex; gap: 14px; flex-wrap: wrap; }
         .col { flex: 1; min-width: 120px; }
 
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
 
-        .stepper-control { display: flex; align-items: center; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); overflow: hidden; height: 46px; width: 100%; max-width: 160px; }
-        .stepper-btn { flex: 0 0 44px; height: 100%; background: transparent; border: none; font-size: 1.6rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; border-radius: 0; transition: background 0.1s; }
+        .stepper-control { display: flex; align-items: center; background: #f1f5f9; border-radius: var(--radius-sm); overflow: hidden; height: 50px; width: 100%; max-width: 160px; border: 2px solid transparent; transition: border 0.2s;}
+        .stepper-control:focus-within { border-color: var(--accent); background: white;}
+        .stepper-btn { flex: 0 0 48px; height: 100%; background: transparent; border: none; font-size: 1.6rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; border-radius: 0; transition: background 0.1s; }
         .stepper-btn:active { background: #e2e8f0; }
-        .stepper-btn.minus { border-right: 2px solid #e2e8f0; color: var(--danger); }
-        .stepper-btn.plus { border-left: 2px solid #e2e8f0; }
-        .stepper-input { flex: 1; min-width: 0; text-align: center; border: none !important; background: transparent !important; padding: 0 !important; font-size: 1.1rem !important; font-weight: 800 !important; color: var(--primary) !important; pointer-events: none; }
+        .stepper-btn.minus { color: var(--danger); }
+        .stepper-input { flex: 1; min-width: 0; text-align: center; border: none !important; background: transparent !important; padding: 0 !important; font-size: 1.15rem !important; font-weight: 800 !important; color: var(--primary) !important; pointer-events: none; }
 
-        .smart-toggles { display: flex; gap: 10px; margin-bottom: 14px; margin-top: 8px; }
-        .toggle-btn { flex: 1; padding: 12px; background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-md); font-weight: 800; font-size: 0.85rem; color: var(--secondary); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .toggle-btn.active { background: #eff6ff; border-color: #bfdbfe; color: var(--accent); }
+        .smart-toggles { display: flex; gap: 10px; margin-bottom: 16px; margin-top: 10px; }
+        .toggle-btn { flex: 1; padding: 14px; background: #ffffff; border: 2px solid var(--border); border-radius: var(--radius-sm); font-weight: 800; font-size: 0.85rem; color: var(--secondary); box-shadow: var(--shadow-sm); }
+        .toggle-btn.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); box-shadow: none;}
         
-        .hidden-section { display: none; margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: var(--radius-md); border: 2px solid #e2e8f0; }
+        .hidden-section { display: none; margin-bottom: 20px; padding: 20px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid var(--border); }
         .hidden-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
         
-        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .intol-row:last-child { margin-bottom: 0; }
-        .intol-row label { margin: 0; font-weight: 800; color: var(--primary); font-size: 0.95rem; text-transform: none; flex: 1; }
+        .intol-row label { margin: 0; font-weight: 800; color: var(--primary); font-size: 1rem; text-transform: none; flex: 1; }
 
-        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--light); z-index: 2000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--primary); font-weight: 800; font-size: 1.2rem; letter-spacing: 0.5px; }
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--accent); font-weight: 800; font-size: 1.2rem; letter-spacing: 0.5px; }
+        
+        .search-container { margin-bottom: 20px; background: white; padding: 16px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+        .search-container input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; color: var(--primary); background: #f8fafc; outline: none; font-size: 16px; transition: all 0.2s;}
+        .search-container input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
     </style>
 </head>
 <body>
-    <div id="login-overlay" style="position:fixed; inset:0; background:#0f172a; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; color:white; font-family:'Inter',sans-serif;">
-    <div style="background:white; padding:30px; border-radius:24px; width:90%; max-width:350px; text-align:center; color:#0f172a; box-shadow:0 20px 50px rgba(0,0,0,0.3);">
-        <h2 style="margin:0 0 10px 0;">RistoGest Pro</h2>
-        <p style="color:#64748b; font-size:0.9rem; margin-bottom:25px;">Inserisci la chiave d'accesso per gestire le prenotazioni</p>
-        <input type="password" id="app-pwd-input" placeholder="Password..." style="width:100%; padding:15px; border-radius:12px; border:2px solid #e2e8f0; font-size:1.1rem; margin-bottom:15px; text-align:center; outline:none;">
-        <button onclick="checkAppPassword()" style="width:100%; padding:15px; border-radius:12px; border:none; background:#4f46e5; color:white; font-weight:800; font-size:1rem; cursor:pointer;">ACCEDI</button>
-    </div>
-</div>
+    
+    <div id="login-overlay" style="position:fixed; inset:0; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; color:white;">
+        <div style="background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:40px 30px; border-radius:32px; width:90%; max-width:380px; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
+            <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px auto; box-shadow: var(--shadow-float);">🍽️</div>
+            <h2 style="margin:0 0 8px 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">RistoGest Pro</h2>
+            <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:30px; font-weight: 500;">Area Ristoratori</p>
+            
+            <input type="email" id="app-email-input" placeholder="Email ristorante" style="width:100%; padding:18px; border-radius:16px; border:2px solid rgba(255,255,255,0.1); font-size:1.1rem; margin-bottom:15px; outline:none; background: rgba(0,0,0,0.2); color: white;">
+            <input type="password" id="app-pwd-input" placeholder="Password (min. 6 caratteri)" style="width:100%; padding:18px; border-radius:16px; border:2px solid rgba(255,255,255,0.1); font-size:1.1rem; margin-bottom:15px; outline:none; background: rgba(0,0,0,0.2); color: white;">
+            
+            <div style="text-align: right; margin-bottom: 24px;">
+                <span onclick="forgotPassword()" style="color: #cbd5e1; font-size: 0.85rem; cursor: pointer; text-decoration: underline;">Password dimenticata?</span>
+            </div>
 
-<div id="loading-overlay">Sincronizzazione... ⏳</div>
+            <button id="btn-login" onclick="loginRestaurant()" style="width:100%; padding:18px; border-radius:16px; border:none; background:var(--accent); color:white; font-weight:800; font-size:1.1rem; cursor:pointer; box-shadow: var(--shadow-float); transition: transform 0.2s; margin-bottom: 15px;">ACCEDI</button>
+            
+            <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
+            
+            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 0.85rem;">Nuovo ristorante?</p>
+            <button id="btn-register" onclick="registerRestaurant()" style="width:100%; padding:16px; border-radius:16px; border:2px solid var(--accent); background:transparent; color:var(--accent-light); font-weight:800; font-size:1rem; cursor:pointer; transition: background 0.2s;">CREA ACCOUNT</button>
+        </div>
+    </div>
+
+<div id="loading-overlay" style="display:none;">Sincronizzazione... ⏳</div>
 
 <header id="main-header">
     <div class="header-top-row">
-        <h2>📅 RistoGest</h2>
+        <h2><span>🍽️</span> RistoGest</h2>
         <div class="live-clock" id="live-clock">
             <div class="date">-</div>
             <div class="time">-</div>
         </div>
     </div>
     <div class="header-actions">
-        <button class="btn-outline" onclick="toggleView('calendar')" id="btn-cal">🗓 Agenda</button>
-        <button class="btn-outline" onclick="toggleView('list')" id="btn-list">📋 Lista</button>
-        <button class="btn-accent" onclick="window.closeModals(); openFormModal()">➕ Nuova</button>
+        <button class="btn-outline active-tab" onclick="window.toggleView('calendar', this)" id="btn-cal">🗓 Agenda</button>
+        <button class="btn-outline" onclick="window.toggleView('list', this)" id="btn-list">📋 Lista</button>
+        <button class="btn-outline" onclick="window.openOptionsModal()" style="flex: 0 0 54px; padding: 0; background: var(--light);">⚙️</button>
     </div>
+    <button class="btn-accent" onclick="window.closeModals(); openFormModal()" style="width: 100%; padding: 16px; font-size: 1.05rem;">➕ Aggiungi prenotazione</button>
 </header>
 
 <main>
@@ -216,13 +255,64 @@
         </div>
         <div class="agenda-view" id="agenda-grid"></div>
     </div>
-    <div id="list-view" class="list-view"><div id="list-container"></div></div>
+    
+    <div id="list-view" class="list-view">
+        <div id="list-container"></div>
+    </div>
 </main>
+
+<div id="optionsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-drag-handle"></div>
+        <span class="close-modal" onclick="closeModals()">&times;</span>
+        <h2 style="margin-top: 0; font-weight: 800; margin-bottom: 24px; color: var(--primary);">⚙️ Opzioni</h2>
+        
+        <div style="background: var(--light); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 24px;">
+            <h3 style="font-size: 1.05rem; margin-top: 0; margin-bottom: 16px; color: var(--primary);">Chiusura Settimanale</h3>
+            <div class="row">
+                <div class="form-group col">
+                    <label>Giorno</label>
+                    <select id="opt-closing-day">
+                        <option value="1">Lunedì</option>
+                        <option value="2">Martedì</option>
+                        <option value="3">Mercoledì</option>
+                        <option value="4">Giovedì</option>
+                        <option value="5">Venerdì</option>
+                        <option value="6">Sabato</option>
+                        <option value="0">Domenica</option>
+                        <option value="-1">Nessuno</option>
+                    </select>
+                </div>
+                <div class="form-group col">
+                    <label>Turno</label>
+                    <select id="opt-closing-shift">
+                        <option value="tutto">Tutto il giorno</option>
+                        <option value="pranzo">Solo Pranzo</option>
+                        <option value="cena">Solo Cena</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-accent" style="width: 100%; padding: 14px;" onclick="window.saveSettings()">💾 Salva Impostazioni</button>
+        </div>
+
+        <div style="background: var(--accent-light); padding: 20px; border-radius: var(--radius-md); border: 1px solid #c7d2fe;">
+            <h3 style="font-size: 1.05rem; margin-top: 0; margin-bottom: 16px; color: var(--accent);">Backup Sistema</h3>
+            <button class="btn-outline" style="width: 100%; margin-bottom: 20px; border-color: #a5b4fc; color: var(--accent); background: white; padding: 14px;" onclick="window.exportBackup()">📥 Scarica Backup (JSON)</button>
+            
+            <label style="display: block; font-weight: 800; font-size: 0.85rem; color: var(--accent); margin-bottom: 8px;">Ripristino da JSON</label>
+            <input type="file" id="backup-file" accept=".json" style="width: 100%; margin-bottom: 14px; padding: 12px; border: 2px dashed #a5b4fc; border-radius: var(--radius-sm); background: white;">
+            <button class="btn-danger" style="width: 100%; padding: 14px;" onclick="window.importBackup()">📤 Ripristina su Firebase</button>
+        </div>
+
+        <button class="btn-danger" style="width: 100%; padding: 14px; margin-top: 20px; border-radius: var(--radius-md);" onclick="window.logoutRestaurant()">🚪 Esci dall'Account</button>
+    </div>
+</div>
 
 <div id="formModal" class="modal">
     <div class="modal-content">
+        <div class="modal-drag-handle"></div>
         <span class="close-modal" onclick="attemptCloseForm()">&times;</span>
-        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 18px; color: var(--primary);">Nuova Prenotazione</h2>
+        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 24px; color: var(--primary); font-size: 1.4rem;">Nuova Prenotazione</h2>
         <form id="reservationForm" onsubmit="saveReservation(event)">
             <input type="hidden" id="res-id">
             
@@ -247,27 +337,30 @@
             </div>
 
             <div class="row">
-                <div class="form-group col"><label>Persone Totali</label><input type="number" id="res-pax" min="1" required inputmode="numeric"></div>
-                <div class="form-group col">
+                <div class="form-group" style="flex: 0.8; min-width: 90px;">
+                    <label>Pax</label>
+                    <input type="number" id="res-pax" min="1" required inputmode="numeric" style="text-align: center; font-size: 1.2rem;">
+                </div>
+                <div class="form-group" style="flex: 2; min-width: 180px;">
                     <label>Telefono</label>
                     <div style="display: flex; gap: 8px;">
-                        <input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel" style="flex: 1;">
-                        <a id="btn-call-phone" href="#" style="display: none; background: var(--accent); color: white; padding: 0 16px; border-radius: var(--radius-sm); text-decoration: none; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">📞</a>
+                        <input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel" style="flex: 1; width: 100%; min-width: 0;">
+                        <button type="button" id="btn-call-phone" onclick="window.confirmCall(document.getElementById('res-phone').value, document.getElementById('res-name').value)" style="display: none; background: #10b981; color: white; padding: 0 16px; border-radius: var(--radius-sm); border: none; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); flex-shrink: 0; cursor: pointer;">📞</button>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group"><label>Nome Prenotazione</label><input type="text" id="res-name" required placeholder="Es. Rossi"></div>
+            <div class="form-group"><label>Nome Prenotazione</label><input type="text" id="res-name" required placeholder="Es. Mario Rossi" style="font-size: 1.1rem;"></div>
 
             <div class="smart-toggles">
                 <button type="button" class="toggle-btn" id="btn-toggle-bimbi" onclick="toggleSection('children-section', this)">👶 Bambini & Seggioloni</button>
                 <button type="button" class="toggle-btn" id="btn-toggle-menu" onclick="toggleSection('menu-section', this)">🥗 Menù Speciali</button>
             </div>
 
-            <div id="children-section" class="hidden-section" style="background: #eff6ff; border-color: #bfdbfe;">
+            <div id="children-section" class="hidden-section" style="background: var(--accent-light); border-color: #c7d2fe;">
                 <div class="row">
                     <div class="form-group col" style="margin-bottom:0;">
-                        <label style="color: #1e3a8a;">Bambini</label>
+                        <label style="color: var(--accent);">Bambini</label>
                         <div class="stepper-control">
                             <button type="button" class="stepper-btn minus" onclick="updateStepper('res-children', -1)">−</button>
                             <input type="number" id="res-children" class="stepper-input" value="0" readonly>
@@ -275,7 +368,7 @@
                         </div>
                     </div>
                     <div class="form-group col" style="margin-bottom:0;">
-                        <label style="color: #1e3a8a;">Seggioloni</label>
+                        <label style="color: var(--accent);">Seggioloni</label>
                         <div class="stepper-control">
                             <button type="button" class="stepper-btn minus" onclick="updateStepper('res-highchairs', -1)">−</button>
                             <input type="number" id="res-highchairs" class="stepper-input" value="0" readonly>
@@ -285,9 +378,9 @@
                 </div>
             </div>
 
-            <div id="menu-section" class="hidden-section" style="background: #fef2f2; border-color: #fecaca;">
+            <div id="menu-section" class="hidden-section" style="background: var(--danger-light); border-color: #fecaca;">
                 <div class="intol-row">
-                    <label style="color: #991b1b;">Celiaci</label>
+                    <label style="color: var(--danger);">Celiaci</label>
                     <div class="stepper-control">
                         <button type="button" class="stepper-btn minus" onclick="updateStepper('int-celiaco', -1)">−</button>
                         <input type="number" id="int-celiaco" class="stepper-input" value="0" readonly>
@@ -295,7 +388,7 @@
                     </div>
                 </div>
                 <div class="intol-row">
-                    <label style="color: #065f46;">Vegetariani</label>
+                    <label style="color: #059669;">Vegetariani</label>
                     <div class="stepper-control">
                         <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegetariano', -1)">−</button>
                         <input type="number" id="int-vegetariano" class="stepper-input" value="0" readonly>
@@ -303,7 +396,7 @@
                     </div>
                 </div>
                 <div class="intol-row">
-                    <label style="color: #065f46;">Vegani</label>
+                    <label style="color: #059669;">Vegani</label>
                     <div class="stepper-control">
                         <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegano', -1)">−</button>
                         <input type="number" id="int-vegano" class="stepper-input" value="0" readonly>
@@ -315,9 +408,9 @@
             <div class="form-group"><label>Note Opzionali</label><input type="text" id="res-notes" placeholder="Richieste extra..."></div>
             <div class="form-group"><label>Operatore</label><input type="text" id="res-operator" required placeholder="Tuo nome"></div>
 
-            <div class="row" style="margin-top: 20px;">
-                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 16px; font-size: 1.1rem; border-radius: 12px;">💾 Salva Prenotazione</button>
-                <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1; border-radius: 12px;" onclick="window.deleteReservation()">🗑 Elimina</button>
+            <div class="row" style="margin-top: 24px;">
+                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 18px; font-size: 1.15rem; border-radius: 16px;">💾 Salva Prenotazione</button>
+                <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1; border-radius: 16px; font-size: 1.15rem;" onclick="window.deleteReservation()">🗑 Elimina</button>
             </div>
         </form>
     </div>
@@ -325,82 +418,257 @@
 
 <div id="dayModal" class="modal">
     <div class="modal-content">
+        <div class="modal-drag-handle"></div>
         <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 15px; font-weight: 800; color: var(--primary);">Prenotazioni</h2>
-        <div id="day-modal-list" style="margin-bottom: 20px; max-height: 55vh; overflow-y: auto;"></div>
-        <button class="btn-accent" style="width: 100%; padding: 16px; border-radius: 12px;" onclick="window.closeModals(); openFormModalForDay()">➕ Aggiungi prenotazione</button>
+        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 20px; font-weight: 800; color: var(--primary);">Prenotazioni</h2>
+        <div id="day-modal-list" style="margin-bottom: 24px; max-height: 55vh; overflow-y: auto;"></div>
+        <button class="btn-accent" style="width: 100%; padding: 18px; border-radius: 16px; font-size: 1.1rem;" onclick="window.closeModals(); openFormModalForDay()">➕ Aggiungi prenotazione</button>
     </div>
 </div>
 
 <script type="module">
-    // Gestione password all'avvio
-    window.checkAppPassword = function() {
-        const input = document.getElementById('app-pwd-input').value;
-        if(input === '123') { // Aggiornata in base all'ultima richiesta
-            localStorage.setItem('risto_secret_key', input);
-            document.getElementById('login-overlay').style.display = 'none';
-        } else {
-            alert("Password errata!");
-        }
-    };
-
-    window.addEventListener('load', () => {
-        if(localStorage.getItem('risto_secret_key') === '123') {
-            document.getElementById('login-overlay').style.display = 'none';
-        }
-    });
-
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyD_JLRWYDGbod9sAtotDLzBYAvg1js40_I",
-        authDomain: "ristorante-italo.firebaseapp.com",
-        projectId: "ristorante-italo",
-        storageBucket: "ristorante-italo.firebasestorage.app",
-        messagingSenderId: "311449776759",
-        appId: "1:311449776759:web:7623cb79093c576b9d0c72",
-        measurementId: "G-SRTCFX9GPY"
-    };
+   const firebaseConfig = {
+  apiKey: "AIzaSyBidWhuv1uWHKQ7Rib6BxcvK9sbG4QjA_4",
+  authDomain: "risto-gest-pro-2026.firebaseapp.com",
+  databaseURL: "https://risto-gest-pro-2026-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "risto-gest-pro-2026",
+  storageBucket: "risto-gest-pro-2026.firebasestorage.app",
+  messagingSenderId: "135116387205",
+  appId: "1:135116387205:web:729c51f3ff2c1dcd874aec",
+  measurementId: "G-SP10P2SRRF"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app); 
 
     let reservations = [];
     let currentDate = new Date();
     let selectedDayForNewRes = null;
     let initialLoadDone = false;
+    let currentRestaurantId = null; 
+    let unsubscribeSnapshot = null; 
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(()=>{}); });
     }
 
-    // --- NUOVO: Funzione per controllare la chiusura del Martedì Sera ---
-    window.checkClosedTuesday = function() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentRestaurantId = user.uid;
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('loading-overlay').style.display = 'flex';
+            startListeningToReservations();
+        } else {
+            currentRestaurantId = null;
+            document.getElementById('login-overlay').style.display = 'flex';
+            document.getElementById('loading-overlay').style.display = 'none';
+            if(unsubscribeSnapshot) {
+                unsubscribeSnapshot();
+                unsubscribeSnapshot = null;
+            }
+            reservations = [];
+            renderCalendar();
+            renderList();
+        }
+    });
+
+    window.loginRestaurant = function() {
+        const email = document.getElementById('app-email-input').value.trim();
+        const pwd = document.getElementById('app-pwd-input').value;
+        const btnLogin = document.getElementById('btn-login');
+
+        if(!email || !pwd) return alert("Inserisci email e password per accedere.");
+
+        btnLogin.innerText = "ACCESSO IN CORSO... ⏳";
+        btnLogin.disabled = true;
+
+        signInWithEmailAndPassword(auth, email, pwd)
+            .then(() => {
+                btnLogin.innerText = "ACCEDI";
+                btnLogin.disabled = false;
+            })
+            .catch(() => {
+                alert("Errore: Credenziali errate o utente inesistente.");
+                btnLogin.innerText = "ACCEDI";
+                btnLogin.disabled = false;
+            });
+    };
+
+    window.registerRestaurant = function() {
+        const email = document.getElementById('app-email-input').value.trim();
+        const pwd = document.getElementById('app-pwd-input').value;
+        const btnRegister = document.getElementById('btn-register');
+
+        if(!email || !pwd) return alert("Inserisci un'email e una password per registrarti.");
+        if(pwd.length < 6) return alert("La password deve avere almeno 6 caratteri.");
+
+        btnRegister.innerText = "CREAZIONE... ⏳";
+        btnRegister.disabled = true;
+
+        createUserWithEmailAndPassword(auth, email, pwd)
+            .then(() => {
+                alert("Account creato con successo! Benvenuto in RistoGest Pro.");
+                btnRegister.innerText = "CREA ACCOUNT";
+                btnRegister.disabled = false;
+            })
+            .catch((error) => {
+                let msg = "Errore durante la registrazione.";
+                if (error.code === 'auth/email-already-in-use') msg = "Questa email è già in uso. Prova ad accedere.";
+                if (error.code === 'auth/invalid-email') msg = "L'email inserita non è valida.";
+                alert(msg);
+                btnRegister.innerText = "CREA ACCOUNT";
+                btnRegister.disabled = false;
+            });
+    };
+
+    window.forgotPassword = function() {
+        const email = document.getElementById('app-email-input').value.trim();
+        if(!email) return alert("Inserisci la tua email nella casella qui sopra per recuperare la password.");
+        
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                alert("Email di recupero inviata! Controlla la tua casella di posta per reimpostare la password.");
+            })
+            .catch((error) => {
+                alert("Impossibile inviare l'email. Verifica di aver scritto l'indirizzo corretto.");
+            });
+    };
+
+    window.logoutRestaurant = function() {
+        if(confirm("Sei sicuro di voler uscire dall'account? Dovrai reinserire i dati.")) {
+            signOut(auth).then(() => {
+                window.closeModals();
+            });
+        }
+    };
+
+    function startListeningToReservations() {
+        if (!currentRestaurantId) return;
+        
+        const dbPath = collection(db, "ristoranti", currentRestaurantId, "prenotazioni");
+        
+        unsubscribeSnapshot = onSnapshot(dbPath, (snapshot) => {
+            reservations = [];
+            snapshot.forEach((doc) => { reservations.push({ id: doc.id, ...doc.data() }); });
+            renderCalendar(); renderList();
+            
+            if(!initialLoadDone) { 
+                document.getElementById('loading-overlay').style.display = 'none'; 
+                window.toggleView('calendar', document.getElementById('btn-cal')); 
+                initialLoadDone = true; 
+            } 
+            else if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) { 
+                window.openDayModal(selectedDayForNewRes); 
+            }
+        }, (error) => { 
+            document.getElementById('loading-overlay').innerText = "Errore connessione. Verifica le regole del DB."; 
+            console.error(error);
+        });
+    }
+
+    window.openOptionsModal = function() {
+        window.closeModals();
+        document.getElementById('opt-closing-day').value = localStorage.getItem('risto_closing_day') || '2'; 
+        document.getElementById('opt-closing-shift').value = localStorage.getItem('risto_closing_shift') || 'cena'; 
+        document.getElementById('optionsModal').style.display = 'block';
+    };
+
+    window.saveSettings = function() {
+        const passwordInput = prompt("Inserisci la password di sicurezza per le impostazioni interne dell'app:");
+        const correctPassword = localStorage.getItem('risto_secret_key') || 'CristinaSamu'; 
+        
+        if (passwordInput === correctPassword) {
+            localStorage.setItem('risto_closing_day', document.getElementById('opt-closing-day').value);
+            localStorage.setItem('risto_closing_shift', document.getElementById('opt-closing-shift').value);
+            alert("Impostazioni salvate con successo!");
+            window.closeModals();
+            renderCalendar(); 
+        } else if(passwordInput !== null) {
+            alert("Password errata! Le modifiche non sono state salvate.");
+        }
+    };
+
+    window.exportBackup = function() {
+        if(reservations.length === 0) return alert("Nessuna prenotazione da esportare.");
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reservations));
+        const dlAnchorElem = document.createElement('a');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", "ristogest_backup_" + getTodayString() + ".json");
+        dlAnchorElem.click();
+    };
+
+    window.importBackup = function() {
+        const fileInput = document.getElementById('backup-file');
+        if (!fileInput.files.length) return alert("Seleziona un file JSON.");
+        if (!currentRestaurantId) return alert("Errore di sessione.");
+        
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = async function(e) {
+            try {
+                const importedRes = JSON.parse(e.target.result);
+                if (!Array.isArray(importedRes)) throw new Error("File non valido.");
+                if (!confirm(`Trovate ${importedRes.length} prenotazioni. Caricarle nel database del tuo ristorante?`)) return;
+
+                document.getElementById('loading-overlay').innerText = "Ripristino in corso... ⏳";
+                document.getElementById('loading-overlay').style.display = 'flex';
+
+                for (const res of importedRes) {
+                    await setDoc(doc(db, "ristoranti", currentRestaurantId, "prenotazioni", res.id), res);
+                }
+                
+                alert("Ripristino completato con successo!");
+                window.closeModals();
+                fileInput.value = ""; 
+            } catch (error) {
+                alert("Errore durante l'importazione: " + error.message);
+            } finally {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    window.checkClosedShift = function() {
         const dateVal = document.getElementById('res-date').value;
         const timeVal = document.getElementById('res-time').value;
         
         if (dateVal && timeVal) {
-            const dayOfWeek = new Date(dateVal).getDay(); // 0: Dom, 1: Lun, 2: Mar...
+            const dayOfWeek = new Date(dateVal).getDay(); 
             const hour = parseInt(timeVal.split(':')[0]);
+            const isPranzo = hour < 15;
             
-            // Se è martedì (2) e l'orario è da cena (es. dalle 18:00 in poi)
-            if (dayOfWeek === 2 && hour >= 18) {
-                alert("⚠️ ATTENZIONE: Il locale è normalmente chiuso il Martedì sera!");
+            const closingDay = parseInt(localStorage.getItem('risto_closing_day') || '2');
+            const closingShift = localStorage.getItem('risto_closing_shift') || 'cena';
+
+            if (dayOfWeek === closingDay) {
+                if (closingShift === 'tutto' || (closingShift === 'pranzo' && isPranzo) || (closingShift === 'cena' && !isPranzo)) {
+                    alert("⚠️ ATTENZIONE: Il locale risulta CHIUSO nel turno selezionato!");
+                }
             }
         }
     };
     
-    // Assegno i listener ai campi Data e Orario
-    document.getElementById('res-date').addEventListener('change', checkClosedTuesday);
-    document.getElementById('res-time').addEventListener('change', checkClosedTuesday);
+    document.getElementById('res-date').addEventListener('change', window.checkClosedShift);
+    document.getElementById('res-time').addEventListener('change', window.checkClosedShift);
 
-    // --- NUOVO: Aggiorna dinamicamente il link chiamata in base al telefono inserito ---
+    window.confirmCall = function(phone, name) {
+        if (!phone) return;
+        const displayName = name ? name : "questo numero";
+        if (confirm(`Vuoi chiamare ${displayName} al numero ${phone}?`)) {
+            window.location.href = `tel:${phone}`;
+        }
+    };
+
     document.getElementById('res-phone').addEventListener('input', (e) => {
         const callBtn = document.getElementById('btn-call-phone');
-        if (e.target.value) {
-            callBtn.href = `tel:${e.target.value}`;
-        }
+        callBtn.style.display = e.target.value ? 'flex' : 'none';
     });
 
     window.updateStepper = function(inputId, delta) {
@@ -411,7 +679,7 @@
         inputEl.value = val;
     };
 
-    const monthColors = ["#0f172a", "#334155", "#115e59", "#047857", "#c2410c", "#b91c1c", "#e11d48", "#d97706", "#b45309", "#78350f", "#475569", "#0f766e"];
+    const monthColors = ["#0f172a", "#1e293b", "#334155", "#475569", "#115e59", "#0f766e", "#0369a1", "#1d4ed8", "#4338ca", "#4f46e5", "#6d28d9", "#be123c"];
 
     function updateClock() {
         const clockEl = document.getElementById('live-clock');
@@ -431,22 +699,14 @@
         return smHolidays.includes(mmdd) || dynamicHolidays.includes(`${dateObj.getFullYear()}-${mmdd}`);
     }
 
-    function adjustStickyHeader() { document.getElementById('month-header').style.top = (document.getElementById('main-header').offsetHeight + 5) + 'px'; }
-    window.addEventListener('resize', adjustStickyHeader);
-
-    onSnapshot(collection(db, "prenotazioni"), (snapshot) => {
-        reservations = [];
-        snapshot.forEach((doc) => { reservations.push({ id: doc.id, ...doc.data() }); });
-        renderCalendar(); renderList();
-        if(!initialLoadDone) { document.getElementById('loading-overlay').style.display = 'none'; window.toggleView('calendar'); initialLoadDone = true; } 
-        else if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) { window.openDayModal(selectedDayForNewRes); }
-    }, (error) => { document.getElementById('loading-overlay').innerText = "Errore connessione"; });
-
-    window.toggleView = function(view) {
+    window.toggleView = function(view, btnClicked) {
         document.getElementById('calendar-view').style.display = view === 'calendar' ? 'block' : 'none';
         document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
-        document.getElementById('btn-cal').style.opacity = view === 'calendar' ? '1' : '0.6';
-        document.getElementById('btn-list').style.opacity = view === 'list' ? '1' : '0.6';
+        
+        document.getElementById('btn-cal').classList.remove('active-tab');
+        document.getElementById('btn-list').classList.remove('active-tab');
+        if(btnClicked) btnClicked.classList.add('active-tab');
+
         if(view === 'calendar') { renderCalendar(); scrollToToday(); }
         if(view === 'list') renderList();
     };
@@ -460,7 +720,7 @@
         document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
     };
 
-    window.attemptCloseForm = function() { if(confirm("Sei sicuro di voler chiudere? I dati non salvati andranno persi.")) { window.closeModals(); } };
+    window.attemptCloseForm = function() { if(confirm("Chiudere senza salvare?")) { window.closeModals(); } };
 
     window.toggleSection = function(sectionId, btn) {
         document.getElementById(sectionId).classList.toggle('active');
@@ -468,7 +728,9 @@
     };
 
     window.changeMonth = function(dir) {
-        currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar();
+        currentDate.setDate(1);
+        currentDate.setMonth(currentDate.getMonth() + dir); 
+        renderCalendar();
         if(currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear()) { scrollToToday(); } 
         else { window.scrollTo({top: 0, behavior: 'smooth'}); }
     };
@@ -476,24 +738,23 @@
     function scrollToToday() { setTimeout(() => { const todayEl = document.getElementById('row-today'); if(todayEl) { window.scrollTo({ top: todayEl.getBoundingClientRect().top + window.pageYOffset - document.getElementById('main-header').offsetHeight - 80, behavior: 'smooth' }); } }, 150); }
 
     function renderCalendar() {
-        adjustStickyHeader();
         const grid = document.getElementById('agenda-grid'); grid.innerHTML = '';
         const year = currentDate.getFullYear(); const month = currentDate.getMonth();
         
         const color = monthColors[month];
         document.getElementById('month-year-display').innerText = `${["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"][month]} ${year}`;
-        
         document.getElementById('month-header').style.backgroundColor = color;
         
-        document.body.style.background = `linear-gradient(to bottom, ${color}33 0%, #f8fafc 100vh)`;
-        document.body.style.backgroundAttachment = "fixed";
-
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const todayStr = getTodayString();
 
+        const closingDay = parseInt(localStorage.getItem('risto_closing_day') || '2');
+        const closingShift = localStorage.getItem('risto_closing_shift') || 'cena';
+
         for (let day = 1; day <= daysInMonth; day++) {
             const dateObj = new Date(year, month, day); const dateString = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            const isOggi = dateString === todayStr; const isTuesday = dateObj.getDay() === 2;
+            const isOggi = dateString === todayStr; 
+            const isClosingDay = dateObj.getDay() === closingDay;
             
             const div = document.createElement('div');
             div.className = `agenda-row ${isOggi ? 'today' : ''} ${isHoliday(dateObj) ? 'festivo' : ''}`;
@@ -505,10 +766,21 @@
             const resPranzo = dayRes.filter(r => r.service === 'Pranzo');
             const resCena = dayRes.filter(r => r.service === 'Cena');
 
-            html += resPranzo.length > 0 ? `<div class="shift-pill pill-pranzo"><span class="title">☀️ PRANZO</span> <span class="val">${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>` : `<div class="shift-pill pill-empty"><span class="title">☀️ PRANZO</span> <span class="val">-</span></div>`;
-            if(resCena.length > 0) { html += `<div class="shift-pill pill-cena"><span class="title">${isTuesday ? '🌙 EXTRA' : '🌙 CENA'}</span> <span class="val">${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; } 
-            else if (isTuesday) { html += `<div class="shift-pill pill-chiuso"><span class="title">🌙 CENA</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`; } 
-            else { html += `<div class="shift-pill pill-empty"><span class="title">🌙 CENA</span> <span class="val">-</span></div>`; }
+            if (resPranzo.length > 0) { 
+                html += `<div class="shift-pill pill-pranzo"><span class="title">${isClosingDay ? '☀️ EXTRA' : '☀️ PRANZO'}</span> <span class="val">${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; 
+            } else if (isClosingDay && (closingShift === 'pranzo' || closingShift === 'tutto')) {
+                html += `<div class="shift-pill pill-chiuso"><span class="title">☀️ PRANZO</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`;
+            } else { 
+                html += `<div class="shift-pill pill-empty"><span class="title">☀️ PRANZO</span> <span class="val">-</span></div>`; 
+            }
+
+            if (resCena.length > 0) { 
+                html += `<div class="shift-pill pill-cena"><span class="title">${isClosingDay ? '🌙 EXTRA' : '🌙 CENA'}</span> <span class="val">${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; 
+            } else if (isClosingDay && (closingShift === 'cena' || closingShift === 'tutto')) { 
+                html += `<div class="shift-pill pill-chiuso"><span class="title">🌙 CENA</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`; 
+            } else { 
+                html += `<div class="shift-pill pill-empty"><span class="title">🌙 CENA</span> <span class="val">-</span></div>`; 
+            }
 
             div.innerHTML = html + `</div>`; grid.appendChild(div);
         }
@@ -523,7 +795,7 @@
     }
 
     function generateDayListHtml(dayRes) {
-        if(dayRes.length === 0) return '<p style="padding: 15px; color: #64748b; font-weight: 600;">Nessuna prenotazione.</p>';
+        if(dayRes.length === 0) return '<p style="padding: 20px; text-align:center; color: var(--secondary); font-weight: 600;">Nessuna prenotazione trovata.</p>';
         const pranzi = dayRes.filter(r => r.service === 'Pranzo').sort((a,b) => a.time.localeCompare(b.time));
         const cene = dayRes.filter(r => r.service === 'Cena').sort((a,b) => a.time.localeCompare(b.time));
         
@@ -533,12 +805,16 @@
             let groupHtml = `<div class="service-section"><div class="service-title ${titleClass}"><span>${icon} ${titleText}</span> <span>Tot: ${arr.reduce((s,r) => s + r.pax, 0)} pax</span></div>`;
             arr.forEach(r => {
                 const intolBadge = getIntoleranceString(r.intolerances) ? `<div class="intol-badge">${getIntoleranceString(r.intolerances)}</div>` : '';
-                const seggBadge = r.highchairs > 0 ? `<div class="seggiolone-badge">🪑 ${r.highchairs} Seggiolone/i</div>` : '';
+                const seggBadge = r.highchairs > 0 ? `<div class="seggiolone-badge">🪑 ${r.highchairs} Seggiolone</div>` : '';
                 const badgesHtml = (intolBadge || seggBadge) ? `<div class="badges-container">${intolBadge}${seggBadge}</div>` : '';
+                
+                const safeName = r.name ? r.name.replace(/'/g, "\\'") : '';
+                const phoneHtml = r.phone ? `<span onclick="event.stopPropagation(); window.confirmCall('${r.phone}', '${safeName}')" style="color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 8px; font-weight: 800; text-decoration: none;">📞 ${r.phone}</span>` : `<span>-</span>`;
+
                 groupHtml += `
                     <div class="list-item" onclick="window.closeModals(); window.openFormModal('${r.id}')">
-                        <div class="item-top"><span>${r.time} - ${r.name}</span><span>${r.pax} pax</span></div>
-                        <div class="item-details"><span>📞 ${r.phone}</span><span>Op: ${r.operator}</span></div>
+                        <div class="item-top"><span>${r.time} <span style="color:var(--secondary); font-weight:500;">|</span> ${r.name}</span><span>👤 ${r.pax}</span></div>
+                        <div class="item-details">${phoneHtml}<span>📝 ${r.operator}</span></div>
                         ${badgesHtml}
                     </div>`;
             });
@@ -554,6 +830,7 @@
         if(isOggi) return; 
         const contentEl = headerEl.nextElementSibling;
         const iconEl = headerEl.querySelector('.icon');
+        if (!iconEl) return;
         if (contentEl.style.display === 'none') { contentEl.style.display = 'block'; iconEl.style.transform = 'rotate(180deg)'; } 
         else { contentEl.style.display = 'none'; iconEl.style.transform = 'rotate(0deg)'; }
     };
@@ -565,24 +842,82 @@
         document.getElementById('dayModal').style.display = 'block';
     };
 
+    window.filterPastDays = function(query) {
+        query = query.toLowerCase().trim();
+        const blocks = document.querySelectorAll('.past-day-block');
+        blocks.forEach(block => {
+            const searchData = block.getAttribute('data-search');
+            if(searchData.includes(query)) {
+                block.style.display = 'block';
+            } else {
+                block.style.display = 'none';
+            }
+        });
+    };
+
     function renderList() {
         const container = document.getElementById('list-container'); container.innerHTML = '';
-        const grouped = {}; reservations.sort((a,b) => a.date.localeCompare(b.date)).forEach(r => { if(!grouped[r.date]) grouped[r.date] = []; grouped[r.date].push(r); });
-        for(const [dateStr, resArray] of Object.entries(grouped)) {
-            const isOggi = dateStr === getTodayString();
-            let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
-            if(isOggi) itaDate = "⭐ OGGI - " + itaDate;
-            const groupDiv = document.createElement('div'); groupDiv.className = 'list-group';
-            groupDiv.innerHTML = `
-                <div class="list-group-header" style="background-color: ${monthColors[new Date(dateStr).getMonth()]};" onclick="window.toggleAccordion(this, ${isOggi})">
-                    <span>${itaDate}</span> ${isOggi ? '' : `<span class="icon" style="transform: rotate(0deg); display: inline-block;">▼</span>`}
+        const todayStr = getTodayString();
+        
+        const grouped = {}; 
+        reservations.forEach(r => { if(!grouped[r.date]) grouped[r.date] = []; grouped[r.date].push(r); });
+
+        const pastDates = [];
+        const upcomingDates = [];
+        
+        Object.keys(grouped).sort().forEach(dateStr => {
+            if (dateStr < todayStr) pastDates.push(dateStr);
+            else upcomingDates.push(dateStr);
+        });
+
+        if (pastDates.length > 0) {
+            const pastContainer = document.createElement('div');
+            pastContainer.className = 'list-group';
+            pastContainer.style.marginBottom = '24px';
+            
+            let pastHtml = `
+                <div class="list-group-header" style="background-color: var(--secondary);" onclick="window.toggleAccordion(this, false)">
+                    <span>📚 GIORNI PASSATI</span> <span class="icon" style="transform: rotate(0deg); display: inline-block; transition: transform 0.3s;">▼</span>
                 </div>
-                <div class="list-group-content" style="display: ${isOggi ? 'block' : 'none'};">${generateDayListHtml(resArray)}</div>`;
-            container.appendChild(groupDiv);
+                <div class="list-group-content" style="display: none; padding: 16px; background: var(--light);">
+                    <div class="search-container">
+                        <label style="display:block; font-size:0.8rem; font-weight:800; color:var(--secondary); margin-bottom:8px; text-transform:uppercase;">Filtra date passate</label>
+                        <input type="text" id="search-past" placeholder="Es. 15, Maggio, 2025..." onkeyup="window.filterPastDays(this.value)">
+                    </div>
+            `;
+            
+            pastDates.sort((a,b) => b.localeCompare(a)).forEach(dateStr => {
+                let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+                
+                pastHtml += `<div class="past-day-block list-group" data-search="${itaDate.toLowerCase()} ${dateStr}" style="margin-bottom: 16px; box-shadow:var(--shadow-sm);">
+                    <div style="background: white; padding: 12px 20px; font-weight: 800; color: var(--primary); font-size: 1rem; border-bottom: 2px solid var(--border);">${itaDate}</div>
+                    ${generateDayListHtml(grouped[dateStr])}
+                </div>`;
+            });
+            
+            pastHtml += `</div>`;
+            pastContainer.innerHTML = pastHtml;
+            container.appendChild(pastContainer);
         }
+
+        upcomingDates.forEach(dateStr => {
+            container.appendChild(createDateGroup(dateStr, grouped[dateStr], dateStr === todayStr, dateStr === todayStr));
+        });
     }
 
-    window.openFormModalForDay = function() { window.closeModals(); window.openFormModal(); if(selectedDayForNewRes) { document.getElementById('res-date').value = selectedDayForNewRes; window.checkClosedTuesday(); } };
+    function createDateGroup(dateStr, resArray, isOggi, forceOpen = false) {
+        let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
+        if(isOggi) itaDate = "⭐ OGGI - " + itaDate;
+        const groupDiv = document.createElement('div'); groupDiv.className = 'list-group';
+        groupDiv.innerHTML = `
+            <div class="list-group-header" style="background-color: ${isOggi ? 'var(--accent)' : monthColors[new Date(dateStr).getMonth()]};" onclick="window.toggleAccordion(this, ${isOggi})">
+                <span>${itaDate}</span> ${isOggi ? '' : `<span class="icon" style="transform: rotate(${forceOpen?'180':'0'}deg); display: inline-block; transition: transform 0.3s;">▼</span>`}
+            </div>
+            <div class="list-group-content" style="display: ${forceOpen ? 'block' : 'none'};">${generateDayListHtml(resArray)}</div>`;
+        return groupDiv;
+    }
+
+    window.openFormModalForDay = function() { window.closeModals(); window.openFormModal(); if(selectedDayForNewRes) { document.getElementById('res-date').value = selectedDayForNewRes; window.checkClosedShift(); } };
 
     window.openFormModal = function(id = null) {
         document.getElementById('reservationForm').reset();
@@ -605,9 +940,7 @@
                 document.getElementById('int-vegano').value = r.intolerances.vegano || 0;
                 document.getElementById('btn-delete').style.display = 'block';
                 
-                // Attiva e imposta il tasto chiama
-                callBtn.href = `tel:${r.phone}`;
-                callBtn.style.display = 'flex';
+                callBtn.style.display = r.phone ? 'flex' : 'none';
                 
                 if(r.children > 0 || r.highchairs > 0) window.toggleSection('children-section', document.getElementById('btn-toggle-bimbi'));
                 if(r.intolerances.celiaco > 0 || r.intolerances.vegetariano > 0 || r.intolerances.vegano > 0) window.toggleSection('menu-section', document.getElementById('btn-toggle-menu'));
@@ -620,77 +953,73 @@
         document.getElementById('formModal').style.display = 'block';
     };
 
-   window.saveReservation = async function(e) {
-    e.preventDefault();
-    
-    const savedSecret = localStorage.getItem('risto_secret_key');
-    
-    const btnSalva = document.getElementById('btn-submit-save'); 
-    btnSalva.disabled = true; 
-    btnSalva.innerText = "⏳ Salvataggio...";
-    
-    const timeValue = document.getElementById('res-time').value;
-    const autoService = parseInt(timeValue.split(':')[0]) < 15 ? 'Pranzo' : 'Cena';
-    const id = document.getElementById('res-id').value || Date.now().toString() + Math.floor(Math.random()*1000);
-    
-    const newRes = {
-        date: document.getElementById('res-date').value, 
-        service: autoService, 
-        time: timeValue, 
-        name: document.getElementById('res-name').value,
-        phone: document.getElementById('res-phone').value, 
-        pax: parseInt(document.getElementById('res-pax').value),
-        children: parseInt(document.getElementById('res-children').value) || 0, 
-        highchairs: parseInt(document.getElementById('res-highchairs').value) || 0,
-        intolerances: { 
-            celiaco: parseInt(document.getElementById('int-celiaco').value) || 0, 
-            vegetariano: parseInt(document.getElementById('int-vegetariano').value) || 0, 
-            vegano: parseInt(document.getElementById('int-vegano').value) || 0 
-        },
-        notes: document.getElementById('res-notes').value, 
-        operator: document.getElementById('res-operator').value,
-        secret: savedSecret 
+    window.saveReservation = async function(e) {
+        e.preventDefault();
+        if (!currentRestaurantId) return alert("Errore: Ristorante non identificato.");
+        
+        const btnSalva = document.getElementById('btn-submit-save'); 
+        btnSalva.disabled = true; 
+        btnSalva.innerText = "⏳ Salvataggio...";
+        
+        const timeValue = document.getElementById('res-time').value;
+        const autoService = parseInt(timeValue.split(':')[0]) < 15 ? 'Pranzo' : 'Cena';
+        const id = document.getElementById('res-id').value || Date.now().toString() + Math.floor(Math.random()*1000);
+        
+        const newRes = {
+            date: document.getElementById('res-date').value, 
+            service: autoService, 
+            time: timeValue, 
+            name: document.getElementById('res-name').value,
+            phone: document.getElementById('res-phone').value, 
+            pax: parseInt(document.getElementById('res-pax').value),
+            children: parseInt(document.getElementById('res-children').value) || 0, 
+            highchairs: parseInt(document.getElementById('res-highchairs').value) || 0,
+            intolerances: { 
+                celiaco: parseInt(document.getElementById('int-celiaco').value) || 0, 
+                vegetariano: parseInt(document.getElementById('int-vegetariano').value) || 0, 
+                vegano: parseInt(document.getElementById('int-vegano').value) || 0 
+            },
+            notes: document.getElementById('res-notes').value, 
+            operator: document.getElementById('res-operator').value
+        };
+
+        try { 
+            await setDoc(doc(db, "ristoranti", currentRestaurantId, "prenotazioni", id), newRes);
+            window.closeModals(); 
+            selectedDayForNewRes = null; 
+        } 
+        catch (error) { 
+            alert("Errore durante il salvataggio. Verifica le regole Firebase."); 
+            console.error(error);
+        } 
+        finally { 
+            btnSalva.disabled = false; 
+            btnSalva.innerText = "💾 Salva Prenotazione"; 
+        }
     };
 
-    try { 
-        await setDoc(doc(db, "prenotazioni", id), newRes);
-        window.closeModals(); 
-        selectedDayForNewRes = null; 
-    } 
-    catch (error) { 
-        alert("Errore! La password salvata non è valida o non hai i permessi."); 
-        console.error(error);
-    } 
-    finally { 
-        btnSalva.disabled = false; 
-        btnSalva.innerText = "💾 Salva Prenotazione"; 
-    }
-};
+    window.deleteReservation = async function() {
+        const id = document.getElementById('res-id').value;
+        if (!id || !currentRestaurantId) return;
+        
+        if (confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
+            const btnDelete = document.getElementById('btn-delete');
+            btnDelete.disabled = true;
+            btnDelete.innerText = "⏳ Eliminazione...";
 
-window.deleteReservation = async function() {
-    const id = document.getElementById('res-id').value;
-    if (!id) return;
-
-    if (confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
-        const savedSecret = localStorage.getItem('risto_secret_key');
-
-        const btnDelete = document.getElementById('btn-delete');
-        btnDelete.disabled = true;
-        btnDelete.innerText = "⏳ Eliminazione...";
-
-        try {
-            await deleteDoc(doc(db, "prenotazioni", id));
-            window.closeModals();
-            alert("Prenotazione eliminata correttamente.");
-        } catch (error) {
-            console.error("Errore durante l'eliminazione:", error);
-            alert("Errore! Non hai i permessi per eliminare o la password è errata.");
-        } finally {
-            btnDelete.disabled = false;
-            btnDelete.innerText = "🗑 Elimina";
+            try {
+                await deleteDoc(doc(db, "ristoranti", currentRestaurantId, "prenotazioni", id));
+                window.closeModals();
+                alert("Prenotazione eliminata.");
+            } catch (error) {
+                console.error(error);
+                alert("Errore! Impossibile eliminare. Verifica le regole Firebase.");
+            } finally {
+                btnDelete.disabled = false;
+                btnDelete.innerText = "🗑 Elimina";
+            }
         }
-    }
-};
+    };
 </script>
 
 </body>
