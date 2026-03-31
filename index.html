@@ -479,15 +479,16 @@
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
     // LE TUE CHIAVI FIREBASE
-    const firebaseConfig = {
-        apiKey: "AIzaSyD_JLRWYDGbod9sAtotDLzBYAvg1js40_I",
-        authDomain: "ristorante-italo.firebaseapp.com",
-        projectId: "ristorante-italo",
-        storageBucket: "ristorante-italo.firebasestorage.app",
-        messagingSenderId: "311449776759",
-        appId: "1:311449776759:web:7623cb79093c576b9d0c72",
-        measurementId: "G-SRTCFX9GPY"
-    };
+   const firebaseConfig = {
+  apiKey: "AIzaSyBidWhuv1uWHKQ7Rib6BxcvK9sbG4QjA_4",
+  authDomain: "risto-gest-pro-2026.firebaseapp.com",
+  databaseURL: "https://risto-gest-pro-2026-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "risto-gest-pro-2026",
+  storageBucket: "risto-gest-pro-2026.firebasestorage.app",
+  messagingSenderId: "135116387205",
+  appId: "1:135116387205:web:729c51f3ff2c1dcd874aec",
+  measurementId: "G-SP10P2SRRF"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
