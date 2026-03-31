@@ -124,21 +124,21 @@
         .intol-badge { background: #fef2f2; color: #b91c1c; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #fecaca; }
         .seggiolone-badge { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 800; padding: 4px 8px; border-radius: 8px; border: 1px solid #bae6fd; }
 
-        /* MODALI FLUTTUANTI (Staccate dal fondo) */
+        /* MODALI FLUTTUANTI */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); z-index: 1000; backdrop-filter: blur(5px); }
         
         .modal-content { 
             background-color: #fff; 
             position: absolute; 
-            bottom: 15px; /* Distanza dal bordo inferiore */
-            left: 15px;   /* Distanza dal bordo sinistro */
-            right: 15px;  /* Distanza dal bordo destro */
+            bottom: 15px; 
+            left: 15px;   
+            right: 15px;  
             width: auto;
             max-width: 600px;
             margin: 0 auto;
-            border-radius: var(--radius-lg); /* Arrotondato su tutti i lati */
+            border-radius: var(--radius-lg); 
             padding: 25px 20px; 
-            max-height: calc(100vh - 80px); /* Evita che sbatta in alto */
+            max-height: calc(100vh - 80px); 
             overflow-y: auto; 
             padding-bottom: calc(20px + env(safe-area-inset-bottom)); 
             box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
@@ -248,7 +248,13 @@
 
             <div class="row">
                 <div class="form-group col"><label>Persone Totali</label><input type="number" id="res-pax" min="1" required inputmode="numeric"></div>
-                <div class="form-group col"><label>Telefono</label><input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel"></div>
+                <div class="form-group col">
+                    <label>Telefono</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel" style="flex: 1;">
+                        <a id="btn-call-phone" href="#" style="display: none; background: var(--accent); color: white; padding: 0 16px; border-radius: var(--radius-sm); text-decoration: none; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">📞</a>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group"><label>Nome Prenotazione</label><input type="text" id="res-name" required placeholder="Es. Rossi"></div>
@@ -327,23 +333,23 @@
 </div>
 
 <script type="module">
-    // Funzione per controllare la password al primo avvio
-window.checkAppPassword = function() {
-    const input = document.getElementById('app-pwd-input').value;
-    if(input === '0000') { // Deve essere identica a quella su Firebase
-        localStorage.setItem('risto_secret_key', input);
-        document.getElementById('login-overlay').style.display = 'none';
-    } else {
-        alert("Password errata!");
-    }
-};
+    // Gestione password all'avvio
+    window.checkAppPassword = function() {
+        const input = document.getElementById('app-pwd-input').value;
+        if(input === '123') { // Aggiornata in base all'ultima richiesta
+            localStorage.setItem('risto_secret_key', input);
+            document.getElementById('login-overlay').style.display = 'none';
+        } else {
+            alert("Password errata!");
+        }
+    };
 
-// Controllo automatico: se la password è già salvata, entra subito
-window.addEventListener('load', () => {
-    if(localStorage.getItem('risto_secret_key') === '0000') {
-        document.getElementById('login-overlay').style.display = 'none';
-    }
-});
+    window.addEventListener('load', () => {
+        if(localStorage.getItem('risto_secret_key') === '123') {
+            document.getElementById('login-overlay').style.display = 'none';
+        }
+    });
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
@@ -368,6 +374,34 @@ window.addEventListener('load', () => {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(()=>{}); });
     }
+
+    // --- NUOVO: Funzione per controllare la chiusura del Martedì Sera ---
+    window.checkClosedTuesday = function() {
+        const dateVal = document.getElementById('res-date').value;
+        const timeVal = document.getElementById('res-time').value;
+        
+        if (dateVal && timeVal) {
+            const dayOfWeek = new Date(dateVal).getDay(); // 0: Dom, 1: Lun, 2: Mar...
+            const hour = parseInt(timeVal.split(':')[0]);
+            
+            // Se è martedì (2) e l'orario è da cena (es. dalle 18:00 in poi)
+            if (dayOfWeek === 2 && hour >= 18) {
+                alert("⚠️ ATTENZIONE: Il locale è normalmente chiuso il Martedì sera!");
+            }
+        }
+    };
+    
+    // Assegno i listener ai campi Data e Orario
+    document.getElementById('res-date').addEventListener('change', checkClosedTuesday);
+    document.getElementById('res-time').addEventListener('change', checkClosedTuesday);
+
+    // --- NUOVO: Aggiorna dinamicamente il link chiamata in base al telefono inserito ---
+    document.getElementById('res-phone').addEventListener('input', (e) => {
+        const callBtn = document.getElementById('btn-call-phone');
+        if (e.target.value) {
+            callBtn.href = `tel:${e.target.value}`;
+        }
+    });
 
     window.updateStepper = function(inputId, delta) {
         const inputEl = document.getElementById(inputId);
@@ -548,12 +582,14 @@ window.addEventListener('load', () => {
         }
     }
 
-    window.openFormModalForDay = function() { window.closeModals(); window.openFormModal(); if(selectedDayForNewRes) document.getElementById('res-date').value = selectedDayForNewRes; };
+    window.openFormModalForDay = function() { window.closeModals(); window.openFormModal(); if(selectedDayForNewRes) { document.getElementById('res-date').value = selectedDayForNewRes; window.checkClosedTuesday(); } };
 
     window.openFormModal = function(id = null) {
         document.getElementById('reservationForm').reset();
         document.getElementById('res-id').value = '';
         document.getElementById('btn-delete').style.display = 'none';
+        
+        const callBtn = document.getElementById('btn-call-phone');
         
         if (id) {
             document.getElementById('form-title').innerText = "Modifica Prenotazione";
@@ -569,11 +605,16 @@ window.addEventListener('load', () => {
                 document.getElementById('int-vegano').value = r.intolerances.vegano || 0;
                 document.getElementById('btn-delete').style.display = 'block';
                 
+                // Attiva e imposta il tasto chiama
+                callBtn.href = `tel:${r.phone}`;
+                callBtn.style.display = 'flex';
+                
                 if(r.children > 0 || r.highchairs > 0) window.toggleSection('children-section', document.getElementById('btn-toggle-bimbi'));
                 if(r.intolerances.celiaco > 0 || r.intolerances.vegetariano > 0 || r.intolerances.vegano > 0) window.toggleSection('menu-section', document.getElementById('btn-toggle-menu'));
             }
         } else {
             document.getElementById('form-title').innerText = "Nuova Prenotazione";
+            callBtn.style.display = 'none';
             if(!selectedDayForNewRes) document.getElementById('res-date').value = getTodayString();
         }
         document.getElementById('formModal').style.display = 'block';
@@ -582,7 +623,6 @@ window.addEventListener('load', () => {
    window.saveReservation = async function(e) {
     e.preventDefault();
     
-    // RECUPERIAMO LA CHIAVE SEGRETA SALVATA NEL TABLET
     const savedSecret = localStorage.getItem('risto_secret_key');
     
     const btnSalva = document.getElementById('btn-submit-save'); 
@@ -609,8 +649,6 @@ window.addEventListener('load', () => {
         },
         notes: document.getElementById('res-notes').value, 
         operator: document.getElementById('res-operator').value,
-        
-        // AGGIUNGIAMO LA CHIAVE SEGRETA (IL "PUNTO B")
         secret: savedSecret 
     };
 
@@ -628,13 +666,12 @@ window.addEventListener('load', () => {
         btnSalva.innerText = "💾 Salva Prenotazione"; 
     }
 };
-// --- AGGIUNGI DA QUI ---
+
 window.deleteReservation = async function() {
     const id = document.getElementById('res-id').value;
     if (!id) return;
 
     if (confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
-        // Recuperiamo la chiave segreta salvata
         const savedSecret = localStorage.getItem('risto_secret_key');
 
         const btnDelete = document.getElementById('btn-delete');
@@ -642,10 +679,7 @@ window.deleteReservation = async function() {
         btnDelete.innerText = "⏳ Eliminazione...";
 
         try {
-            // Eliminiamo il documento usando la chiave per le regole di sicurezza
-            // Nota: Se hai configurato le regole come abbiamo detto, Firebase verificherà il permesso
             await deleteDoc(doc(db, "prenotazioni", id));
-            
             window.closeModals();
             alert("Prenotazione eliminata correttamente.");
         } catch (error) {
@@ -657,7 +691,6 @@ window.deleteReservation = async function() {
         }
     }
 };
-// --- FINO A QUI ---
 </script>
 
 </body>
