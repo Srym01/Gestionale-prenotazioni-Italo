@@ -4,1125 +4,543 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#ffffff">
-    
     <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     <title>RistoGest Pro</title>
     <style>
-        :root {
-            --primary: #0f172a;       
-            --secondary: #64748b;     
-            --accent: #4f46e5;        
-            --accent-hover: #4338ca;  
-            --accent-light: #e0e7ff;
-            --danger: #ef4444;
-            --danger-light: #fef2f2;
-            --light: #f8fafc;         
-            --white: #ffffff;
-            --border: #e2e8f0;
-            
-            --pranzo-bg: #fffbeb;     
-            --pranzo-text: #b45309;
-            --pranzo-border: #fcd34d;
-            
-            --cena-bg: #eff6ff;       
-            --cena-text: #1d4ed8;
-            --cena-border: #93c5fd;
+        :root{--bg:#f2f3f5;--bg-card:#fff;--bg-el:#f8f9fa;--bg-in:#f1f3f5;--bg-hv:#eceef1;--tx:#1a1d23;--tx2:#6b7280;--tx3:#9ca3af;--ac:#6c5ce7;--ac-g:rgba(108,92,231,.16);--ac-h:#5a4bd6;--ac-s:rgba(108,92,231,.07);--ok:#10b981;--ok-s:rgba(16,185,129,.08);--ok-b:rgba(16,185,129,.22);--wa:#f59e0b;--wa-s:rgba(245,158,11,.08);--wa-b:rgba(245,158,11,.22);--wa-t:#b45309;--in:#3b82f6;--in-s:rgba(59,130,246,.08);--in-b:rgba(59,130,246,.22);--in-t:#1d4ed8;--er:#ef4444;--er-s:rgba(239,68,68,.06);--er-b:rgba(239,68,68,.18);--bd:#e5e7eb;--r:10px;--rm:14px;--rl:22px;--rx:28px;--ss:0 1px 3px rgba(0,0,0,.05);--sg:0 4px 18px var(--ac-g)}
+        *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+        body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--tx);overscroll-behavior-y:none;min-height:100vh;min-height:100dvh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 32px;        
-            --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-            --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.08);
-            --shadow-float: 0 20px 40px rgba(79, 70, 229, 0.15);
-        }
-        
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        body { 
-            margin: 0; 
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); 
-            color: var(--primary); 
-            overscroll-behavior-y: none; 
-            background-color: var(--light);
-            background-attachment: fixed; 
-            transition: background 0.5s ease;
-            min-height: 100vh;
-        }
-        
-        header { 
-            background-color: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            color: var(--primary); 
-            padding: 20px 20px 16px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 16px; 
-            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        }
-        .header-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        header h2 { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
-        header h2 span { background: var(--accent); color: white; padding: 4px 10px; border-radius: 8px; font-size: 1rem; }
+        /* TRIAL BANNER */
+        #trial-bar{display:none;background:linear-gradient(135deg,var(--ac),#a78bfa);color:#fff;padding:10px 16px;font-weight:700;text-align:center;position:sticky;top:0;z-index:102;box-shadow:0 2px 12px var(--ac-g)}
+        #trial-bar .tb-d{font-size:.92rem;font-weight:800}
+        #trial-bar .tb-s{font-size:.68rem;font-weight:500;opacity:.85;margin-top:1px}
 
-        .live-clock { text-align: right; font-variant-numeric: tabular-nums; }
-        .live-clock .date { font-size: 0.75rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .live-clock .time { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
-        
-        .header-actions { display: flex; gap: 10px; width: 100%; }
-        button { cursor: pointer; padding: 14px; border: none; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.95rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 6px; }
-        
-        .btn-accent { background-color: var(--accent); color: white; flex: 1; box-shadow: var(--shadow-float); }
-        .btn-accent:active { transform: scale(0.97); background-color: var(--accent-hover); box-shadow: none; }
-        .btn-accent:disabled { background-color: #94a3b8; box-shadow: none; cursor: not-allowed; opacity: 0.7; }
-        
-        .btn-outline { background-color: var(--white); border: 1px solid var(--border); color: var(--secondary); flex: 1; box-shadow: var(--shadow-sm); }
-        .btn-outline:active { background-color: #f1f5f9; transform: scale(0.97); }
-        .btn-outline.active-tab { background-color: var(--primary); color: white; border-color: var(--primary); }
-        
-        .btn-danger { background-color: var(--danger); color: white; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2); }
-        .btn-danger:active { transform: scale(0.97); }
+        /* TRIAL EXPIRED */
+        #trial-exp{display:none;position:fixed;inset:0;background:linear-gradient(145deg,#f0eef8,#e8edf5,var(--bg));z-index:10001;align-items:center;justify-content:center;flex-direction:column;padding:28px}
+        .te-c{background:#fff;border:1px solid var(--bd);padding:34px 26px;border-radius:var(--rx);width:90%;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(108,92,231,.1)}
+        .te-ic{width:60px;height:60px;background:var(--er-s);border:2px solid var(--er-b);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem}
+        .te-c h2{font-size:1.25rem;font-weight:800;margin-bottom:5px}
+        .te-c p{color:var(--tx2);font-size:.86rem;line-height:1.5;margin-bottom:18px}
 
-        main { padding: 20px 15px; max-width: 800px; margin: auto; padding-bottom: 90px; }
-        
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; color: white; padding: 16px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); position: sticky; z-index: 90; transition: background-color 0.5s ease; border: 1px solid rgba(255,255,255,0.1); }
-        .calendar-header button { background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 12px; backdrop-filter: blur(5px); }
-        .calendar-header button:active { background: rgba(255,255,255,0.3); }
-        .calendar-header h2 { margin: 0; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* HEADER */
+        header{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 16px 12px;display:flex;flex-direction:column;gap:10px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--bd)}
+        .ht{display:flex;justify-content:space-between;align-items:center}
+        .brand{display:flex;align-items:center;gap:9px}
+        .bi{width:33px;height:33px;background:var(--ac);border-radius:9px;display:flex;align-items:center;justify-content:center;box-shadow:var(--sg)}.bi svg{width:17px;height:17px}
+        .brand h1{font-size:1.12rem;font-weight:800;letter-spacing:-.3px}.brand h1 span{font-weight:500;color:var(--tx3);font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-top:-1px}
+        .clk{text-align:right;font-variant-numeric:tabular-nums}.clk .cd{font-size:.66rem;color:var(--tx3);text-transform:uppercase;font-weight:700;letter-spacing:.5px}.clk .ct{font-family:'Space Mono',monospace;font-size:.92rem;font-weight:700;color:var(--ac)}
+        .ha{display:flex;gap:6px}
+        button{cursor:pointer;border:none;font-family:inherit;font-weight:700;font-size:.86rem;transition:all .2s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center;gap:5px}
+        .bt{flex:1;padding:10px;background:var(--bg-el);color:var(--tx2);border-radius:var(--r);border:1px solid var(--bd);font-size:.8rem}.bt:active{transform:scale(.97)}.bt.active{background:var(--ac);color:#fff;border-color:var(--ac);box-shadow:var(--sg)}.bt svg{width:15px;height:15px}
+        .bic{width:42px;height:42px;background:var(--bg-el);color:var(--tx2);border-radius:var(--r);border:1px solid var(--bd);flex-shrink:0;padding:0}.bic:active{transform:scale(.95);background:var(--bg-hv)}.bic svg{width:19px;height:19px}
+        .bp{width:100%;padding:13px;background:var(--ac);color:#fff;border-radius:var(--rm);font-size:.9rem;box-shadow:var(--sg)}.bp:active{transform:scale(.98);background:var(--ac-h)}.bp:disabled{background:var(--bg-hv);color:var(--tx3);box-shadow:none;cursor:not-allowed;opacity:.6}.bp svg{width:17px;height:17px}
+        .bd2{padding:13px;background:var(--er-s);color:var(--er);border-radius:var(--rm);border:1px solid var(--er-b);font-size:.9rem}.bd2:active{transform:scale(.97)}
+        main{padding:14px 14px 100px;max-width:800px;margin:auto}
 
-        .agenda-view { display: flex; flex-direction: column; gap: 14px; }
-        .agenda-row { display: flex; background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border); min-height: 85px; }
-        .agenda-row:active { transform: scale(0.98); background-color: #f8fafc; }
-        .agenda-row.today { border: 2px solid var(--accent); box-shadow: var(--shadow-float); }
-        .agenda-row.today .agenda-date { background: var(--accent); color: white; border-right: none; }
-        .agenda-row.today .agenda-date .day, .agenda-row.today .agenda-date .num { color: white; }
-        
-        .agenda-date { width: 80px; min-width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 5px; border-right: 1px solid var(--border); background: #f8fafc; }
-        .agenda-date .num { font-size: 1.8rem; font-weight: 800; margin-bottom: 2px; }
-        .agenda-date .day { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--secondary); letter-spacing: 0.5px; }
-        .festivo .num, .festivo .day { color: var(--danger); }
-        .agenda-row.today.festivo .agenda-date .num, .agenda-row.today.festivo .agenda-date .day { color: white; } 
-        
-        .agenda-content { flex: 1; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .shift-pill { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 10px 6px; border-radius: 12px; font-weight: 800; }
-        .shift-pill .title { font-size: 0.7rem; text-transform: uppercase; margin-bottom: 4px; opacity: 0.8; letter-spacing: 0.5px; }
-        .shift-pill .val { font-size: 1.1rem; }
-        
-        .pill-pranzo { background-color: var(--pranzo-bg); color: var(--pranzo-text); border: 1px solid var(--pranzo-border); }
-        .pill-cena { background-color: var(--cena-bg); color: var(--cena-text); border: 1px solid var(--cena-border); }
-        .pill-chiuso { background-color: #f1f5f9; color: var(--secondary); border: 1px solid var(--border); }
-        .pill-empty { background-color: transparent; border: 1px dashed #cbd5e1; color: #94a3b8; }
+        /* CALENDAR */
+        .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:12px 14px;border-radius:var(--rm);transition:background .4s}.mh h2{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#fff}.mh button{width:35px;height:35px;background:rgba(255,255,255,.22);color:#fff;border-radius:9px;padding:0}.mh button:active{background:rgba(255,255,255,.35)}.mh button svg{width:17px;height:17px}
+        .av{display:flex;flex-direction:column;gap:7px}
+        .ar{display:flex;background:var(--bg-card);border-radius:var(--rm);overflow:hidden;cursor:pointer;transition:transform .15s;border:1px solid var(--bd);min-height:74px;box-shadow:var(--ss)}.ar:active{transform:scale(.985)}.ar.today{border:2px solid var(--ac);box-shadow:0 0 0 3px var(--ac-g)}.ar.today .ad2{background:var(--ac);border-right:none}.ar.today .ad2 .dn,.ar.today .ad2 .dd{color:#fff}
+        .ad2{width:66px;min-width:66px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;border-right:1px solid var(--bd);background:var(--bg-el)}.dn{font-size:1.45rem;font-weight:800;line-height:1}.dd{font-size:.58rem;text-transform:uppercase;font-weight:800;color:var(--tx3);letter-spacing:1px;margin-top:2px}
+        .fest .dn,.fest .dd{color:var(--er)!important}.ar.today.fest .ad2 .dn,.ar.today.fest .ad2 .dd{color:#fff!important}
+        .ac2{flex:1;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .sp{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:7px 5px;border-radius:8px;font-weight:800}.sp .st{font-size:.56rem;text-transform:uppercase;margin-bottom:2px;opacity:.8;letter-spacing:.8px}.sp .sv{font-size:.95rem}
+        .pp{background:var(--wa-s);color:var(--wa-t);border:1px solid var(--wa-b)}.pc{background:var(--in-s);color:var(--in-t);border:1px solid var(--in-b)}.px{background:var(--bg-el);color:var(--tx3);border:1px solid var(--bd)}.pe{background:transparent;border:1px dashed #ddd;color:var(--tx3)}
 
-        .list-view { display: none; }
-        .list-group { margin-bottom: 20px; background: white; border-radius: var(--radius-md); box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid var(--border); }
-        .list-group-header { color: white; padding: 16px 20px; font-size: 1.1rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; cursor: pointer; letter-spacing: 0.5px; transition: opacity 0.2s;}
-        .list-group-header:active { opacity: 0.9; }
-        
-        .service-section { padding: 0; background: var(--white); }
-        .service-title { margin: 0; padding: 14px 20px; font-size: 0.95rem; font-weight: 800; display: flex; justify-content: space-between; background: #f8fafc; border-bottom: 1px solid var(--border); }
-        .title-pranzo { color: var(--pranzo-text); border-left: 6px solid var(--pranzo-border); }
-        .title-cena { color: var(--cena-text); border-left: 6px solid var(--cena-border); }
-        .service-divider { height: 6px; background-color: #f1f5f9; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        /* LIST */
+        .lv{display:none}
+        .lg{margin-bottom:16px;background:var(--bg-card);border-radius:var(--rm);overflow:hidden;border:1px solid var(--bd);box-shadow:var(--ss)}
+        .lgh{color:#fff;padding:14px 16px;font-size:.82rem;font-weight:800;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:8px}.lgh:active{opacity:.85}
+        .lgh-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+        .lgh-date-box{width:40px;height:40px;background:rgba(255,255,255,.22);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+        .lgh-date-box .lgh-num{font-size:1.1rem;font-weight:800;line-height:1}
+        .lgh-date-box .lgh-dow{font-size:.52rem;text-transform:uppercase;letter-spacing:.5px;opacity:.85;font-weight:700}
+        .lgh-info{display:flex;flex-direction:column;min-width:0}
+        .lgh-info .lgh-title{font-size:.82rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .lgh-stats{display:flex;gap:6px;margin-top:3px}
+        .lgh-stat{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(255,255,255,.2);display:flex;align-items:center;gap:3px;white-space:nowrap}
+        .lgh-stat svg{width:10px;height:10px}
 
-        .list-item { padding: 16px 20px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column; gap: 10px; transition: background 0.2s; }
-        .list-item:active { background-color: #f8fafc; }
-        .list-item:last-child { border-bottom: none; }
-        .item-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1.1rem; color: var(--primary); }
-        .item-details { color: var(--secondary); font-size: 0.9rem; display: flex; justify-content: space-between; font-weight: 600; align-items: center;}
-        
-        .badges-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-        .intol-badge { background: var(--danger-light); color: var(--danger); font-size: 0.75rem; font-weight: 800; padding: 6px 10px; border-radius: 8px; border: 1px solid #fecaca; }
-        .seggiolone-badge { background: var(--accent-light); color: var(--accent); font-size: 0.75rem; font-weight: 800; padding: 6px 10px; border-radius: 8px; border: 1px solid #c7d2fe; }
+        /* Service section headers */
+        .sst{margin:0;padding:10px 16px;font-size:.76rem;font-weight:800;display:flex;justify-content:space-between;align-items:center;background:var(--bg-el);border-bottom:1px solid var(--bd);text-transform:uppercase;letter-spacing:.8px}
+        .stp{color:var(--wa-t);border-left:4px solid var(--wa);background:var(--wa-s)!important}.stc{color:var(--in-t);border-left:4px solid var(--in);background:var(--in-s)!important}
+        .sdv{height:2px;background:var(--bg)}
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); z-index: 1000; backdrop-filter: blur(4px); }
-        
-        .modal-content { 
-            background-color: #fff; 
-            position: absolute; 
-            bottom: 0; 
-            left: 0;   
-            right: 0;  
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0; 
-            padding: 30px 24px; 
-            max-height: 90vh; 
-            overflow-y: auto; 
-            padding-bottom: calc(30px + env(safe-area-inset-bottom)); 
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.2); 
-            animation: slideUp 0.35s cubic-bezier(0.3, 1, 0.3, 1); 
-        }
-        
-        .modal-drag-handle { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: -15px auto 20px auto; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--secondary); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 50%; font-weight: bold; transition: all 0.2s;}
-        .close-modal:active { background: #e2e8f0; transform: scale(0.9); }
-        
-        /* STILI IMPOSTAZIONI A RIGHE E TOGGLES */
-        .settings-list { background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
-        .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
-        .settings-row.no-hover { cursor: default; }
-        .settings-row.no-hover:active { background: var(--white); }
-        .settings-row:active:not(.no-hover) { background: #f8fafc; }
-        .settings-row:last-child { border-bottom: none; }
-        .settings-row .icon { font-size: 1.3rem; margin-right: 14px; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #f1f5f9; border-radius: 8px; }
-        .settings-row .text { flex: 1; font-weight: 700; color: var(--primary); font-size: 1rem; }
-        .settings-row .chevron { color: var(--secondary); font-size: 1.4rem; font-weight: 400; }
-        .settings-row.danger .text { color: var(--danger); }
-        .settings-row.danger .icon { background: var(--danger-light); color: var(--danger); }
-        
-        /* SWITCH (Interruttori stile iOS) */
-        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 26px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
-        input:checked + .slider { background-color: #10b981; }
-        input:checked + .slider:before { transform: translateX(22px); }
+        /* Timeline grid */
+        .tl-grid{display:flex;flex-direction:column}
+        .tl-slot{display:flex;border-bottom:1px solid var(--bd);min-height:56px;transition:background .15s}
+        .tl-slot:last-child{border-bottom:none}
+        .tl-slot:hover{background:rgba(108,92,231,.02)}
+        .tl-time{width:58px;min-width:58px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid var(--bd);background:var(--bg-el);font-size:.72rem;font-weight:800;color:var(--tx2);gap:1px;position:relative}
+        .tl-time::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--bd);border:2px solid var(--bg-el);z-index:1}
+        .tl-time.has-res::after{background:var(--ac);border-color:var(--ac-s);box-shadow:0 0 0 2px var(--ac-g)}
+        .tl-cards{flex:1;padding:6px 8px;display:flex;flex-direction:column;gap:5px;position:relative}
 
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-weight: 800; margin-bottom: 8px; font-size: 0.85rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; border: 2px solid transparent; border-radius: var(--radius-sm); font-size: 16px; background-color: #f1f5f9; color: var(--primary); font-weight: 600; transition: all 0.2s; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background-color: #fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
-        .row { display: flex; gap: 14px; flex-wrap: wrap; }
-        .col { flex: 1; min-width: 120px; }
+        /* Reservation cards in timeline */
+        .rc{display:flex;align-items:stretch;border-radius:9px;overflow:hidden;cursor:pointer;transition:all .15s;border:1px solid var(--bd);background:var(--bg-card);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+        .rc:active{transform:scale(.985);box-shadow:0 1px 6px rgba(0,0,0,.1)}
+        .rc-bar{width:4px;flex-shrink:0}
+        .rc-bar.pax-sm{background:#10b981}.rc-bar.pax-md{background:#3b82f6}.rc-bar.pax-lg{background:#f59e0b}.rc-bar.pax-xl{background:#ef4444}
+        .rc-body{flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:3px;min-width:0}
+        .rc-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+        .rc-name{font-weight:700;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+        .rc-pax{display:flex;align-items:center;gap:3px;font-weight:800;font-size:.78rem;padding:3px 8px;border-radius:6px;flex-shrink:0}
+        .rc-pax.pax-sm{background:rgba(16,185,129,.1);color:#059669}.rc-pax.pax-md{background:rgba(59,130,246,.1);color:#1d4ed8}.rc-pax.pax-lg{background:rgba(245,158,11,.1);color:#b45309}.rc-pax.pax-xl{background:rgba(239,68,68,.1);color:#dc2626}
+        .rc-pax svg{width:13px;height:13px}
+        .rc-bottom{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .rc-phone{font-size:.72rem;font-weight:600;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:3px}
+        .rc-phone:active{background:var(--ac-g)}
+        .rc-phone svg{width:10px;height:10px}
+        .rc-op{font-size:.68rem;font-weight:600;color:var(--tx3);display:flex;align-items:center;gap:3px}
+        .rc-op svg{width:10px;height:10px}
+        .rc-tags{display:flex;gap:3px;flex-wrap:wrap}
+        .rc-tag{font-size:.58rem;font-weight:800;padding:2px 6px;border-radius:4px;display:flex;align-items:center;gap:2px;white-space:nowrap}
+        .rc-tag.cel{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+        .rc-tag.veg{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+        .rc-tag.vgn{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+        .rc-tag.hc{background:var(--ac-s);color:var(--ac);border:1px solid rgba(108,92,231,.18)}
+        .rc-tag.kids{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+        .rc-tag.notes{background:var(--bg-el);color:var(--tx2);border:1px solid var(--bd)}
 
-        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type="number"] { -moz-appearance: textfield; }
+        /* Empty slot */
+        .tl-empty{color:var(--tx3);font-size:.74rem;font-weight:500;padding:6px 0;opacity:.5;font-style:italic}
 
-        .stepper-control { display: flex; align-items: center; background: #f1f5f9; border-radius: var(--radius-sm); overflow: hidden; height: 50px; width: 100%; max-width: 160px; border: 2px solid transparent; transition: border 0.2s;}
-        .stepper-control:focus-within { border-color: var(--accent); background: white;}
-        .stepper-btn { flex: 0 0 48px; height: 100%; background: transparent; border: none; font-size: 1.6rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; border-radius: 0; transition: background 0.1s; }
-        .stepper-btn:active { background: #e2e8f0; }
-        .stepper-btn.minus { color: var(--danger); }
-        .stepper-input { flex: 1; min-width: 0; text-align: center; border: none !important; background: transparent !important; padding: 0 !important; font-size: 1.15rem !important; font-weight: 800 !important; color: var(--primary) !important; pointer-events: none; }
+        /* Past day styling */
+        .lg.past-day{opacity:.65}.lg.past-day:hover{opacity:.85}
+        .lg.past-day .lgh{filter:saturate(.5)}
+        .lg.today-card{border:2px solid var(--ac);box-shadow:0 0 0 3px var(--ac-g),var(--ss)}
 
-        .smart-toggles { display: flex; gap: 10px; margin-bottom: 16px; margin-top: 10px; }
-        .toggle-btn { flex: 1; padding: 14px; background: #ffffff; border: 2px solid var(--border); border-radius: var(--radius-sm); font-weight: 800; font-size: 0.85rem; color: var(--secondary); box-shadow: var(--shadow-sm); }
-        .toggle-btn.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); box-shadow: none;}
-        
-        .hidden-section { display: none; margin-bottom: 20px; padding: 20px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid var(--border); }
-        .hidden-section.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .intol-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .intol-row:last-child { margin-bottom: 0; }
-        .intol-row label { margin: 0; font-weight: 800; color: var(--primary); font-size: 1rem; text-transform: none; flex: 1; }
+        /* Old list item compat */
+        .li{padding:12px 16px;border-bottom:1px solid var(--bd);cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:background .15s}.li:active{background:var(--bg-hv)}.li:last-child{border-bottom:none}
+        .lit{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.92rem}
+        .lid{color:var(--tx2);font-size:.8rem;display:flex;justify-content:space-between;font-weight:600;align-items:center}
+        .bc{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+        .ib{background:var(--er-s);color:var(--er);font-size:.66rem;font-weight:800;padding:3px 7px;border-radius:5px;border:1px solid var(--er-b)}
+        .sb2{background:var(--ac-s);color:var(--ac);font-size:.66rem;font-weight:800;padding:3px 7px;border-radius:5px;border:1px solid rgba(108,92,231,.18)}
 
-        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--accent); font-weight: 800; font-size: 1.2rem; letter-spacing: 0.5px; }
-        
-        .search-container { margin-bottom: 20px; background: white; padding: 16px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
-        .search-container input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; color: var(--primary); background: #f8fafc; outline: none; font-size: 16px; transition: all 0.2s;}
-        .search-container input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        /* MODAL */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.3);z-index:1000;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+        .mc{background:var(--bg-card);position:absolute;bottom:0;left:0;right:0;width:100%;max-width:600px;margin:0 auto;border-radius:var(--rx) var(--rx) 0 0;padding:24px 20px;max-height:92vh;overflow-y:auto;padding-bottom:calc(24px + env(safe-area-inset-bottom));box-shadow:0 -4px 24px rgba(0,0,0,.12);animation:slu .3s cubic-bezier(.3,1,.3,1)}.mc::-webkit-scrollbar{display:none}
+        .mdg{width:32px;height:4px;background:#d1d5db;border-radius:10px;margin:-8px auto 16px auto}
+        @keyframes slu{from{transform:translateY(100%)}to{transform:translateY(0)}}
+        .cb{position:absolute;top:16px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--bg-el);border:1px solid var(--bd);border-radius:50%;color:var(--tx2);cursor:pointer;padding:0;z-index:10}.cb:active{transform:scale(.9)}.cb svg{width:15px;height:15px}
+        .mt2{font-size:1.15rem;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:9px}.mt2 svg{width:20px;height:20px;color:var(--ac);flex-shrink:0}
+
+        /* SETTINGS */
+        .sl{font-size:.68rem;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin:18px 0 7px 4px}
+        .sc{background:var(--bg-card);border-radius:var(--rm);border:1px solid var(--bd);overflow:hidden;margin-bottom:10px;box-shadow:var(--ss)}
+        .sr{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .15s;gap:11px}.sr:active{background:var(--bg-hv)}.sr:last-child{border-bottom:none}.sr.ni{cursor:default}.sr.ni:active{background:transparent}
+        .si{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.si svg{width:16px;height:16px}
+        .si.pu{background:var(--ac-s)}.si.pu svg{color:var(--ac)}.si.gr{background:var(--ok-s)}.si.gr svg{color:var(--ok)}.si.re{background:var(--er-s)}.si.re svg{color:var(--er)}.si.bl{background:var(--in-s)}.si.bl svg{color:var(--in)}.si.ye{background:var(--wa-s)}.si.ye svg{color:var(--wa)}.si.gy{background:var(--bg-in)}.si.gy svg{color:var(--tx2)}
+        .sla{flex:1;font-weight:600;font-size:.9rem}.ssb{font-size:.74rem;color:var(--tx3);font-weight:500;margin-top:1px}
+        .sch svg{width:15px;height:15px;color:var(--tx3)}
+        .switch{position:relative;display:inline-block;width:44px;height:25px;flex-shrink:0}.switch input{opacity:0;width:0;height:0}
+        .sws{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#d1d5db;transition:.3s;border-radius:25px}.sws:before{position:absolute;content:"";height:19px;width:19px;left:3px;bottom:3px;background:#fff;transition:.3s;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2)}input:checked+.sws{background:var(--ok)}input:checked+.sws:before{transform:translateX(19px)}
+
+        /* PROFILE / OPERATOR */
+        .pcard{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg-card);border-radius:var(--rm);border:1px solid var(--bd);margin-bottom:10px;box-shadow:var(--ss)}
+        .pav2{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;flex-shrink:0;background:var(--ac)}
+        .pinfo{flex:1;min-width:0}.pinfo .pn{font-weight:700;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pinfo .pe3{font-size:.74rem;color:var(--tx3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .opl{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+        .opo{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg-el);border:2px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .2s}.opo:active{transform:scale(.98)}.opo.sel{border-color:var(--ac);background:var(--ac-s)}
+        .opav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0}.opn{flex:1;font-weight:600;font-size:.88rem}
+        .opck{width:20px;height:20px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0}.opo.sel .opck{border-color:var(--ac);background:var(--ac)}.opo.sel .opck svg{display:block}.opck svg{display:none;width:12px;height:12px;color:#fff}
+
+        /* FORMS */
+        .fg{margin-bottom:12px}.fg label{display:block;font-weight:700;margin-bottom:6px;font-size:.74rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
+        .fg input,.fg select,.fg textarea{width:100%;padding:12px 13px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:16px;background:var(--bg-in);color:var(--tx);font-weight:600;font-family:inherit;transition:all .2s;-webkit-appearance:none}
+        .fg input:focus,.fg select:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-g);background:#fff}.fg input::placeholder{color:var(--tx3)}.fg select option{background:var(--bg-card)}
+        .row{display:flex;gap:10px;flex-wrap:wrap}.col{flex:1;min-width:120px}
+        input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}input[type="number"]{-moz-appearance:textfield}
+        .stpc{display:flex;align-items:center;background:var(--bg-in);border-radius:var(--r);overflow:hidden;height:46px;width:100%;max-width:148px;border:1.5px solid var(--bd)}.stpc:focus-within{border-color:var(--ac)}
+        .stpb{flex:0 0 42px;height:100%;background:transparent;border:none;font-size:1.3rem;font-weight:700;color:var(--ac);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;border-radius:0}.stpb:active{background:var(--bg-hv)}.stpb.mn{color:var(--er)}
+        .stpi{flex:1;min-width:0;text-align:center;border:none!important;background:transparent!important;padding:0!important;font-size:1.05rem!important;font-weight:800!important;color:var(--tx)!important;pointer-events:none}
+        .stg{display:flex;gap:7px;margin-bottom:12px;margin-top:6px}
+        .tgb{flex:1;padding:11px;background:var(--bg-el);border:1.5px solid var(--bd);border-radius:var(--r);font-weight:700;font-size:.78rem;color:var(--tx2)}.tgb.active{background:var(--ac-s);border-color:var(--ac);color:var(--ac)}
+        .hs{display:none;margin-bottom:14px;padding:14px;border-radius:var(--rm);border:1px solid var(--bd);background:var(--bg-el)}.hs.active{display:block;animation:fs .25s ease}
+        @keyframes fs{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+        .ir{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.ir:last-child{margin-bottom:0}.ir label{margin:0;font-weight:700;font-size:.9rem;text-transform:none;flex:1;letter-spacing:0}
+
+        /* LOADING */
+        #load-ov{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+        .lsp{width:36px;height:36px;border:3px solid var(--bd);border-top-color:var(--ac);border-radius:50%;animation:sp .7s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}.ltx{color:var(--tx2);font-weight:600;font-size:.88rem}
+
+        /* SEARCH */
+        .sbx{margin-bottom:14px;position:relative}.sbx svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--tx3)}.sbx input{width:100%;padding:11px 13px 11px 38px;border:1.5px solid var(--bd);border-radius:var(--rm);font-family:inherit;font-weight:600;color:var(--tx);background:var(--bg-el);outline:none;font-size:15px}.sbx input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-g);background:#fff}.sbx input::placeholder{color:var(--tx3)}
+
+        /* TEAM */
+        .tmi{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bd)}.tmi:last-child{border-bottom:none}
+        .tma{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0}.tmn{flex:1;font-weight:600;font-size:.88rem}
+        .tmd{width:28px;height:28px;background:var(--er-s);border:1px solid var(--er-b);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.tmd svg{width:13px;height:13px;color:var(--er)}.tmd:active{transform:scale(.9)}
+
+        /* MANUAL */
+        .ms3{margin-bottom:18px}.ms3 h3{font-size:.92rem;font-weight:800;color:var(--ac);margin-bottom:8px;display:flex;align-items:center;gap:7px}.ms3 h3 svg{width:17px;height:17px;flex-shrink:0}.ms3 p{font-size:.84rem;color:var(--tx2);line-height:1.6;font-weight:500}.mhr{border:none;border-top:1px solid var(--bd);margin:14px 0}
+
+        /* LOGIN */
+        .ov-bg{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#f0eef8,#e8edf5,var(--bg))}
+        .lc{position:relative;background:#fff;border:1px solid var(--bd);padding:34px 26px;border-radius:var(--rx);width:90%;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(108,92,231,.1)}
+        .lb2{width:52px;height:52px;background:var(--ac);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:var(--sg)}.lb2 svg{width:26px;height:26px;color:#fff}
+        .lc h2{font-size:1.5rem;font-weight:800;letter-spacing:-.5px;margin-bottom:3px}.lc .ls{color:var(--tx3);font-size:.88rem;margin-bottom:26px;font-weight:500}
+        .lc input{width:100%;padding:14px;border-radius:var(--rm);border:1.5px solid var(--bd);font-size:.95rem;margin-bottom:11px;outline:none;background:var(--bg-in);color:var(--tx);font-weight:600;font-family:inherit}.lc input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-g)}.lc input::placeholder{color:var(--tx3)}
+        .lfg{text-align:right;margin-bottom:18px}.lfg span{color:var(--tx3);font-size:.8rem;cursor:pointer;font-weight:600}.lfg span:active{color:var(--ac)}
+        .lbn{width:100%;padding:14px;border-radius:var(--rm);border:none;background:var(--ac);color:#fff;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:var(--sg);font-family:inherit;margin-bottom:10px}.lbn:active{transform:scale(.98)}
+        .ldv{width:100%;height:1px;background:var(--bd);margin:16px 0}
+        .lrl{color:var(--tx3);font-size:.8rem;margin-bottom:8px;font-weight:500}
+        .lrb{width:100%;padding:13px;border-radius:var(--rm);border:1.5px solid var(--ac);background:transparent;color:var(--ac);font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit}.lrb:active{background:var(--ac-s)}
+        .back-btn{position:absolute;top:16px;left:16px;width:34px;height:34px;background:var(--bg-el);border:1px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.back-btn:active{transform:scale(.9)}
+
+        /* TOAST */
+        .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-100px);background:#fff;border:1px solid var(--bd);color:var(--tx);padding:12px 18px;border-radius:var(--rm);font-weight:600;font-size:.86rem;z-index:99999;box-shadow:0 8px 30px rgba(0,0,0,.12);display:flex;align-items:center;gap:8px;transition:transform .35s cubic-bezier(.3,1,.3,1);max-width:90%}.toast.show{transform:translateX(-50%) translateY(0)}.toast.ok{border-color:var(--ok-b)}.toast.er{border-color:var(--er-b)}
+        .ti2{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.8rem}.toast.ok .ti2{background:var(--ok-s);color:var(--ok)}.toast.er .ti2{background:var(--er-s);color:var(--er)}
     </style>
 </head>
 <body>
-    
-    <div id="login-overlay" style="position:fixed; inset:0; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; color:white;">
-        <div style="background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:40px 30px; border-radius:32px; width:90%; max-width:380px; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);">
-            <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px auto; box-shadow: var(--shadow-float);">🍽️</div>
-            <h2 style="margin:0 0 8px 0; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px;">RistoGest Pro</h2>
-            <p style="color:#94a3b8; font-size:0.95rem; margin-bottom:30px; font-weight: 500;">Area Ristoratori</p>
-            
-            <input type="email" id="app-email-input" placeholder="Email ristorante" style="width:100%; padding:18px; border-radius:16px; border:2px solid rgba(255,255,255,0.1); font-size:1.1rem; margin-bottom:15px; outline:none; background: rgba(0,0,0,0.2); color: white;">
-            <input type="password" id="app-pwd-input" placeholder="Password (min. 6 caratteri)" style="width:100%; padding:18px; border-radius:16px; border:2px solid rgba(255,255,255,0.1); font-size:1.1rem; margin-bottom:15px; outline:none; background: rgba(0,0,0,0.2); color: white;">
-            
-            <div style="text-align: right; margin-bottom: 24px;">
-                <span onclick="forgotPassword()" style="color: #cbd5e1; font-size: 0.85rem; cursor: pointer; text-decoration: underline;">Password dimenticata?</span>
-            </div>
 
-            <button id="btn-login" onclick="loginRestaurant()" style="width:100%; padding:18px; border-radius:16px; border:none; background:var(--accent); color:white; font-weight:800; font-size:1.1rem; cursor:pointer; box-shadow: var(--shadow-float); transition: transform 0.2s; margin-bottom: 15px;">ACCEDI</button>
-            
-            <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
-            
-            <p style="margin: 0 0 10px 0; color: #cbd5e1; font-size: 0.85rem;">Nuovo ristorante?</p>
-            <button id="btn-register" onclick="registerRestaurant()" style="width:100%; padding:16px; border-radius:16px; border:2px solid var(--accent); background:transparent; color:var(--accent-light); font-weight:800; font-size:1rem; cursor:pointer; transition: background 0.2s;">CREA ACCOUNT</button>
-        </div>
-    </div>
+<div id="toast" class="toast"><span class="ti2">✓</span><span id="tmsg"></span></div>
 
-<div id="loading-overlay" style="display:none;">Sincronizzazione... ⏳</div>
+<!-- TRIAL BANNER -->
+<div id="trial-bar"><div class="tb-d" id="tb-d">7 giorni rimanenti</div><div class="tb-s">Periodo di prova gratuita — RistoGest Pro</div></div>
 
-<header id="main-header">
-    <div class="header-top-row">
-        <h2><span>🍽️</span> RistoGest</h2>
-        <div class="live-clock" id="live-clock">
-            <div class="date">-</div>
-            <div class="time">-</div>
-        </div>
+<!-- TRIAL EXPIRED -->
+<div id="trial-exp"><div class="te-c">
+    <div class="te-ic">⏰</div>
+    <h2>Prova Gratuita Scaduta</h2>
+    <p>Il tuo periodo di prova di <strong id="te-dur">7</strong> giorni è terminato. Per continuare a usare RistoGest Pro, passa alla versione completa.</p>
+    <a href="https://play.google.com/store" target="_blank" style="display:block;width:100%;padding:14px;border-radius:var(--rm);background:var(--ac);color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;text-align:center;box-shadow:var(--sg)">Passa a Premium</a>
+    <button id="te-logout" style="width:100%;margin-top:10px;padding:12px;border-radius:var(--rm);border:1.5px solid var(--bd);background:transparent;color:var(--tx2);font-weight:600;font-size:.88rem;cursor:pointer;font-family:inherit">Esci dall'account</button>
+    <div style="font-size:.74rem;color:var(--tx3);margin-top:12px" id="te-em"></div>
+</div></div>
+
+<!-- LOGIN -->
+<div id="login-ov" class="ov-bg"><div class="lc">
+    <div class="lb2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2h18v20H3z"/><path d="M9 6h6"/><path d="M9 10h6"/><path d="M9 14h4"/></svg></div>
+    <h2>RistoGest Pro</h2><p class="ls">Gestione prenotazioni ristorante</p>
+    <input type="email" id="login-em" placeholder="Email ristorante" autocomplete="email">
+    <input type="password" id="login-pw" placeholder="Password" autocomplete="current-password">
+    <div class="lfg"><span onclick="forgotPassword()">Password dimenticata?</span></div>
+    <button class="lbn" id="btn-login" onclick="doLogin()">ACCEDI</button>
+    <div class="ldv"></div><p class="lrl">Nuovo ristorante?</p>
+    <button class="lrb" onclick="showRegister()">CREA ACCOUNT</button>
+</div></div>
+
+<!-- REGISTER -->
+<div id="reg-ov" class="ov-bg" style="display:none;z-index:10000"><div class="lc">
+    <button class="back-btn" onclick="hideRegister()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="lb2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <h2>Crea Account</h2><p class="ls">Registra il tuo ristorante</p>
+    <input type="email" id="reg-em" placeholder="Email del ristorante" autocomplete="email">
+    <input type="password" id="reg-pw" placeholder="Password (min. 6 caratteri)" autocomplete="new-password">
+    <input type="password" id="reg-pw2" placeholder="Conferma password" autocomplete="new-password">
+    <button class="lbn" id="btn-reg" onclick="doRegister()" style="margin-top:8px">REGISTRATI</button>
+</div></div>
+
+<!-- LOADING -->
+<div id="load-ov" style="display:none"><div class="lsp"></div><div class="ltx" id="load-txt">Sincronizzazione...</div></div>
+
+<!-- HEADER -->
+<header id="hdr">
+    <div class="ht"><div class="brand"><div class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M3 2h18v20H3z"/><path d="M9 6h6"/><path d="M9 10h6"/></svg></div><h1>RistoGest<span>Gestionale Pro</span></h1></div><div class="clk" id="clk"><div class="cd">-</div><div class="ct">-</div></div></div>
+    <div class="ha">
+        <button class="bt active" onclick="W.tgView('cal',this)" id="btn-cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>Agenda</button>
+        <button class="bt" onclick="W.tgView('list',this)" id="btn-list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Lista</button>
+        <button class="bic" onclick="W.openMan()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></button>
+        <button class="bic" onclick="W.openOpts()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></button>
     </div>
-    <div class="header-actions">
-        <button class="btn-outline active-tab" onclick="window.toggleView('calendar', this)" id="btn-cal">🗓 Agenda</button>
-        <button class="btn-outline" onclick="window.toggleView('list', this)" id="btn-list">📋 Lista</button>
-        <button class="btn-outline" onclick="window.openOptionsModal()" style="flex: 0 0 54px; padding: 0; background: var(--light);">⚙️</button>
-    </div>
-    <button id="main-add-btn" class="btn-accent" onclick="window.closeModals(); openFormModal()" style="width: 100%; padding: 16px; font-size: 1.05rem;">➕ Aggiungi prenotazione</button>
+    <button id="main-add" class="bp" onclick="W.closeAll();W.openForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nuova prenotazione</button>
 </header>
 
 <main>
-    <div id="calendar-view">
-        <div class="calendar-header" id="month-header">
-            <button onclick="changeMonth(-1)">⬅️</button>
-            <h2 id="month-year-display">Mese Anno</h2>
-            <button onclick="changeMonth(1)">➡️</button>
-        </div>
-        <div class="agenda-view" id="agenda-grid"></div>
-    </div>
-    
-    <div id="list-view" class="list-view">
-        <div id="list-container"></div>
-    </div>
+    <div id="cal-v"><div class="mh" id="mhdr"><button onclick="W.chgMonth(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button><h2 id="my-d">Mese</h2><button onclick="W.chgMonth(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button></div><div class="av" id="ag"></div></div>
+    <div id="list-v" class="lv"><div id="lc2"></div></div>
 </main>
 
-<div id="optionsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-drag-handle"></div>
-        <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 style="margin-top: 0; font-weight: 800; margin-bottom: 24px; color: var(--primary);">⚙️ Impostazioni</h2>
-        
-        <div class="settings-list" id="unlock-container">
-            <div class="settings-row" onclick="unlockAdmin()" id="row-admin-unlock">
-                <div class="icon">🔐</div><div class="text">Sblocca Modalità Creatore</div><div class="chevron">›</div>
-            </div>
-        </div>
+<!-- All modals follow same pattern: onclick backdrop closes, close-btn, z-index layered -->
 
-        <div id="admin-settings" style="display: none;">
-            
-            <p style="font-size: 0.8rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin: 0 0 8px 10px; letter-spacing: 0.5px;">Permessi Camerieri</p>
-            <div class="settings-list">
-                <div class="settings-row no-hover">
-                    <div class="icon">➕</div><div class="text">Creare prenotazioni</div>
-                    <label class="switch"><input type="checkbox" id="perm-add" onchange="window.updatePermissions()"><span class="slider"></span></label>
-                </div>
-                <div class="settings-row no-hover">
-                    <div class="icon">✏️</div><div class="text">Modificare prenotazioni</div>
-                    <label class="switch"><input type="checkbox" id="perm-edit" onchange="window.updatePermissions()"><span class="slider"></span></label>
-                </div>
-                <div class="settings-row no-hover">
-                    <div class="icon">🗑</div><div class="text">Eliminare prenotazioni</div>
-                    <label class="switch"><input type="checkbox" id="perm-delete" onchange="window.updatePermissions()"><span class="slider"></span></label>
-                </div>
-            </div>
+<!-- OPTIONS -->
+<div id="optsM" class="modal" onclick="if(event.target===this)W.closeAll()"><div class="mc"><div class="mdg"></div><button class="cb" onclick="W.closeAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+<div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Impostazioni</div>
+<div class="pcard"><div class="pav2" id="pav">?</div><div class="pinfo"><div class="pn" id="pnm">Ristorante</div><div class="pe3" id="pem">---</div></div></div>
+<div class="sl">Il tuo profilo operatore</div><div id="op-sel" class="opl"><div style="padding:14px;text-align:center;color:var(--tx3);font-size:.84rem;font-weight:500;background:var(--bg-el);border-radius:var(--r);border:1px solid var(--bd)">Nessun operatore.<br>L'admin può aggiungere membri.</div></div>
+<div class="sc" id="ulk-c"><div class="sr" onclick="W.unlockAdm()" id="r-ulk"><div class="si ye" id="ulk-si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="sla" id="ulk-txt">Sblocca Modalità Admin</div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div></div>
+<div id="adm-s" style="display:none">
+<div class="sl">Permessi Camerieri</div><div class="sc">
+<div class="sr ni"><div class="si gr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="sla">Creare prenotazioni</div><label class="switch"><input type="checkbox" id="p-add" onchange="W.updPerms()"><span class="sws"></span></label></div>
+<div class="sr ni"><div class="si bl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="sla">Modificare prenotazioni</div><label class="switch"><input type="checkbox" id="p-edit" onchange="W.updPerms()"><span class="sws"></span></label></div>
+<div class="sr ni"><div class="si re"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><div class="sla">Eliminare prenotazioni</div><label class="switch"><input type="checkbox" id="p-del" onchange="W.updPerms()"><span class="sws"></span></label></div></div>
+<div class="sl">Gestione Team</div><div class="sc"><div class="sr" onclick="W.openTeam()"><div class="si gr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div><div class="sla">Membri del Team<div class="ssb" id="tc-lbl">0 membri</div></div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div></div>
+<div class="sl">Gestione Locale</div><div class="sc">
+<div class="sr" onclick="W.chgPin()"><div class="si ye"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div><div class="sla">Cambia PIN Admin</div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+<div class="sr" onclick="W.openChius()"><div class="si bl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></div><div class="sla">Giorni di Chiusura</div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+<div class="sr" onclick="W.openChPwd()"><div class="si pu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="sla">Modifica Password</div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+<div class="sr" onclick="W.expBackup()"><div class="si gy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="sla">Esporta Backup</div><div class="sch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div></div></div>
+<div class="sc" style="margin-top:6px"><div class="sr" onclick="W.logout()"><div class="si re"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div><div class="sla" style="color:var(--er)">Esci</div></div></div>
+</div></div>
 
-            <p style="font-size: 0.8rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin: 0 0 8px 10px; letter-spacing: 0.5px;">Gestione Locale</p>
-            <div class="settings-list">
-                <div class="settings-row" onclick="window.changeAdminPin()">
-                    <div class="icon">🔑</div><div class="text">Cambia PIN Creatore</div><div class="chevron">›</div>
-                </div>
-                <div class="settings-row" onclick="window.apriImpostazioniChiusura()">
-                    <div class="icon">📅</div><div class="text">Giorni di Chiusura</div><div class="chevron">›</div>
-                </div>
-                <div class="settings-row" onclick="window.exportBackup()">
-                    <div class="icon">📥</div><div class="text">Esporta Backup Dati</div><div class="chevron">›</div>
-                </div>
-            </div>
-        </div>
+<!-- CHANGE PWD --><div id="cpM" class="modal" style="z-index:1001" onclick="if(event.target===this)this.style.display='none'"><div class="mc"><div class="mdg"></div><button class="cb" onclick="Q('cpM').style.display='none'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Modifica Password</div><div class="fg"><label>Nuova Password</label><input type="password" id="np" placeholder="Min. 6 caratteri"></div><div class="fg"><label>Conferma</label><input type="password" id="cp2" placeholder="Ripeti"></div><button class="bp" style="margin-top:6px" onclick="W.chPwd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Aggiorna</button></div></div>
 
-        <div class="settings-list">
-            <div class="settings-row danger" onclick="window.logoutRestaurant()">
-                <div class="icon">🚪</div><div class="text">Esci dall'Account Ristorante</div>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- TEAM --><div id="tmM" class="modal" style="z-index:1001" onclick="if(event.target===this)this.style.display='none'"><div class="mc"><div class="mdg"></div><button class="cb" onclick="Q('tmM').style.display='none'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Team</div><p style="font-size:.82rem;color:var(--tx3);margin-bottom:14px;line-height:1.5">I membri aggiunti appariranno come operatori.</p><div style="display:flex;gap:7px;margin-bottom:14px"><div class="fg" style="flex:1;margin-bottom:0"><input type="text" id="nm-n" placeholder="Nome..." style="margin-bottom:0"></div><button class="bp" style="width:auto;padding:0 18px" onclick="W.addMem()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button></div><div id="tm-l" class="sc" style="margin-bottom:0"><div style="padding:20px;text-align:center;color:var(--tx3);font-size:.86rem">Nessun membro</div></div></div></div>
 
-<div id="chiusuraModal" class="modal" style="z-index: 1001;">
-    <div class="modal-content" style="background: var(--light);">
-        <div class="modal-drag-handle"></div>
-        <span class="close-modal" onclick="document.getElementById('chiusuraModal').style.display='none'">&times;</span>
-        <h3 style="margin-top: 0; font-weight: 800; color: var(--primary); margin-bottom: 20px;">📅 Chiusura Settimanale</h3>
-        <div class="row">
-            <div class="form-group col"><label>Giorno</label>
-                <select id="opt-closing-day">
-                    <option value="-1">Nessuno (Sempre aperto)</option>
-                    <option value="1">Lunedì</option><option value="2">Martedì</option><option value="3">Mercoledì</option>
-                    <option value="4">Giovedì</option><option value="5">Venerdì</option><option value="6">Sabato</option><option value="0">Domenica</option>
-                </select>
-            </div>
-            <div class="form-group col"><label>Turno</label>
-                <select id="opt-closing-shift"><option value="tutto">Tutto il giorno</option><option value="pranzo">Solo Pranzo</option><option value="cena">Solo Cena</option></select>
-            </div>
-        </div>
-        <button class="btn-accent" style="width: 100%; padding: 16px; margin-top: 10px;" onclick="window.saveClosingSettings()">💾 Salva</button>
-    </div>
-</div>
+<!-- MANUAL --><div id="manM" class="modal" style="z-index:1002" onclick="if(event.target===this)this.style.display='none'"><div class="mc" style="max-height:95vh"><div class="mdg"></div><button class="cb" onclick="Q('manM').style.display='none'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Manuale</div>
+<div class="ms3"><h3>📅 Vista Agenda</h3><p>Il calendario mostra ogni giorno con coperti pranzo e cena. Sfondo che sfuma dal colore del mese verso il bianco. Giorno corrente in viola, festivi in rosso.</p></div><hr class="mhr">
+<div class="ms3"><h3>📋 Vista Lista</h3><p>Prenotazioni per data. Quelle passate in sezione chiusa con ricerca, quelle future in primo piano.</p></div><hr class="mhr">
+<div class="ms3"><h3>➕ Nuova Prenotazione</h3><p>Compila il form. "Bambini" e "Menù Speciali" espandono sezioni extra. Turno automatico dall'orario. Operatore auto-compilato se hai selezionato il profilo.</p></div><hr class="mhr">
+<div class="ms3"><h3>👤 Profilo Operatore</h3><p>Nelle impostazioni, sezione "Il tuo profilo operatore": seleziona il tuo nome e ogni prenotazione avrà automaticamente il tuo nome. Salvato sul dispositivo.</p></div><hr class="mhr">
+<div class="ms3"><h3>🔐 Modalità Admin</h3><p>PIN default: 123. Da admin: permessi camerieri, team, PIN, chiusure, password, backup JSON.</p></div><hr class="mhr">
+<div class="ms3"><h3>⏰ Prova Gratuita</h3><p>Quando attivata dal pannello Firebase (app_config/trial → enabled: true), ogni nuovo account ha un periodo di prova. Il banner viola in alto mostra i giorni rimanenti. Scaduto il trial, l'app si blocca e chiede di passare a Premium. L'admin può impostare isPremium: true nel documento account per sbloccare.</p></div><hr class="mhr">
+<div class="ms3"><h3>📞 Contatto Rapido</h3><p>Tocca il telefono nella lista per chiamare. Conferma prima della chiamata.</p></div>
+</div></div>
 
-<div id="formModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-drag-handle"></div>
-        <span class="close-modal" onclick="attemptCloseForm()">&times;</span>
-        <h2 id="form-title" style="margin-top: 0; font-weight: 800; margin-bottom: 24px; color: var(--primary); font-size: 1.4rem;">Nuova Prenotazione</h2>
-        <form id="reservationForm" onsubmit="saveReservation(event)">
-            <input type="hidden" id="res-id">
-            
-            <div class="row">
-                <div class="form-group col"><label>Data</label><input type="date" id="res-date" required></div>
-                <div class="form-group col">
-                    <label>Orario</label>
-                    <select id="res-time" required>
-                        <optgroup label="Pranzo">
-                            <option value="12:00">12:00</option><option value="12:30">12:30</option>
-                            <option value="13:00">13:00</option><option value="13:30">13:30</option>
-                            <option value="14:00">14:00</option><option value="14:30">14:30</option>
-                        </optgroup>
-                        <optgroup label="Cena">
-                            <option value="18:30">18:30</option><option value="19:00">19:00</option>
-                            <option value="19:30">19:30</option><option value="20:00">20:00</option>
-                            <option value="20:30">20:30</option><option value="21:00">21:00</option>
-                            <option value="21:30">21:30</option><option value="22:00">22:00</option>
-                        </optgroup>
-                    </select>
-                </div>
-            </div>
+<!-- CHIUSURA --><div id="chM" class="modal" style="z-index:1001" onclick="if(event.target===this)this.style.display='none'"><div class="mc"><div class="mdg"></div><button class="cb" onclick="Q('chM').style.display='none'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>Chiusura</div><div class="row"><div class="fg col"><label>Giorno</label><select id="cl-d"><option value="-1">Nessuno</option><option value="1">Lunedì</option><option value="2">Martedì</option><option value="3">Mercoledì</option><option value="4">Giovedì</option><option value="5">Venerdì</option><option value="6">Sabato</option><option value="0">Domenica</option></select></div><div class="fg col"><label>Turno</label><select id="cl-s"><option value="tutto">Tutto</option><option value="pranzo">Pranzo</option><option value="cena">Cena</option></select></div></div><button class="bp" style="margin-top:6px" onclick="W.saveChius()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Salva</button></div></div>
 
-            <div class="row">
-                <div class="form-group" style="flex: 0.8; min-width: 90px;">
-                    <label>Pax</label>
-                    <input type="number" id="res-pax" min="1" required inputmode="numeric" style="text-align: center; font-size: 1.2rem;">
-                </div>
-                <div class="form-group" style="flex: 2; min-width: 180px;">
-                    <label>Telefono</label>
-                    <div style="display: flex; gap: 8px;">
-                        <input type="tel" id="res-phone" required placeholder="Es. 333..." inputmode="tel" style="flex: 1; width: 100%; min-width: 0;">
-                        <button type="button" id="btn-call-phone" onclick="window.confirmCall(document.getElementById('res-phone').value, document.getElementById('res-name').value)" style="display: none; background: #10b981; color: white; padding: 0 16px; border-radius: var(--radius-sm); border: none; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); flex-shrink: 0; cursor: pointer;">📞</button>
-                    </div>
-                </div>
-            </div>
+<!-- FORM --><div id="fM" class="modal" onclick="if(event.target===this)W.tryCloseForm()"><div class="mc"><div class="mdg"></div><button class="cb" onclick="W.tryCloseForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg><span id="ftit">Nuova Prenotazione</span></div>
+<form id="rF" onsubmit="W.saveRes(event)"><input type="hidden" id="rid">
+<div class="row"><div class="fg col"><label>Data</label><input type="date" id="rdt" required onchange="W.chkCl()"></div><div class="fg col"><label>Orario</label><select id="rtm" required onchange="W.chkCl()"><optgroup label="Pranzo"><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option></optgroup><optgroup label="Cena"><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option><option>22:00</option></optgroup></select></div></div>
+<div class="row"><div class="fg" style="flex:.7;min-width:80px"><label>Pax</label><input type="number" id="rpx" min="1" required inputmode="numeric" style="text-align:center;font-size:1.1rem"></div><div class="fg" style="flex:2;min-width:160px"><label>Telefono</label><div style="display:flex;gap:7px"><input type="tel" id="rph" required placeholder="333..." inputmode="tel" style="flex:1;min-width:0"><button type="button" id="bcall" style="display:none;background:var(--ok);color:#fff;padding:0 13px;border-radius:var(--r);border:none;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer" onclick="W.call(Q('rph').value,Q('rnm').value)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 11.042 11.042 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 11.042 11.042 0 002.81.7A2 2 0 0122 16.92z"/></svg></button></div></div></div>
+<div class="fg"><label>Nome</label><input type="text" id="rnm" required placeholder="Mario Rossi" style="font-size:1.02rem"></div>
+<div class="stg"><button type="button" class="tgb" id="tb1" onclick="W.tgSec('cs3',this)">👶 Bambini</button><button type="button" class="tgb" id="tb2" onclick="W.tgSec('ms4',this)">🥗 Menù Speciali</button></div>
+<div id="cs3" class="hs" style="border-color:rgba(108,92,231,.2);background:var(--ac-s)"><div class="row"><div class="fg col" style="margin-bottom:0"><label style="color:var(--ac)">Bambini</label><div class="stpc"><button type="button" class="stpb mn" onclick="W.stp('rch',-1)">−</button><input type="number" id="rch" class="stpi" value="0" readonly><button type="button" class="stpb" onclick="W.stp('rch',1)">+</button></div></div><div class="fg col" style="margin-bottom:0"><label style="color:var(--ac)">Seggioloni</label><div class="stpc"><button type="button" class="stpb mn" onclick="W.stp('rhc',-1)">−</button><input type="number" id="rhc" class="stpi" value="0" readonly><button type="button" class="stpb" onclick="W.stp('rhc',1)">+</button></div></div></div></div>
+<div id="ms4" class="hs" style="border-color:var(--er-b);background:var(--er-s)"><div class="ir"><label style="color:var(--er)">Celiaci</label><div class="stpc"><button type="button" class="stpb mn" onclick="W.stp('ic',-1)">−</button><input type="number" id="ic" class="stpi" value="0" readonly><button type="button" class="stpb" onclick="W.stp('ic',1)">+</button></div></div><div class="ir"><label style="color:var(--ok)">Vegetariani</label><div class="stpc"><button type="button" class="stpb mn" style="color:var(--ok)" onclick="W.stp('iv',-1)">−</button><input type="number" id="iv" class="stpi" value="0" readonly><button type="button" class="stpb" style="color:var(--ok)" onclick="W.stp('iv',1)">+</button></div></div><div class="ir"><label style="color:var(--ok)">Vegani</label><div class="stpc"><button type="button" class="stpb mn" style="color:var(--ok)" onclick="W.stp('ivg',-1)">−</button><input type="number" id="ivg" class="stpi" value="0" readonly><button type="button" class="stpb" style="color:var(--ok)" onclick="W.stp('ivg',1)">+</button></div></div></div>
+<div class="fg"><label>Note</label><input type="text" id="rnt" placeholder="Richieste extra..."></div>
+<div class="fg"><label>Operatore</label><select id="rop" required><option value="">-- Seleziona --</option></select></div>
+<div class="row" style="margin-top:14px"><button type="submit" id="bsav" class="bp" style="flex:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:17px;height:17px"><polyline points="20 6 9 17 4 12"/></svg>Salva</button><button type="button" id="bdel" class="bd2" style="display:none;flex:1" onclick="W.delRes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:17px;height:17px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Elimina</button></div></form></div></div>
 
-            <div class="form-group"><label>Nome Prenotazione</label><input type="text" id="res-name" required placeholder="Es. Mario Rossi" style="font-size: 1.1rem;"></div>
-
-            <div class="smart-toggles">
-                <button type="button" class="toggle-btn" id="btn-toggle-bimbi" onclick="toggleSection('children-section', this)">👶 Bambini & Seggioloni</button>
-                <button type="button" class="toggle-btn" id="btn-toggle-menu" onclick="toggleSection('menu-section', this)">🥗 Menù Speciali</button>
-            </div>
-
-            <div id="children-section" class="hidden-section" style="background: var(--accent-light); border-color: #c7d2fe;">
-                <div class="row">
-                    <div class="form-group col" style="margin-bottom:0;">
-                        <label style="color: var(--accent);">Bambini</label>
-                        <div class="stepper-control">
-                            <button type="button" class="stepper-btn minus" onclick="updateStepper('res-children', -1)">−</button>
-                            <input type="number" id="res-children" class="stepper-input" value="0" readonly>
-                            <button type="button" class="stepper-btn plus" onclick="updateStepper('res-children', 1)">+</button>
-                        </div>
-                    </div>
-                    <div class="form-group col" style="margin-bottom:0;">
-                        <label style="color: var(--accent);">Seggioloni</label>
-                        <div class="stepper-control">
-                            <button type="button" class="stepper-btn minus" onclick="updateStepper('res-highchairs', -1)">−</button>
-                            <input type="number" id="res-highchairs" class="stepper-input" value="0" readonly>
-                            <button type="button" class="stepper-btn plus" onclick="updateStepper('res-highchairs', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="menu-section" class="hidden-section" style="background: var(--danger-light); border-color: #fecaca;">
-                <div class="intol-row">
-                    <label style="color: var(--danger);">Celiaci</label>
-                    <div class="stepper-control">
-                        <button type="button" class="stepper-btn minus" onclick="updateStepper('int-celiaco', -1)">−</button>
-                        <input type="number" id="int-celiaco" class="stepper-input" value="0" readonly>
-                        <button type="button" class="stepper-btn plus" onclick="updateStepper('int-celiaco', 1)">+</button>
-                    </div>
-                </div>
-                <div class="intol-row">
-                    <label style="color: #059669;">Vegetariani</label>
-                    <div class="stepper-control">
-                        <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegetariano', -1)">−</button>
-                        <input type="number" id="int-vegetariano" class="stepper-input" value="0" readonly>
-                        <button type="button" class="stepper-btn plus" style="color: #059669;" onclick="updateStepper('int-vegetariano', 1)">+</button>
-                    </div>
-                </div>
-                <div class="intol-row">
-                    <label style="color: #059669;">Vegani</label>
-                    <div class="stepper-control">
-                        <button type="button" class="stepper-btn minus" style="color: #059669;" onclick="updateStepper('int-vegano', -1)">−</button>
-                        <input type="number" id="int-vegano" class="stepper-input" value="0" readonly>
-                        <button type="button" class="stepper-btn plus" style="color: #059669;" onclick="updateStepper('int-vegano', 1)">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group"><label>Note Opzionali</label><input type="text" id="res-notes" placeholder="Richieste extra..."></div>
-            <div class="form-group"><label>Operatore</label><input type="text" id="res-operator" required placeholder="Tuo nome"></div>
-
-            <div class="row" style="margin-top: 24px;">
-                <button type="submit" id="btn-submit-save" class="btn-accent" style="flex: 2; padding: 18px; font-size: 1.15rem; border-radius: 16px;">💾 Salva</button>
-                <button type="button" id="btn-delete" class="btn-danger" style="display:none; flex: 1; border-radius: 16px; font-size: 1.15rem;" onclick="window.deleteReservation()">🗑 Elimina</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="dayModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-drag-handle"></div>
-        <span class="close-modal" onclick="closeModals()">&times;</span>
-        <h2 id="day-modal-title" style="margin-top: 0; font-size: 1.3rem; margin-bottom: 20px; font-weight: 800; color: var(--primary);">Prenotazioni</h2>
-        <div id="day-modal-list" style="margin-bottom: 24px; max-height: 55vh; overflow-y: auto;"></div>
-        <button id="day-add-btn" class="btn-accent" style="width: 100%; padding: 18px; border-radius: 16px; font-size: 1.1rem;" onclick="window.closeModals(); openFormModalForDay()">➕ Aggiungi prenotazione</button>
-    </div>
-</div>
+<!-- DAY --><div id="dM" class="modal" onclick="if(event.target===this)W.closeAll()"><div class="mc"><div class="mdg"></div><button class="cb" onclick="W.closeAll()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="mt2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg><span id="dtit">Prenotazioni</span></div><div id="dlist" style="margin-bottom:18px;max-height:55vh;overflow-y:auto"></div><button id="dadd" class="bp" onclick="W.closeAll();W.openFormDay()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Aggiungi</button></div></div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import{getFirestore,collection,onSnapshot,doc,setDoc,getDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,onAuthStateChanged,signOut,updatePassword}from"https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // LE TUE CHIAVI FIREBASE
-   const firebaseConfig = {
-  apiKey: "AIzaSyBidWhuv1uWHKQ7Rib6BxcvK9sbG4QjA_4",
-  authDomain: "risto-gest-pro-2026.firebaseapp.com",
-  databaseURL: "https://risto-gest-pro-2026-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "risto-gest-pro-2026",
-  storageBucket: "risto-gest-pro-2026.firebasestorage.app",
-  messagingSenderId: "135116387205",
-  appId: "1:135116387205:web:729c51f3ff2c1dcd874aec",
-  measurementId: "G-SP10P2SRRF"
-};
+const fbc={apiKey:"AIzaSyBidWhuv1uWHKQ7Rib6BxcvK9sbG4QjA_4",authDomain:"risto-gest-pro-2026.firebaseapp.com",databaseURL:"https://risto-gest-pro-2026-default-rtdb.europe-west1.firebasedatabase.app",projectId:"risto-gest-pro-2026",storageBucket:"risto-gest-pro-2026.firebasestorage.app",messagingSenderId:"135116387205",appId:"1:135116387205:web:729c51f3ff2c1dcd874aec",measurementId:"G-SP10P2SRRF"};
+const app=initializeApp(fbc),db=getFirestore(app),auth=getAuth(app);
+const Q=id=>document.getElementById(id);
+window.W = window;
+let res=[],curDate=new Date(),selDay=null,initDone=false,rId=null,unsub=null,uEmail=null,isAdmin=false;
+let myOp=localStorage.getItem('rg_op')||'';
+let cfg={adminPin:"123",perms:{add:true,edit:true,delete:false},closing:{day:'2',shift:'cena'},teamMembers:[]};
+if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app); 
+function toast(m,t='ok'){const el=Q('toast');el.className='toast '+t;Q('tmsg').textContent=m;el.querySelector('.ti2').textContent=t==='ok'?'✓':'✗';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3200)}
+function fbE(e){const m={'auth/invalid-credential':'Email o password non corretti.','auth/user-not-found':'Nessun account con questa email.','auth/wrong-password':'Password errata.','auth/email-already-in-use':'Email già registrata.','auth/invalid-email':'Email non valida.','auth/weak-password':'Almeno 6 caratteri.','auth/too-many-requests':'Troppi tentativi.','auth/network-request-failed':'Errore di rete.','auth/requires-recent-login':'Esci e rientra prima di cambiare password.'};return m[e.code]||e.message}
 
-    let reservations = [];
-    let currentDate = new Date();
-    let selectedDayForNewRes = null;
-    let initialLoadDone = false;
-    let currentRestaurantId = null; 
-    let unsubscribeSnapshot = null; 
-    
-    // --- GESTIONE RUOLI E IMPOSTAZIONI ---
-    let isAdmin = false;
-    let restaurantSettings = {
-        adminPin: "123", // PIN Iniziale di Default
-        perms: { add: true, edit: true, delete: false },
-        closing: { day: '2', shift: 'cena' }
-    };
+// ===== AUTH =====
+onAuthStateChanged(auth,u=>{
+    if(u){rId=u.uid;uEmail=u.email;Q('login-ov').style.display='none';Q('reg-ov').style.display='none';Q('load-ov').style.display='flex';Q('load-txt').textContent='Sincronizzazione...';updProf();loadAll()}
+    else{rId=null;uEmail=null;isAdmin=false;initDone=false;Q('login-ov').style.display='flex';Q('load-ov').style.display='none';Q('trial-bar').style.display='none';Q('trial-exp').style.display='none';if(unsub){unsub();unsub=null}res=[];resetUI();renderCal();renderList()}
+});
+function updProf(){if(!uEmail)return;Q('pem').textContent=uEmail;const n=uEmail.split('@')[0];Q('pnm').textContent=n.charAt(0).toUpperCase()+n.slice(1);Q('pav').textContent=n.charAt(0).toUpperCase()}
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+// Login
+W.doLogin=function(){const e=Q('login-em').value.trim(),p=Q('login-pw').value,b=Q('btn-login');if(!e||!p)return toast('Inserisci email e password.','er');b.textContent='ACCESSO...';b.disabled=true;signInWithEmailAndPassword(auth,e,p).then(()=>{b.textContent='ACCEDI';b.disabled=false}).catch(er=>{toast(fbE(er),'er');b.textContent='ACCEDI';b.disabled=false})};
+Q('login-pw').addEventListener('keypress',e=>{if(e.key==='Enter')W.doLogin()});
+Q('login-em').addEventListener('keypress',e=>{if(e.key==='Enter')Q('login-pw').focus()});
+
+// Register
+W.showRegister=function(){Q('reg-ov').style.display='flex'};
+W.hideRegister=function(){Q('reg-ov').style.display='none'};
+W.doRegister=function(){const e=Q('reg-em').value.trim(),p=Q('reg-pw').value,p2=Q('reg-pw2').value,b=Q('btn-reg');if(!e||!p)return toast('Compila tutti i campi.','er');if(p.length<6)return toast('Almeno 6 caratteri.','er');if(p!==p2)return toast('Le password non coincidono.','er');b.textContent='CREAZIONE...';b.disabled=true;createUserWithEmailAndPassword(auth,e,p).then(async cred=>{try{await setDoc(doc(db,"ristoranti",cred.user.uid,"impostazioni","account"),{createdAt:serverTimestamp(),isPremium:false})}catch(x){console.error(x)}toast('Account creato!','ok');Q('reg-ov').style.display='none';b.textContent='REGISTRATI';b.disabled=false}).catch(er=>{toast(fbE(er),'er');b.textContent='REGISTRATI';b.disabled=false})};
+Q('reg-pw2').addEventListener('keypress',e=>{if(e.key==='Enter')W.doRegister()});
+
+W.forgotPassword=function(){const e=Q('login-em').value.trim();if(!e)return toast('Scrivi email e riprova.','er');sendPasswordResetEmail(auth,e).then(()=>toast('Email di recupero inviata!','ok')).catch(er=>toast(fbE(er),'er'))};
+W.logout=function(){if(confirm("Uscire?"))signOut(auth).then(()=>W.closeAll())};
+Q('te-logout').onclick=()=>signOut(auth).then(()=>{Q('trial-exp').style.display='none';W.closeAll()});
+
+// Change password
+W.openChPwd=function(){Q('np').value='';Q('cp2').value='';Q('cpM').style.display='block'};
+W.chPwd=async function(){const n=Q('np').value,c=Q('cp2').value;if(!n||n.length<6)return toast('Almeno 6 caratteri.','er');if(n!==c)return toast('Non coincidono.','er');try{await updatePassword(auth.currentUser,n);toast('Password aggiornata!','ok');Q('cpM').style.display='none'}catch(e){toast(fbE(e),'er')}};
+
+// ===== LOAD ALL (robust — never blocks) =====
+async function loadAll(){
+    if(!rId)return;
+    try{
+        // Trial config — silently skip if missing or permission denied
+        let trialOn=false,trialDays=7;
+        try{const td=await getDoc(doc(db,"app_config","trial"));if(td.exists()){trialOn=!!td.data().enabled;trialDays=td.data().durationDays||7}}catch(x){}
+
+        // Account doc
+        let isPrem=false,creMs=Date.now();
+        try{const ad=await getDoc(doc(db,"ristoranti",rId,"impostazioni","account"));
+            if(ad.exists()){isPrem=!!ad.data().isPremium;if(ad.data().createdAt&&ad.data().createdAt.toDate)creMs=ad.data().createdAt.toDate().getTime()}
+            else{await setDoc(doc(db,"ristoranti",rId,"impostazioni","account"),{createdAt:serverTimestamp(),isPremium:false})}
+        }catch(x){console.log("account err",x)}
+
+        // Trial evaluation
+        if(trialOn&&!isPrem){
+            const left=Math.max(0,trialDays-Math.floor((Date.now()-creMs)/86400000));
+            if(left<=0){Q('trial-exp').style.display='flex';Q('te-em').textContent=uEmail||'';Q('te-dur').textContent=trialDays;Q('load-ov').style.display='none';Q('trial-bar').style.display='none';return}
+            Q('trial-bar').style.display='block';Q('tb-d').textContent=left===1?'⚠ Ultimo giorno di prova!':left+' giorn'+(left===1?'o':'i')+' rimanent'+(left===1?'e':'i');
+        }else{Q('trial-bar').style.display='none';Q('trial-exp').style.display='none'}
+
+        // Settings
+        const sd=await getDoc(doc(db,"ristoranti",rId,"impostazioni","configurazione"));
+        if(sd.exists()){const d=sd.data();cfg={...cfg,...d,perms:{...cfg.perms,...(d.perms||{})},closing:{...cfg.closing,...(d.closing||{})},teamMembers:d.teamMembers||[]}}
+        else{await setDoc(doc(db,"ristoranti",rId,"impostazioni","configurazione"),cfg)}
+        applyPerms();renderOpSel();updOpDrop();updTcLbl();
+
+        // Reservations
+        unsub=onSnapshot(collection(db,"ristoranti",rId,"prenotazioni"),snap=>{
+            res=[];snap.forEach(d=>res.push({id:d.id,...d.data()}));renderCal();renderList();
+            if(!initDone){Q('load-ov').style.display='none';W.tgView('cal',Q('btn-cal'));initDone=true}
+            else if(Q('dM').style.display==='block'&&selDay)W.openDay(selDay);
+        },er=>{Q('load-txt').textContent='Errore DB. Controlla le regole.';Q('load-txt').style.color='var(--er)';console.error(er)});
+    }catch(e){
+        console.error("loadAll error:",e);
+        Q('load-txt').textContent='Errore di caricamento.';Q('load-txt').style.color='var(--er)';
     }
+}
 
-    // LISTENER AUTENTICAZIONE
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentRestaurantId = user.uid;
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('loading-overlay').style.display = 'flex';
-            loadSettingsAndReservations();
-        } else {
-            currentRestaurantId = null;
-            isAdmin = false;
-            document.getElementById('login-overlay').style.display = 'flex';
-            document.getElementById('loading-overlay').style.display = 'none';
-            if(unsubscribeSnapshot) { unsubscribeSnapshot(); unsubscribeSnapshot = null; }
-            reservations = [];
-            resetUI();
-            renderCalendar();
-            renderList();
-        }
-    });
+// ===== BACK BUTTON HANDLER =====
+let modalOpen=false;
+function pushState(){if(!modalOpen){history.pushState({modal:true},'');modalOpen=true}}
+function popModal(){modalOpen=false;const openM=document.querySelector('.modal[style*="display: block"],.modal[style*="display:block"]');if(openM){if(openM.id==='fM'){if(confirm('Chiudere senza salvare?'))W.closeAll();else pushState()}else{W.closeAll()}}else{history.back()}}
+addEventListener('popstate',e=>{if(e.state&&e.state.modal)popModal();else if(document.querySelector('.modal[style*="display: block"],.modal[style*="display:block"]')){e.preventDefault();W.closeAll()}});
 
-    // --- AUTENTICAZIONE FUNZIONI ---
-    window.loginRestaurant = function() {
-        const email = document.getElementById('app-email-input').value.trim();
-        const pwd = document.getElementById('app-pwd-input').value;
-        const btnLogin = document.getElementById('btn-login');
+// ===== ADMIN =====
+W.unlockAdm=function(){if(isAdmin)return toast('Già Admin.','ok');const p=prompt('PIN Admin:');if(p===cfg.adminPin){isAdmin=true;Q('adm-s').style.display='block';Q('ulk-txt').textContent='Admin Attivo ✓';Q('r-ulk').style.background='var(--ac-s)';Q('r-ulk').querySelector('.sla').style.color='var(--ac)';Q('ulk-si').className='si pu';Q('p-add').checked=cfg.perms.add;Q('p-edit').checked=cfg.perms.edit;Q('p-del').checked=cfg.perms.delete;applyPerms();toast('Admin sbloccato!','ok')}else if(p!==null)toast('PIN errato!','er')};
+W.chgPin=async function(){if(!isAdmin)return;const p=prompt('Nuovo PIN:');if(p&&p.length>0){cfg.adminPin=p;await saveC();toast('PIN cambiato!','ok')}};
+W.updPerms=async function(){if(!isAdmin)return;cfg.perms.add=Q('p-add').checked;cfg.perms.edit=Q('p-edit').checked;cfg.perms.delete=Q('p-del').checked;await saveC();applyPerms()};
+async function saveC(){if(!rId)return;try{await setDoc(doc(db,"ristoranti",rId,"impostazioni","configurazione"),cfg)}catch(e){toast('Errore salvataggio.','er')}}
+function applyPerms(){const ca=isAdmin||cfg.perms.add;Q('main-add').style.display=ca?'flex':'none';const da=Q('dadd');if(da)da.style.display=ca?'flex':'none';const ce=isAdmin||cfg.perms.edit;const sb=Q('bsav');sb.disabled=!ce;sb.innerHTML=ce?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:17px;height:17px"><polyline points="20 6 9 17 4 12"/></svg>Salva':'Modifica Disabilitata'}
+function resetUI(){Q('adm-s').style.display='none';Q('ulk-txt').textContent='Sblocca Modalità Admin';Q('r-ulk').style.background='';Q('r-ulk').querySelector('.sla').style.color='';Q('ulk-si').className='si ye'}
 
-        if(!email || !pwd) return alert("Inserisci email e password per accedere.");
-        btnLogin.innerText = "ACCESSO IN CORSO... ⏳"; btnLogin.disabled = true;
+// Operator selection
+const clrs=['#6c5ce7','#10b981','#f59e0b','#3b82f6','#ef4444','#a78bfa','#14b8a6','#f97316'];
+function renderOpSel(){const c=Q('op-sel'),mm=cfg.teamMembers||[];if(!mm.length){c.innerHTML='<div style="padding:14px;text-align:center;color:var(--tx3);font-size:.84rem;font-weight:500;background:var(--bg-el);border-radius:var(--r);border:1px solid var(--bd)">Nessun operatore.<br>L\'admin può aggiungere membri.</div>';return}c.innerHTML=mm.map((m,i)=>`<div class="opo ${myOp===m?'sel':''}" onclick="W.selOp('${m.replace(/'/g,"\\'")}')"><div class="opav" style="background:${clrs[i%clrs.length]}">${m.charAt(0).toUpperCase()}</div><div class="opn">${m}</div><div class="opck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div></div>`).join('')}
+W.selOp=function(n){if(myOp===n){myOp='';localStorage.removeItem('rg_op')}else{myOp=n;localStorage.setItem('rg_op',n)}renderOpSel();toast(myOp?'Profilo: '+myOp:'Profilo rimosso','ok')};
 
-        signInWithEmailAndPassword(auth, email, pwd)
-            .then(() => { btnLogin.innerText = "ACCEDI"; btnLogin.disabled = false; })
-            .catch((error) => {
-                alert("Blocco Firebase: " + error.message);
-                console.error(error);
-                btnLogin.innerText = "ACCEDI"; btnLogin.disabled = false;
-            });
-    };
+// Team
+W.openTeam=function(){if(!isAdmin)return;renderTmL();Q('tmM').style.display='block';pushState()};
+W.addMem=async function(){if(!isAdmin)return;const inp=Q('nm-n'),n=inp.value.trim();if(!n)return toast('Inserisci nome.','er');if(cfg.teamMembers.includes(n))return toast('Già presente.','er');cfg.teamMembers.push(n);await saveC();inp.value='';renderTmL();renderOpSel();updOpDrop();updTcLbl();toast(n+' aggiunto!','ok')};
+W.rmMem=async function(n){if(!isAdmin||!confirm('Rimuovere '+n+'?'))return;cfg.teamMembers=cfg.teamMembers.filter(m=>m!==n);if(myOp===n){myOp='';localStorage.removeItem('rg_op')}await saveC();renderTmL();renderOpSel();updOpDrop();updTcLbl();toast(n+' rimosso.','ok')};
+function renderTmL(){const c=Q('tm-l'),mm=cfg.teamMembers||[];if(!mm.length){c.innerHTML='<div style="padding:20px;text-align:center;color:var(--tx3);font-size:.86rem">Nessun membro</div>';return}c.innerHTML=mm.map((m,i)=>`<div class="tmi"><div class="tma" style="background:${clrs[i%clrs.length]}">${m.charAt(0).toUpperCase()}</div><div class="tmn">${m}</div><button class="tmd" onclick="W.rmMem('${m.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`).join('')}
+function updOpDrop(){const s=Q('rop'),cv=s.value,mm=cfg.teamMembers||[];let h='<option value="">-- Seleziona --</option>';mm.forEach(m=>h+=`<option value="${m}">${m}</option>`);h+='<option value="__c__">✎ Altro...</option>';s.innerHTML=h;if(cv&&mm.includes(cv))s.value=cv}
+function updTcLbl(){const c=(cfg.teamMembers||[]).length;Q('tc-lbl').textContent=c+' membr'+(c===1?'o':'i')}
+Q('rop').addEventListener('change',function(){if(this.value==='__c__'){const n=prompt('Nome operatore:');if(n&&n.trim()){const o=document.createElement('option');o.value=n.trim();o.textContent=n.trim();this.insertBefore(o,this.lastElementChild);this.value=n.trim()}else this.value=''}});
+Q('nm-n').addEventListener('keypress',e=>{if(e.key==='Enter'){e.preventDefault();W.addMem()}});
 
-    window.registerRestaurant = function() {
-        const email = document.getElementById('app-email-input').value.trim();
-        const pwd = document.getElementById('app-pwd-input').value;
-        const btnRegister = document.getElementById('btn-register');
+// Chiusura, backup
+W.openChius=function(){if(!isAdmin)return;Q('cl-d').value=cfg.closing.day;Q('cl-s').value=cfg.closing.shift;Q('chM').style.display='block';pushState()};
+W.saveChius=async function(){if(!isAdmin)return;cfg.closing.day=Q('cl-d').value;cfg.closing.shift=Q('cl-s').value;await saveC();toast('Aggiornato!','ok');Q('chM').style.display='none';renderCal()};
+W.expBackup=function(){if(!isAdmin)return;if(!res.length)return toast('Nessun dato.','er');const d="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(res,null,2));const a=document.createElement('a');a.href=d;a.download="ristogest_backup_"+todayStr()+".json";a.click();toast('Scaricato!','ok')};
+W.chkCl=function(){const dv=Q('rdt').value,tv=Q('rtm').value;if(dv&&tv){const dow=new Date(dv).getDay(),h=parseInt(tv.split(':')[0]),ip=h<15,cd=parseInt(cfg.closing.day),cs=cfg.closing.shift;if(dow===cd&&(cs==='tutto'||(cs==='pranzo'&&ip)||(cs==='cena'&&!ip)))toast('⚠ Locale CHIUSO!','er')}};
+W.call=function(p,n){if(!p)return;if(confirm('Chiamare '+(n||p)+'?'))location.href='tel:'+p};
+Q('rph').addEventListener('input',e=>{Q('bcall').style.display=e.target.value?'flex':'none'});
+W.stp=function(id,d){const el=Q(id);el.value=Math.max(0,(parseInt(el.value)||0)+d)};
 
-        if(!email || !pwd) return alert("Inserisci un'email e una password per registrarti.");
-        if(pwd.length < 6) return alert("La password deve avere almeno 6 caratteri.");
+// ===== CALENDAR =====
+const mTh=[{h:'#c0392b'},{h:'#8e44ad'},{h:'#27ae60'},{h:'#e67e22'},{h:'#e74c3c'},{h:'#16a085'},{h:'#2980b9'},{h:'#d35400'},{h:'#8e44ad'},{h:'#c0392b'},{h:'#7f8c8d'},{h:'#2c3e50'}];
+function h2r(hex){return{r:parseInt(hex.slice(1,3),16),g:parseInt(hex.slice(3,5),16),b:parseInt(hex.slice(5,7),16)}}
+function updClk(){const c=Q('clk'),n=new Date();c.querySelector('.cd').innerText=n.toLocaleDateString('it-IT',{weekday:'short',day:'2-digit',month:'short'});c.querySelector('.ct').innerText=n.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+setInterval(updClk,1000);updClk();
+const todayStr=()=>{const t=new Date();return`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`};
+const smH=["01-01","01-06","02-05","03-25","04-01","05-01","07-28","08-15","09-03","10-01","11-01","11-02","12-08","12-25","12-26","12-31"];
+const dynH=["2026-04-05","2026-04-06"];
+function isHol(d){if(d.getDay()===0)return true;const mm=`${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;return smH.includes(mm)||dynH.includes(`${d.getFullYear()}-${mm}`)}
+const mNm=["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+const dNm=["Dom","Lun","Mar","Mer","Gio","Ven","Sab"];
 
-        btnRegister.innerText = "CREAZIONE... ⏳"; btnRegister.disabled = true;
+W.tgView=function(v,btn){Q('cal-v').style.display=v==='cal'?'block':'none';Q('list-v').style.display=v==='list'?'block':'none';document.querySelectorAll('.bt').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(v==='cal'){renderCal();scrlToday()}if(v==='list')renderList()};
+W.openOpts=function(){W.closeAll();Q('optsM').style.display='block';pushState()};
+W.openMan=function(){Q('manM').style.display='block';pushState()};
+W.closeAll=function(){document.querySelectorAll('.modal').forEach(m=>m.style.display='none');Q('rF').reset();Q('rid').value='';Q('cs3').classList.remove('active');Q('ms4').classList.remove('active');document.querySelectorAll('.tgb').forEach(b=>b.classList.remove('active'));modalOpen=false};
+W.tryCloseForm=function(){if(confirm('Chiudere senza salvare?'))W.closeAll()};
+W.tgSec=function(id,btn){Q(id).classList.toggle('active');btn.classList.toggle('active')};
+W.chgMonth=function(dir){curDate.setDate(1);curDate.setMonth(curDate.getMonth()+dir);renderCal();if(curDate.getMonth()===new Date().getMonth()&&curDate.getFullYear()===new Date().getFullYear())scrlToday();else scrollTo({top:0,behavior:'smooth'})};
+function scrlToday(){setTimeout(()=>{const el=Q('row-today');if(el)scrollTo({top:el.getBoundingClientRect().top+pageYOffset-Q('hdr').offsetHeight-50,behavior:'smooth'})},150)}
 
-        createUserWithEmailAndPassword(auth, email, pwd)
-            .then(() => {
-                alert("Account creato con successo! Benvenuto in RistoGest Pro.");
-                btnRegister.innerText = "CREA ACCOUNT"; btnRegister.disabled = false;
-            })
-            .catch((error) => {
-                let msg = "Errore durante la registrazione: " + error.message;
-                if (error.code === 'auth/email-already-in-use') msg = "Questa email è già in uso. Prova ad accedere.";
-                if (error.code === 'auth/invalid-email') msg = "L'email inserita non è valida.";
-                alert(msg);
-                btnRegister.innerText = "CREA ACCOUNT"; btnRegister.disabled = false;
-            });
-    };
+function renderCal(){const g=Q('ag');g.innerHTML='';const y=curDate.getFullYear(),m=curDate.getMonth();const th=mTh[m];Q('my-d').innerText=mNm[m]+' '+y;Q('mhdr').style.backgroundColor=th.h;const dim=new Date(y,m+1,0).getDate();const ts=todayStr();const cd=parseInt(cfg.closing.day),cs=cfg.closing.shift;const rgb=h2r(th.h);
+for(let d=1;d<=dim;d++){const dO=new Date(y,m,d),ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,isT=ds===ts,isC=dO.getDay()===cd;
+const div=document.createElement('div');div.className=`ar ${isT?'today':''} ${isHol(dO)?'fest':''}`;if(isT)div.id='row-today';div.onclick=()=>W.openDay(ds);
+if(!isT){const int=1-(d-1)/(dim-1||1);div.style.background=`linear-gradient(135deg,rgba(${rgb.r},${rgb.g},${rgb.b},${Math.max(.01,int*.12)}) 0%,#fff 100%)`}
+const dr=res.filter(r=>r.date===ds),rp=dr.filter(r=>r.service==='Pranzo'),rc=dr.filter(r=>r.service==='Cena');
+let h=`<div class="ad2"><span class="dn">${d}</span><span class="dd">${dNm[dO.getDay()]}</span></div><div class="ac2">`;
+if(rp.length)h+=`<div class="sp pp"><span class="st">${isC?'☀ EXTRA':'☀ PRANZO'}</span><span class="sv">${rp.reduce((s,r)=>s+r.pax,0)} pax</span></div>`;else if(isC&&(cs==='pranzo'||cs==='tutto'))h+=`<div class="sp px"><span class="st">☀ PRANZO</span><span class="sv" style="font-size:.72rem">Chiuso</span></div>`;else h+=`<div class="sp pe"><span class="st">☀ PRANZO</span><span class="sv">—</span></div>`;
+if(rc.length)h+=`<div class="sp pc"><span class="st">${isC?'☾ EXTRA':'☾ CENA'}</span><span class="sv">${rc.reduce((s,r)=>s+r.pax,0)} pax</span></div>`;else if(isC&&(cs==='cena'||cs==='tutto'))h+=`<div class="sp px"><span class="st">☾ CENA</span><span class="sv" style="font-size:.72rem">Chiuso</span></div>`;else h+=`<div class="sp pe"><span class="st">☾ CENA</span><span class="sv">—</span></div>`;
+div.innerHTML=h+'</div>';g.appendChild(div)}}
 
-    window.forgotPassword = function() {
-        const email = document.getElementById('app-email-input').value.trim();
-        if(!email) return alert("Scrivi la tua email nella casella qui sopra e clicca di nuovo su 'Password dimenticata?'.");
-        
-        sendPasswordResetEmail(auth, email)
-            .then(() => alert("Email inviata! Controlla la tua posta in arrivo (e lo Spam)."))
-            .catch((error) => {
-                if(error.code === 'auth/user-not-found') alert("Questa email non risulta registrata.");
-                else alert("Errore durante l'invio: " + error.message);
-            });
-    };
+function intStr(o){if(!o)return'';let a=[];if(o.celiaco>0)a.push(o.celiaco+' Cel');if(o.vegetariano>0)a.push(o.vegetariano+' Veg');if(o.vegano>0)a.push(o.vegano+' Vgn');return a.length?'⚠ '+a.join(' · '):''}
 
-    window.logoutRestaurant = function() {
-        if(confirm("Sei sicuro di voler uscire dall'account?")) { signOut(auth).then(() => { window.closeModals(); }); }
-    };
+function paxClass(p){if(p<=2)return'pax-sm';if(p<=4)return'pax-md';if(p<=6)return'pax-lg';return'pax-xl'}
 
-    // --- CARICAMENTO IMPOSTAZIONI CLOUD E PRENOTAZIONI ---
-    async function loadSettingsAndReservations() {
-        if (!currentRestaurantId) return;
-        
-        try {
-            // 1. Carica prima le impostazioni
-            const settingsDoc = await getDoc(doc(db, "ristoranti", currentRestaurantId, "impostazioni", "configurazione"));
-            if(settingsDoc.exists()) {
-                restaurantSettings = settingsDoc.data();
-            } else {
-                // Se non esistono, le salva sul cloud per la prima volta
-                await setDoc(doc(db, "ristoranti", currentRestaurantId, "impostazioni", "configurazione"), restaurantSettings);
-            }
-            
-            applyPermissionsToUI();
+function buildResCard(r){
+const pc=paxClass(r.pax);const sn=r.name?r.name.replace(/'/g,"\\'"):'';
+let tags='';
+if(r.intolerances){
+if((r.intolerances.celiaco||0)>0)tags+=`<span class="rc-tag cel">🚫 ${r.intolerances.celiaco} Cel</span>`;
+if((r.intolerances.vegetariano||0)>0)tags+=`<span class="rc-tag veg">🥬 ${r.intolerances.vegetariano} Veg</span>`;
+if((r.intolerances.vegano||0)>0)tags+=`<span class="rc-tag vgn">🌱 ${r.intolerances.vegano} Vgn</span>`;
+}
+if((r.children||0)>0)tags+=`<span class="rc-tag kids">👶 ${r.children}</span>`;
+if((r.highchairs||0)>0)tags+=`<span class="rc-tag hc">🪑 ${r.highchairs}</span>`;
+if(r.notes)tags+=`<span class="rc-tag notes" title="${r.notes.replace(/"/g,'&quot;')}">📝</span>`;
+const ph=r.phone?`<span class="rc-phone" onclick="event.stopPropagation();W.call('${r.phone}','${sn}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.44 2.58.94 2.13.7 2.81"/></svg>${r.phone}</span>`:'';
+const op=r.operator?`<span class="rc-op"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${r.operator}</span>`:'';
+return`<div class="rc" onclick="W.closeAll();W.openForm('${r.id}')"><div class="rc-bar ${pc}"></div><div class="rc-body"><div class="rc-top"><span class="rc-name">${r.name}</span><span class="rc-pax ${pc}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${r.pax}</span></div><div class="rc-bottom">${ph}${op}</div>${tags?`<div class="rc-tags">${tags}</div>`:''}</div></div>`;
+}
 
-            // 2. Carica le prenotazioni
-            const dbPath = collection(db, "ristoranti", currentRestaurantId, "prenotazioni");
-            unsubscribeSnapshot = onSnapshot(dbPath, (snapshot) => {
-                reservations = [];
-                snapshot.forEach((doc) => { reservations.push({ id: doc.id, ...doc.data() }); });
-                renderCalendar(); renderList();
-                
-                if(!initialLoadDone) { 
-                    document.getElementById('loading-overlay').style.display = 'none'; 
-                    window.toggleView('calendar', document.getElementById('btn-cal')); 
-                    initialLoadDone = true; 
-                } 
-                else if (document.getElementById('dayModal').style.display === 'block' && selectedDayForNewRes) { 
-                    window.openDayModal(selectedDayForNewRes); 
-                }
-            }, (error) => { 
-                document.getElementById('loading-overlay').innerText = "Errore connessione DB. Controlla le regole."; 
-                console.error("Errore onSnapshot:", error);
-            });
-        } catch (error) {
-            console.error("Errore critico in loadSettingsAndReservations:", error);
-            document.getElementById('loading-overlay').innerText = "Accesso negato. Aggiorna le regole di Firebase."; 
-        }
-    }
+function dayHtmlTimeline(dr,service){
+const arr=dr.filter(r=>r.service===service).sort((a,b)=>a.time.localeCompare(b.time));
+if(!arr.length)return'';
+const slots=service==='Pranzo'?['12:00','12:30','13:00','13:30','14:00','14:30']:['18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+const usedSlots=new Set(arr.map(r=>r.time));
+const allSlots=[...new Set([...slots,...usedSlots])].sort();
+let h=`<div class="sst ${service==='Pranzo'?'stp':'stc'}"><span>${service==='Pranzo'?'☀':'☾'} ${service.toUpperCase()}</span><span>${arr.reduce((s,r)=>s+r.pax,0)} pax · ${arr.length} prenotazion${arr.length===1?'e':'i'}</span></div><div class="tl-grid">`;
+allSlots.forEach(t=>{const tRes=arr.filter(r=>r.time===t);
+h+=`<div class="tl-slot"><div class="tl-time ${tRes.length?'has-res':''}">${t}</div><div class="tl-cards">`;
+if(tRes.length)tRes.forEach(r=>{h+=buildResCard(r)});
+else h+=`<div class="tl-empty">—</div>`;
+h+=`</div></div>`});
+return h+'</div>';}
 
-    // --- LOGICA MODALITA' ADMIN E PERMESSI ---
-    window.unlockAdmin = function() {
-        if(isAdmin) return alert("Sei già in Modalità Creatore.");
-        const pin = prompt("Inserisci il PIN Creatore per sbloccare le funzioni:");
-        
-        if(pin === restaurantSettings.adminPin) {
-            isAdmin = true;
-            document.getElementById('admin-settings').style.display = 'block';
-            
-            const unlockRow = document.getElementById('row-admin-unlock');
-            unlockRow.querySelector('.text').innerText = "Modalità Creatore Attiva ✅";
-            unlockRow.querySelector('.icon').innerText = "👑";
-            unlockRow.style.background = "var(--accent-light)";
-            unlockRow.querySelector('.text').style.color = "var(--accent)";
-            unlockRow.classList.add('no-hover');
-            
-            // Imposta gli interruttori visivamente
-            document.getElementById('perm-add').checked = restaurantSettings.perms.add;
-            document.getElementById('perm-edit').checked = restaurantSettings.perms.edit;
-            document.getElementById('perm-delete').checked = restaurantSettings.perms.delete;
-            
-            applyPermissionsToUI();
-        } else if(pin !== null) {
-            alert("PIN Errato!");
-        }
-    };
+function dayHtml(dr){if(!dr.length)return'<p style="padding:28px;text-align:center;color:var(--tx3);font-size:.88rem;font-weight:500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:28px;height:28px;display:block;margin:0 auto 8px;opacity:.4"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>Nessuna prenotazione</p>';
+const pr=dr.filter(r=>r.service==='Pranzo'),ce=dr.filter(r=>r.service==='Cena');let h='';
+h+=dayHtmlTimeline(dr,'Pranzo');
+if(pr.length&&ce.length)h+='<div class="sdv"></div>';
+h+=dayHtmlTimeline(dr,'Cena');
+return h;}
 
-    window.changeAdminPin = async function() {
-        if(!isAdmin) return;
-        const newPin = prompt("Inserisci il NUOVO PIN Creatore:");
-        if(newPin && newPin.length > 0) {
-            restaurantSettings.adminPin = newPin;
-            await saveCloudSettings();
-            alert("PIN modificato con successo!");
-        }
-    };
+W.tgAcc=function(h,isO){if(isO)return;const c=h.nextElementSibling,ic=h.querySelector('.icon');if(!ic)return;c.style.display=c.style.display==='none'?'block':'none';ic.style.transform=c.style.display==='none'?'rotate(0deg)':'rotate(180deg)'};
+W.openDay=function(ds){selDay=ds;Q('dtit').innerText=new Date(ds).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();Q('dlist').innerHTML=dayHtml(res.filter(r=>r.date===ds));const isPast=ds<todayStr();const da=Q('dadd');if(da){if(isPast){da.style.display='none'}else{da.style.display=(isAdmin||cfg.perms.add)?'flex':'none'}}Q('dM').style.display='block';pushState()};
+W.filterPast=function(q){q=q.toLowerCase().trim();document.querySelectorAll('.pdb').forEach(b=>{b.style.display=b.getAttribute('data-s').includes(q)?'block':'none'})};
 
-    window.updatePermissions = async function() {
-        if(!isAdmin) return;
-        restaurantSettings.perms.add = document.getElementById('perm-add').checked;
-        restaurantSettings.perms.edit = document.getElementById('perm-edit').checked;
-        restaurantSettings.perms.delete = document.getElementById('perm-delete').checked;
-        
-        await saveCloudSettings();
-        applyPermissionsToUI();
-    };
+function renderList(){const c=Q('lc2');c.innerHTML='';const ts=todayStr();const gp={};res.forEach(r=>{if(!gp[r.date])gp[r.date]=[];gp[r.date].push(r)});const past=[],up=[];Object.keys(gp).sort().forEach(d=>{if(d<ts)past.push(d);else up.push(d)});
 
-    async function saveCloudSettings() {
-        if(!currentRestaurantId) return;
-        try {
-            await setDoc(doc(db, "ristoranti", currentRestaurantId, "impostazioni", "configurazione"), restaurantSettings);
-        } catch(e) { console.error("Errore salvataggio impostazioni", e); alert("Errore nel salvataggio impostazioni."); }
-    }
+if(past.length){const pc=document.createElement('div');pc.className='lg';pc.style.marginBottom='18px';let h=`<div class="lgh" style="background:#6b7280" onclick="W.tgAcc(this,false)"><div class="lgh-left"><div class="lgh-date-box"><span class="lgh-num">📚</span></div><div class="lgh-info"><span class="lgh-title">ARCHIVIO PASSATI</span><div class="lgh-stats"><span class="lgh-stat">${past.length} giorn${past.length===1?'o':'i'}</span></div></div></div><span class="icon" style="transform:rotate(0deg);display:inline-block;transition:transform .3s">▼</span></div><div style="display:none;padding:12px;background:var(--bg)"><div class="sbx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Cerca nel passato..." onkeyup="W.filterPast(this.value)"></div>`;
+past.sort((a,b)=>b.localeCompare(a)).forEach(d=>{const dO=new Date(d);let it=dO.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();const dr=gp[d];const tp=dr.reduce((s,r)=>s+r.pax,0);h+=`<div class="pdb lg past-day" data-s="${it.toLowerCase()} ${d}" style="margin-bottom:10px"><div style="padding:10px 14px;font-weight:800;font-size:.82rem;border-bottom:1px solid var(--bd);background:var(--bg-el);display:flex;justify-content:space-between;align-items:center"><span>${it}</span><span style="font-size:.72rem;color:var(--tx2)">${tp} pax · ${dr.length} pren.</span></div>${dayHtml(dr)}</div>`});h+='</div>';pc.innerHTML=h;c.appendChild(pc)}
 
-    function applyPermissionsToUI() {
-        const canAdd = isAdmin || restaurantSettings.perms.add;
-        document.getElementById('main-add-btn').style.display = canAdd ? 'flex' : 'none';
-        const dayBtn = document.getElementById('day-add-btn');
-        if(dayBtn) dayBtn.style.display = canAdd ? 'block' : 'none';
+up.forEach(d=>{const dO=new Date(d);const dayNum=dO.getDate();const dowName=dNm[dO.getDay()];let it=dO.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();const isO=d===ts;if(isO)it='OGGI — '+it;const th=mTh[dO.getMonth()];const dr=gp[d];const tp=dr.reduce((s,r)=>s+r.pax,0);const rp=dr.filter(r=>r.service==='Pranzo');const rc=dr.filter(r=>r.service==='Cena');
+const g=document.createElement('div');g.className=`lg ${isO?'today-card':''}`;
+let statsH=`<div class="lgh-stats">`;
+if(rp.length)statsH+=`<span class="lgh-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/></svg>☀ ${rp.reduce((s,r)=>s+r.pax,0)}</span>`;
+if(rc.length)statsH+=`<span class="lgh-stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1111.21 3"/></svg>☾ ${rc.reduce((s,r)=>s+r.pax,0)}</span>`;
+statsH+=`<span class="lgh-stat">${tp} pax</span></div>`;
+g.innerHTML=`<div class="lgh" style="background:${isO?'var(--ac)':th.h}" onclick="W.tgAcc(this,${isO})"><div class="lgh-left"><div class="lgh-date-box"><span class="lgh-num">${dayNum}</span><span class="lgh-dow">${dowName}</span></div><div class="lgh-info"><span class="lgh-title">${it}</span>${statsH}</div></div>${isO?'':`<span class="icon" style="transform:rotate(0deg);display:inline-block;transition:transform .3s">▼</span>`}</div><div style="display:${isO?'block':'none'}">${dayHtml(dr)}</div>`;c.appendChild(g)})}
 
-        const canEdit = isAdmin || restaurantSettings.perms.edit;
-        document.getElementById('btn-submit-save').disabled = !canEdit;
-        if(!canEdit) document.getElementById('btn-submit-save').innerText = "Modifica Disabilitata";
-        else document.getElementById('btn-submit-save').innerText = "💾 Salva";
-    }
+W.openFormDay=function(){if(!isAdmin&&!cfg.perms.add)return toast('Non permesso.','er');if(selDay&&selDay<todayStr())return toast('Non puoi prenotare per giorni passati.','er');W.closeAll();W.openForm();if(selDay){Q('rdt').value=selDay;W.chkCl()}};
+W.openForm=function(id=null){Q('rF').reset();Q('rid').value='';Q('bdel').style.display='none';updOpDrop();const cb=Q('bcall');Q('rdt').setAttribute('min',todayStr());
+if(id){Q('ftit').innerText='Dettagli';const r=res.find(x=>x.id===id);if(r){Q('rid').value=r.id;Q('rdt').value=r.date;Q('rdt').removeAttribute('min');Q('rtm').value=r.time;Q('rnm').value=r.name;Q('rph').value=r.phone;Q('rpx').value=r.pax;Q('rch').value=r.children||0;Q('rhc').value=r.highchairs||0;Q('rnt').value=r.notes||'';
+const os=Q('rop'),ov=r.operator||'';if(!Array.from(os.options).some(o=>o.value===ov)&&ov){const o=document.createElement('option');o.value=ov;o.textContent=ov;os.insertBefore(o,os.lastElementChild)}os.value=ov;
+if(r.intolerances){Q('ic').value=r.intolerances.celiaco||0;Q('iv').value=r.intolerances.vegetariano||0;Q('ivg').value=r.intolerances.vegano||0}
+Q('bdel').style.display=(isAdmin||cfg.perms.delete)?'flex':'none';cb.style.display=r.phone?'flex':'none';
+if((r.children||0)>0||(r.highchairs||0)>0)W.tgSec('cs3',Q('tb1'));
+if(r.intolerances&&((r.intolerances.celiaco||0)+(r.intolerances.vegetariano||0)+(r.intolerances.vegano||0)>0))W.tgSec('ms4',Q('tb2'))}}
+else{if(!isAdmin&&!cfg.perms.add)return toast('Non permesso.','er');Q('ftit').innerText='Nuova Prenotazione';cb.style.display='none';if(!selDay)Q('rdt').value=todayStr();if(myOp){const os=Q('rop');if(Array.from(os.options).some(o=>o.value===myOp))os.value=myOp}}
+Q('fM').style.display='block';pushState()};
 
-    function resetUI() {
-        document.getElementById('admin-settings').style.display = 'none';
-        const unlockRow = document.getElementById('row-admin-unlock');
-        if(unlockRow) {
-            unlockRow.querySelector('.text').innerText = "Sblocca Modalità Creatore";
-            unlockRow.querySelector('.icon').innerText = "🔐";
-            unlockRow.style.background = "var(--white)";
-            unlockRow.querySelector('.text').style.color = "var(--primary)";
-            unlockRow.classList.remove('no-hover');
-        }
-    }
+W.saveRes=async function(e){e.preventDefault();const isE=Q('rid').value!=='';if(isE&&!isAdmin&&!cfg.perms.edit)return toast('Non permesso.','er');if(!isE&&!isAdmin&&!cfg.perms.add)return toast('Non permesso.','er');if(!rId)return toast('Errore.','er');
+const dv=Q('rdt').value,tv=Q('rtm').value;
+if(!isE){const ts=todayStr();const now=new Date();const nowH=now.getHours(),nowM=now.getMinutes();if(dv<ts)return toast('Non puoi prenotare per giorni passati.','er');if(dv===ts){const[h,m]=tv.split(':').map(Number);if(h<nowH||(h===nowH&&m<=nowM))return toast('Non puoi prenotare per orari già passati.','er')}}
+const btn=Q('bsav');btn.disabled=true;btn.innerHTML='Salvataggio...';const id=Q('rid').value||Date.now().toString()+Math.floor(Math.random()*1000);
+const nr={date:dv,service:parseInt(tv.split(':')[0])<15?'Pranzo':'Cena',time:tv,name:Q('rnm').value,phone:Q('rph').value,pax:parseInt(Q('rpx').value),children:parseInt(Q('rch').value)||0,highchairs:parseInt(Q('rhc').value)||0,intolerances:{celiaco:parseInt(Q('ic').value)||0,vegetariano:parseInt(Q('iv').value)||0,vegano:parseInt(Q('ivg').value)||0},notes:Q('rnt').value,operator:Q('rop').value};
+try{await setDoc(doc(db,"ristoranti",rId,"prenotazioni",id),nr);W.closeAll();selDay=null;toast(isE?'Aggiornata!':'Salvata!','ok')}catch(err){toast('Errore: '+err.message,'er')}finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:17px;height:17px"><polyline points="20 6 9 17 4 12"/></svg>Salva'}};
 
-    // --- IMPOSTAZIONI CHIUSURA E BACKUP (Roba da Admin) ---
-    window.apriImpostazioniChiusura = function() {
-        if(!isAdmin) return;
-        document.getElementById('opt-closing-day').value = restaurantSettings.closing.day; 
-        document.getElementById('opt-closing-shift').value = restaurantSettings.closing.shift; 
-        document.getElementById('chiusuraModal').style.display = 'block';
-    };
-
-    window.saveClosingSettings = async function() {
-        if(!isAdmin) return;
-        restaurantSettings.closing.day = document.getElementById('opt-closing-day').value;
-        restaurantSettings.closing.shift = document.getElementById('opt-closing-shift').value;
-        await saveCloudSettings();
-        alert("Giorni di chiusura aggiornati!");
-        document.getElementById('chiusuraModal').style.display = 'none';
-        renderCalendar(); 
-    };
-
-    window.exportBackup = function() {
-        if(!isAdmin) return;
-        if(reservations.length === 0) return alert("Nessuna prenotazione da esportare.");
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reservations));
-        const dlAnchorElem = document.createElement('a');
-        dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", "ristogest_backup_" + getTodayString() + ".json");
-        dlAnchorElem.click();
-    };
-
-    window.checkClosedShift = function() {
-        const dateVal = document.getElementById('res-date').value;
-        const timeVal = document.getElementById('res-time').value;
-        
-        if (dateVal && timeVal) {
-            const dayOfWeek = new Date(dateVal).getDay(); 
-            const hour = parseInt(timeVal.split(':')[0]);
-            const isPranzo = hour < 15;
-            
-            const closingDay = parseInt(restaurantSettings.closing.day);
-            const closingShift = restaurantSettings.closing.shift;
-
-            if (dayOfWeek === closingDay) {
-                if (closingShift === 'tutto' || (closingShift === 'pranzo' && isPranzo) || (closingShift === 'cena' && !isPranzo)) {
-                    alert("⚠️ ATTENZIONE: Il locale risulta CHIUSO nel turno selezionato!");
-                }
-            }
-        }
-    };
-    
-    document.getElementById('res-date').addEventListener('change', window.checkClosedShift);
-    document.getElementById('res-time').addEventListener('change', window.checkClosedShift);
-
-    window.confirmCall = function(phone, name) {
-        if (!phone) return;
-        const displayName = name ? name : "questo numero";
-        if (confirm(`Vuoi chiamare ${displayName} al numero ${phone}?`)) { window.location.href = `tel:${phone}`; }
-    };
-
-    document.getElementById('res-phone').addEventListener('input', (e) => {
-        const callBtn = document.getElementById('btn-call-phone');
-        callBtn.style.display = e.target.value ? 'flex' : 'none';
-    });
-
-    window.updateStepper = function(inputId, delta) {
-        const inputEl = document.getElementById(inputId);
-        let val = parseInt(inputEl.value) || 0;
-        val += delta;
-        if (val < 0) val = 0; 
-        inputEl.value = val;
-    };
-
-    const monthColors = ["#0f172a", "#1e293b", "#334155", "#475569", "#115e59", "#0f766e", "#0369a1", "#1d4ed8", "#4338ca", "#4f46e5", "#6d28d9", "#be123c"];
-
-    function updateClock() {
-        const clockEl = document.getElementById('live-clock');
-        const now = new Date();
-        clockEl.querySelector('.date').innerText = now.toLocaleDateString('it-IT', { weekday: 'short', day: '2-digit', month: 'short' });
-        clockEl.querySelector('.time').innerText = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute:'2-digit', second:'2-digit' });
-    }
-    setInterval(updateClock, 1000); updateClock();
-
-    const getTodayString = () => { const t = new Date(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`; };
-    const smHolidays = ["01-01", "01-06", "02-05", "03-25", "04-01", "05-01", "07-28", "08-15", "09-03", "10-01", "11-01", "11-02", "12-08", "12-25", "12-26", "12-31"];
-    const dynamicHolidays = ["2026-04-05", "2026-04-06"]; 
-
-    function isHoliday(dateObj) {
-        if (dateObj.getDay() === 0) return true;
-        const mmdd = `${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-        return smHolidays.includes(mmdd) || dynamicHolidays.includes(`${dateObj.getFullYear()}-${mmdd}`);
-    }
-
-    window.toggleView = function(view, btnClicked) {
-        document.getElementById('calendar-view').style.display = view === 'calendar' ? 'block' : 'none';
-        document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
-        
-        document.getElementById('btn-cal').classList.remove('active-tab');
-        document.getElementById('btn-list').classList.remove('active-tab');
-        if(btnClicked) btnClicked.classList.add('active-tab');
-
-        if(view === 'calendar') { renderCalendar(); scrollToToday(); }
-        if(view === 'list') renderList();
-    };
-
-    window.openOptionsModal = function() {
-        window.closeModals();
-        document.getElementById('optionsModal').style.display = 'block';
-    };
-
-    window.closeModals = function() {
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-        document.getElementById('reservationForm').reset();
-        document.getElementById('res-id').value = '';
-        document.getElementById('children-section').classList.remove('active');
-        document.getElementById('menu-section').classList.remove('active');
-        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-    };
-
-    window.attemptCloseForm = function() { if(confirm("Chiudere senza salvare?")) { window.closeModals(); } };
-
-    window.toggleSection = function(sectionId, btn) {
-        document.getElementById(sectionId).classList.toggle('active');
-        btn.classList.toggle('active');
-    };
-
-    window.changeMonth = function(dir) {
-        currentDate.setDate(1);
-        currentDate.setMonth(currentDate.getMonth() + dir); 
-        renderCalendar();
-        if(currentDate.getMonth() === new Date().getMonth() && currentDate.getFullYear() === new Date().getFullYear()) { scrollToToday(); } 
-        else { window.scrollTo({top: 0, behavior: 'smooth'}); }
-    };
-
-    function scrollToToday() { setTimeout(() => { const todayEl = document.getElementById('row-today'); if(todayEl) { window.scrollTo({ top: todayEl.getBoundingClientRect().top + window.pageYOffset - document.getElementById('main-header').offsetHeight - 80, behavior: 'smooth' }); } }, 150); }
-
-    function renderCalendar() {
-        const grid = document.getElementById('agenda-grid'); grid.innerHTML = '';
-        const year = currentDate.getFullYear(); const month = currentDate.getMonth();
-        
-        const color = monthColors[month];
-        document.getElementById('month-year-display').innerText = `${["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"][month]} ${year}`;
-        document.getElementById('month-header').style.backgroundColor = color;
-        
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const todayStr = getTodayString();
-
-        const closingDay = parseInt(restaurantSettings.closing.day);
-        const closingShift = restaurantSettings.closing.shift;
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dateObj = new Date(year, month, day); const dateString = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            const isOggi = dateString === todayStr; 
-            const isClosingDay = dateObj.getDay() === closingDay;
-            
-            const div = document.createElement('div');
-            div.className = `agenda-row ${isOggi ? 'today' : ''} ${isHoliday(dateObj) ? 'festivo' : ''}`;
-            if(isOggi) div.id = 'row-today'; div.onclick = () => window.openDayModal(dateString);
-            
-            let html = `<div class="agenda-date"><span class="num">${day}</span><span class="day">${["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"][dateObj.getDay()]}</span></div><div class="agenda-content">`;
-            
-            const dayRes = reservations.filter(r => r.date === dateString);
-            const resPranzo = dayRes.filter(r => r.service === 'Pranzo');
-            const resCena = dayRes.filter(r => r.service === 'Cena');
-
-            if (resPranzo.length > 0) { 
-                html += `<div class="shift-pill pill-pranzo"><span class="title">${isClosingDay ? '☀️ EXTRA' : '☀️ PRANZO'}</span> <span class="val">${resPranzo.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; 
-            } else if (isClosingDay && (closingShift === 'pranzo' || closingShift === 'tutto')) {
-                html += `<div class="shift-pill pill-chiuso"><span class="title">☀️ PRANZO</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`;
-            } else { 
-                html += `<div class="shift-pill pill-empty"><span class="title">☀️ PRANZO</span> <span class="val">-</span></div>`; 
-            }
-
-            if (resCena.length > 0) { 
-                html += `<div class="shift-pill pill-cena"><span class="title">${isClosingDay ? '🌙 EXTRA' : '🌙 CENA'}</span> <span class="val">${resCena.reduce((s, r) => s + r.pax, 0)} pax</span></div>`; 
-            } else if (isClosingDay && (closingShift === 'cena' || closingShift === 'tutto')) { 
-                html += `<div class="shift-pill pill-chiuso"><span class="title">🌙 CENA</span> <span class="val" style="font-size:0.8rem;">Chiuso</span></div>`; 
-            } else { 
-                html += `<div class="shift-pill pill-empty"><span class="title">🌙 CENA</span> <span class="val">-</span></div>`; 
-            }
-
-            div.innerHTML = html + `</div>`; grid.appendChild(div);
-        }
-    }
-
-    function getIntoleranceString(intolObj) {
-        let arr = [];
-        if(intolObj.celiaco > 0) arr.push(`${intolObj.celiaco} Celiaci`);
-        if(intolObj.vegetariano > 0) arr.push(`${intolObj.vegetariano} Vegt`);
-        if(intolObj.vegano > 0) arr.push(`${intolObj.vegano} Vegani`);
-        return arr.length > 0 ? `⚠️ ${arr.join(' • ')}` : '';
-    }
-
-    function generateDayListHtml(dayRes) {
-        if(dayRes.length === 0) return '<p style="padding: 20px; text-align:center; color: var(--secondary); font-weight: 600;">Nessuna prenotazione trovata.</p>';
-        const pranzi = dayRes.filter(r => r.service === 'Pranzo').sort((a,b) => a.time.localeCompare(b.time));
-        const cene = dayRes.filter(r => r.service === 'Cena').sort((a,b) => a.time.localeCompare(b.time));
-        
-        let html = '';
-        const renderGroup = (arr, titleClass, icon, titleText) => {
-            if(arr.length === 0) return '';
-            let groupHtml = `<div class="service-section"><div class="service-title ${titleClass}"><span>${icon} ${titleText}</span> <span>Tot: ${arr.reduce((s,r) => s + r.pax, 0)} pax</span></div>`;
-            arr.forEach(r => {
-                const intolBadge = getIntoleranceString(r.intolerances) ? `<div class="intol-badge">${getIntoleranceString(r.intolerances)}</div>` : '';
-                const seggBadge = r.highchairs > 0 ? `<div class="seggiolone-badge">🪑 ${r.highchairs} Seggiolone</div>` : '';
-                const badgesHtml = (intolBadge || seggBadge) ? `<div class="badges-container">${intolBadge}${seggBadge}</div>` : '';
-                
-                const safeName = r.name ? r.name.replace(/'/g, "\\'") : '';
-                const phoneHtml = r.phone ? `<span onclick="event.stopPropagation(); window.confirmCall('${r.phone}', '${safeName}')" style="color: var(--accent); background: var(--accent-light); padding: 4px 10px; border-radius: 8px; font-weight: 800; text-decoration: none;">📞 ${r.phone}</span>` : `<span>-</span>`;
-
-                groupHtml += `
-                    <div class="list-item" onclick="window.closeModals(); window.openFormModal('${r.id}')">
-                        <div class="item-top"><span>${r.time} <span style="color:var(--secondary); font-weight:500;">|</span> ${r.name}</span><span>👤 ${r.pax}</span></div>
-                        <div class="item-details">${phoneHtml}<span>📝 ${r.operator}</span></div>
-                        ${badgesHtml}
-                    </div>`;
-            });
-            return groupHtml + `</div>`;
-        };
-        html += renderGroup(pranzi, 'title-pranzo', '☀️', 'PRANZO');
-        if(pranzi.length > 0 && cene.length > 0) html += `<div class="service-divider"></div>`;
-        html += renderGroup(cene, 'title-cena', '🌙', 'CENA');
-        return html;
-    }
-
-    window.toggleAccordion = function(headerEl, isOggi) {
-        if(isOggi) return; 
-        const contentEl = headerEl.nextElementSibling;
-        const iconEl = headerEl.querySelector('.icon');
-        if (!iconEl) return;
-        if (contentEl.style.display === 'none') { contentEl.style.display = 'block'; iconEl.style.transform = 'rotate(180deg)'; } 
-        else { contentEl.style.display = 'none'; iconEl.style.transform = 'rotate(0deg)'; }
-    };
-
-    window.openDayModal = function(dateString) {
-        selectedDayForNewRes = dateString;
-        document.getElementById('day-modal-title').innerText = new Date(dateString).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
-        document.getElementById('day-modal-list').innerHTML = generateDayListHtml(reservations.filter(r => r.date === dateString));
-        document.getElementById('dayModal').style.display = 'block';
-    };
-
-    window.filterPastDays = function(query) {
-        query = query.toLowerCase().trim();
-        const blocks = document.querySelectorAll('.past-day-block');
-        blocks.forEach(block => {
-            const searchData = block.getAttribute('data-search');
-            if(searchData.includes(query)) { block.style.display = 'block'; } 
-            else { block.style.display = 'none'; }
-        });
-    };
-
-    function renderList() {
-        const container = document.getElementById('list-container'); container.innerHTML = '';
-        const todayStr = getTodayString();
-        
-        const grouped = {}; 
-        reservations.forEach(r => { if(!grouped[r.date]) grouped[r.date] = []; grouped[r.date].push(r); });
-
-        const pastDates = [];
-        const upcomingDates = [];
-        
-        Object.keys(grouped).sort().forEach(dateStr => {
-            if (dateStr < todayStr) pastDates.push(dateStr);
-            else upcomingDates.push(dateStr);
-        });
-
-        if (pastDates.length > 0) {
-            const pastContainer = document.createElement('div');
-            pastContainer.className = 'list-group';
-            pastContainer.style.marginBottom = '24px';
-            
-            let pastHtml = `
-                <div class="list-group-header" style="background-color: var(--secondary);" onclick="window.toggleAccordion(this, false)">
-                    <span>📚 GIORNI PASSATI</span> <span class="icon" style="transform: rotate(0deg); display: inline-block; transition: transform 0.3s;">▼</span>
-                </div>
-                <div class="list-group-content" style="display: none; padding: 16px; background: var(--light);">
-                    <div class="search-container">
-                        <label style="display:block; font-size:0.8rem; font-weight:800; color:var(--secondary); margin-bottom:8px; text-transform:uppercase;">Filtra date passate</label>
-                        <input type="text" id="search-past" placeholder="Es. 15, Maggio, 2025..." onkeyup="window.filterPastDays(this.value)">
-                    </div>
-            `;
-            
-            pastDates.sort((a,b) => b.localeCompare(a)).forEach(dateStr => {
-                let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
-                pastHtml += `<div class="past-day-block list-group" data-search="${itaDate.toLowerCase()} ${dateStr}" style="margin-bottom: 16px; box-shadow:var(--shadow-sm);">
-                    <div style="background: white; padding: 12px 20px; font-weight: 800; color: var(--primary); font-size: 1rem; border-bottom: 2px solid var(--border);">${itaDate}</div>
-                    ${generateDayListHtml(grouped[dateStr])}
-                </div>`;
-            });
-            pastHtml += `</div>`;
-            pastContainer.innerHTML = pastHtml;
-            container.appendChild(pastContainer);
-        }
-
-        upcomingDates.forEach(dateStr => { container.appendChild(createDateGroup(dateStr, grouped[dateStr], dateStr === todayStr, dateStr === todayStr)); });
-    }
-
-    function createDateGroup(dateStr, resArray, isOggi, forceOpen = false) {
-        let itaDate = new Date(dateStr).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
-        if(isOggi) itaDate = "⭐ OGGI - " + itaDate;
-        const groupDiv = document.createElement('div'); groupDiv.className = 'list-group';
-        groupDiv.innerHTML = `
-            <div class="list-group-header" style="background-color: ${isOggi ? 'var(--accent)' : monthColors[new Date(dateStr).getMonth()]};" onclick="window.toggleAccordion(this, ${isOggi})">
-                <span>${itaDate}</span> ${isOggi ? '' : `<span class="icon" style="transform: rotate(${forceOpen?'180':'0'}deg); display: inline-block; transition: transform 0.3s;">▼</span>`}
-            </div>
-            <div class="list-group-content" style="display: ${forceOpen ? 'block' : 'none'};">${generateDayListHtml(resArray)}</div>`;
-        return groupDiv;
-    }
-
-    window.openFormModalForDay = function() { 
-        if(!isAdmin && !restaurantSettings.perms.add) return alert("Non hai i permessi per aggiungere prenotazioni.");
-        window.closeModals(); window.openFormModal(); 
-        if(selectedDayForNewRes) { document.getElementById('res-date').value = selectedDayForNewRes; window.checkClosedShift(); } 
-    };
-
-    window.openFormModal = function(id = null) {
-        document.getElementById('reservationForm').reset();
-        document.getElementById('res-id').value = '';
-        document.getElementById('btn-delete').style.display = 'none';
-        
-        const callBtn = document.getElementById('btn-call-phone');
-        
-        if (id) {
-            document.getElementById('form-title').innerText = "Dettagli Prenotazione";
-            const r = reservations.find(res => res.id === id);
-            if (r) {
-                document.getElementById('res-id').value = r.id; document.getElementById('res-date').value = r.date;
-                document.getElementById('res-time').value = r.time; document.getElementById('res-name').value = r.name;
-                document.getElementById('res-phone').value = r.phone; document.getElementById('res-pax').value = r.pax;
-                document.getElementById('res-children').value = r.children; document.getElementById('res-highchairs').value = r.highchairs;
-                document.getElementById('res-notes').value = r.notes; document.getElementById('res-operator').value = r.operator;
-                document.getElementById('int-celiaco').value = r.intolerances.celiaco || 0;
-                document.getElementById('int-vegetariano').value = r.intolerances.vegetariano || 0;
-                document.getElementById('int-vegano').value = r.intolerances.vegano || 0;
-                
-                // Mostra il tasto elimina in base ai permessi
-                document.getElementById('btn-delete').style.display = (isAdmin || restaurantSettings.perms.delete) ? 'block' : 'none';
-                
-                callBtn.style.display = r.phone ? 'flex' : 'none';
-                
-                if(r.children > 0 || r.highchairs > 0) window.toggleSection('children-section', document.getElementById('btn-toggle-bimbi'));
-                if(r.intolerances.celiaco > 0 || r.intolerances.vegetariano > 0 || r.intolerances.vegano > 0) window.toggleSection('menu-section', document.getElementById('btn-toggle-menu'));
-            }
-        } else {
-            if(!isAdmin && !restaurantSettings.perms.add) return alert("Non hai i permessi per aggiungere prenotazioni.");
-            document.getElementById('form-title').innerText = "Nuova Prenotazione";
-            callBtn.style.display = 'none';
-            if(!selectedDayForNewRes) document.getElementById('res-date').value = getTodayString();
-        }
-        document.getElementById('formModal').style.display = 'block';
-    };
-
-    window.saveReservation = async function(e) {
-        e.preventDefault();
-        
-        const isEditing = document.getElementById('res-id').value !== '';
-        if (isEditing && !isAdmin && !restaurantSettings.perms.edit) return alert("Non hai i permessi per modificare.");
-        if (!isEditing && !isAdmin && !restaurantSettings.perms.add) return alert("Non hai i permessi per aggiungere.");
-        if (!currentRestaurantId) return alert("Errore: Ristorante non identificato.");
-        
-        const btnSalva = document.getElementById('btn-submit-save'); 
-        btnSalva.disabled = true; 
-        btnSalva.innerText = "⏳ Salvataggio...";
-        
-        const timeValue = document.getElementById('res-time').value;
-        const autoService = parseInt(timeValue.split(':')[0]) < 15 ? 'Pranzo' : 'Cena';
-        const id = document.getElementById('res-id').value || Date.now().toString() + Math.floor(Math.random()*1000);
-        
-        const newRes = {
-            date: document.getElementById('res-date').value, 
-            service: autoService, 
-            time: timeValue, 
-            name: document.getElementById('res-name').value,
-            phone: document.getElementById('res-phone').value, 
-            pax: parseInt(document.getElementById('res-pax').value),
-            children: parseInt(document.getElementById('res-children').value) || 0, 
-            highchairs: parseInt(document.getElementById('res-highchairs').value) || 0,
-            intolerances: { 
-                celiaco: parseInt(document.getElementById('int-celiaco').value) || 0, 
-                vegetariano: parseInt(document.getElementById('int-vegetariano').value) || 0, 
-                vegano: parseInt(document.getElementById('int-vegano').value) || 0 
-            },
-            notes: document.getElementById('res-notes').value, 
-            operator: document.getElementById('res-operator').value
-        };
-
-        try { 
-            await setDoc(doc(db, "ristoranti", currentRestaurantId, "prenotazioni", id), newRes);
-            window.closeModals(); 
-            selectedDayForNewRes = null; 
-        } 
-        catch (error) { alert("Errore durante il salvataggio: " + error.message); console.error(error); } 
-        finally { btnSalva.disabled = false; btnSalva.innerText = "💾 Salva"; }
-    };
-
-    window.deleteReservation = async function() {
-        if(!isAdmin && !restaurantSettings.perms.delete) return alert("Non hai i permessi per eliminare prenotazioni.");
-        const id = document.getElementById('res-id').value;
-        if (!id || !currentRestaurantId) return;
-        
-        if (confirm("Sei sicuro di voler eliminare definitivamente questa prenotazione?")) {
-            const btnDelete = document.getElementById('btn-delete');
-            btnDelete.disabled = true; btnDelete.innerText = "⏳ Eliminazione...";
-
-            try {
-                await deleteDoc(doc(db, "ristoranti", currentRestaurantId, "prenotazioni", id));
-                window.closeModals();
-            } catch (error) {
-                console.error(error);
-                alert("Errore! Impossibile eliminare: " + error.message);
-            } finally {
-                btnDelete.disabled = false; btnDelete.innerText = "🗑 Elimina";
-            }
-        }
-    };
+W.delRes=async function(){if(!isAdmin&&!cfg.perms.delete)return toast('Non permesso.','er');const id=Q('rid').value;if(!id||!rId)return;if(confirm('Eliminare?')){const btn=Q('bdel');btn.disabled=true;btn.innerHTML='...';try{await deleteDoc(doc(db,"ristoranti",rId,"prenotazioni",id));W.closeAll();toast('Eliminata.','ok')}catch(err){toast('Errore.','er')}finally{btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:17px;height:17px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Elimina'}}};
 </script>
-
 </body>
 </html>
